@@ -3,21 +3,35 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanySetting;
 use App\Models\Order;
+use App\Services\Cart;
+use App\Support\OrderWhatsAppMessage;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\URL;
 
-/**
- * Placeholder until task T5 of odd/tasks/storefront-rebuild.md implements the order flow.
- */
 class CheckoutController extends Controller
 {
-    public function create(): View
+    public function create(Cart $cart): View|RedirectResponse
     {
-        return view('store.placeholder', ['title' => 'Enviar pedido por WhatsApp']);
+        if ($cart->unitCount() === 0) {
+            return redirect()->route('cart.show');
+        }
+
+        return view('store.checkout.create');
     }
 
     public function confirmation(Order $order): View
     {
-        return view('store.placeholder', ['title' => '¡Pedido registrado!']);
+        $order->load('items');
+        $company = CompanySetting::current();
+
+        return view('store.checkout.confirmation', [
+            'order' => $order,
+            'company' => $company,
+            'whatsappUrl' => $company->whatsappUrl(OrderWhatsAppMessage::make($order)),
+            'confirmationUrl' => URL::signedRoute('checkout.confirmation', ['order' => $order->code]),
+        ]);
     }
 }
