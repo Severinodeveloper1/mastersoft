@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanySetting;
 use Illuminate\Contracts\View\View;
 
-/**
- * Placeholder until task T6 of odd/tasks/storefront-rebuild.md implements this page.
- */
 class ClaimController extends Controller
 {
     public function __invoke(): View
     {
-        return view('store.placeholder', ['title' => 'Libro de Reclamaciones']);
+        return view('store.claims.create', ['company' => CompanySetting::current()]);
     }
 }

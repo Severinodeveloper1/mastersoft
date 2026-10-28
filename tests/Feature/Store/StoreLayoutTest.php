@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\CompanySetting;
 use App\Models\Product;
 use App\Support\Money;
+use Database\Seeders\ContentSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,6 +16,7 @@ class StoreLayoutTest extends TestCase
 
     public function test_storefront_pages_render_inside_the_store_layout(): void
     {
+        $this->seed(ContentSeeder::class);
         CompanySetting::current()->update([
             'phone' => '+51 942 000 111',
             'whatsapp_number' => '51942000111',

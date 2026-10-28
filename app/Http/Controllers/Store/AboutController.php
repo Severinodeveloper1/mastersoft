@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\AboutPage;
+use App\Models\Brand;
+use App\Models\CompanySetting;
 use Illuminate\Contracts\View\View;
 
-/**
- * Placeholder until task T6 of odd/tasks/storefront-rebuild.md implements this page.
- */
 class AboutController extends Controller
 {
     public function __invoke(): View
     {
-        return view('store.placeholder', ['title' => 'Nosotros']);
+        return view('store.about.index', [
+            'about' => AboutPage::current()->load('media'),
+            'brands' => Brand::query()->where('is_active', true)->whereHas('media', fn ($query) => $query->where('collection_name', 'logo'))->with('media')->orderBy('name')->get(),
+            'company' => CompanySetting::current(),
+        ]);
     }
 }

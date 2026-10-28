@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanySetting;
 use Illuminate\Contracts\View\View;
 
-/**
- * Placeholder until task T6 of odd/tasks/storefront-rebuild.md implements this page.
- */
 class ContactController extends Controller
 {
     public function __invoke(): View
     {
-        return view('store.placeholder', ['title' => 'Contáctanos']);
+        $company = CompanySetting::current();
+        $mapUrl = $company->map_embed_url;
+        $mapUrl = is_string($mapUrl) && preg_match('~^https://www\.google\.com/maps/embed(?:\?|/|$)~', $mapUrl) ? $mapUrl : null;
+
+        return view('store.contact.index', compact('company', 'mapUrl'));
     }
 }
