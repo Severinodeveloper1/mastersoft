@@ -9,10 +9,12 @@ use App\Enums\GoodType;
 use Database\Factories\ClaimFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use OwenIt\Auditing\Auditable as AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
+use Throwable;
 
 /**
  * A sheet of the virtual Libro de Reclamaciones.
@@ -83,6 +85,16 @@ class Claim extends Model implements Auditable
             $claim->code = str_pad((string) $claim->number, 6, '0', STR_PAD_LEFT).'-'.$filedAt->year;
             $claim->response_due_on = static::addBusinessDays($filedAt, self::RESPONSE_BUSINESS_DAYS);
         });
+    }
+
+    /**
+     * Files a claim, retrying when a concurrent filing took the same correlative number.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    public static function file(array $attributes): self
+    {
+        return retry(3, fn () => static::create($attributes), 50, fn (Throwable $e) => $e instanceof UniqueConstraintViolationException);
     }
 
     /**
