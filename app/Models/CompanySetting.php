@@ -45,4 +45,18 @@ class CompanySetting extends Model implements Auditable, HasMedia
 
         return $digits !== '' ? $digits : null;
     }
+
+    /**
+     * wa.me link to the store's WhatsApp, optionally with a prefilled message; null when no number is set.
+     */
+    public function whatsappUrl(?string $message = null): ?string
+    {
+        $digits = $this->whatsappDigits();
+
+        if ($digits === null) {
+            return null;
+        }
+
+        return "https://wa.me/{$digits}".($message !== null ? '?text='.rawurlencode($message) : '');
+    }
 }

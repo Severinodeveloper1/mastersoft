@@ -5,7 +5,53 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* Design tokens from Docs/Stitch/00-brief.md §3. Lime is never used as text on white, and white is never used on lime. */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-heading: 'Roboto Flex', 'Roboto', ui-sans-serif, system-ui, sans-serif;
+
+    --color-primary: #a4ce3a;
+    --color-primary-hover: #93bc2f;
+    --color-primary-dark: #6e8f1e;
+    --color-on-primary: #1f2a0a;
+    --color-accent: #f92400;
+    --color-ink: #1e1e1e;
+    --color-muted: #6b6b6b;
+    --color-surface: #ffffff;
+    --color-surface-alt: #f5f5f5;
+    --color-line: #e5e5e5;
+    --color-footer: #2b2b2b;
+    --color-whatsapp: #25d366;
+
+    --radius-card: 0.75rem;
+    --radius-input: 0.5rem;
+
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+    --shadow-card-hover: 0 6px 16px -4px rgb(110 143 30 / 0.12), 0 2px 4px -1px rgb(0 0 0 / 0.04);
+    --shadow-float: 0 4px 14px 0 rgb(37 211 102 / 0.38);
+}
+
+@layer base {
+    body {
+        @apply bg-surface font-sans text-ink antialiased;
+    }
+
+    h1, h2, h3, h4 {
+        @apply font-heading;
+    }
+}
+
+@utility price {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+@utility container-store {
+    @apply mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8;
+}
+
+[x-cloak] {
+    display: none !important;
 }
