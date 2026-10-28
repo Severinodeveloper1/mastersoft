@@ -3,18 +3,31 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanySetting;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
 
-/**
- * Placeholder until task T4 of odd/tasks/storefront-rebuild.md implements this page.
- */
 class ProductController extends Controller
 {
     public function __invoke(Product $product): View
     {
         abort_unless(Product::query()->visibleInStore()->whereKey($product->getKey())->exists(), 404);
 
-        return view('store.placeholder', ['title' => $product->name]);
+        $product->load(['category', 'brand']);
+        $images = $product->getMedia('images')->map(fn ($media) => ['url' => $media->getUrl(), 'alt' => $product->name])->all();
+        if ($images === []) {
+            $images[] = ['url' => '', 'alt' => $product->name];
+        }
+
+        return view('store.product.show', [
+            'title' => $product->name,
+            'description' => $product->summary ?: "Compra {$product->name} en Mastersoft.",
+            'product' => $product,
+            'images' => $images,
+            'relatedProducts' => $product->category
+                ? Product::query()->visibleInStore()->with('category')->where('category_id', $product->category_id)->whereKeyNot($product->getKey())->latest()->take(4)->get()
+                : collect(),
+            'company' => CompanySetting::current(),
+        ]);
     }
 }
