@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         $this->call(ShieldSeeder::class);
+        $this->call(ContentSeeder::class);
 
         // Create or update Super Admin user
         $admin = User::updateOrCreate(

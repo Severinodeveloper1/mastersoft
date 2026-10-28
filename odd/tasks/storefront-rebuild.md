@@ -20,7 +20,7 @@ Orchestrator: Claude (Opus). Implementation workers: Codex (via `codex:codex-res
 
 | ID | Specs | Unit | Route | Status | Commit |
 |---|---|---|---|---|---|
-| T0 | S1 | Baseline: ignore `Docs/public_html_mastersoft`, commit template + docs on `main`, create feature branch | Claude inline | blocked: user approval | — |
+| T0 | S1 | Baseline: ignore `Docs/public_html_mastersoft`, commit template + docs on `main`, create feature branch | Claude inline | done | `93a3c66` (main) |
 | T1 | S3, S4, S6 | Domain: migrations, models, factories, seeders (categories, brands, products, banners, promotions, settings, about, legal pages, orders, order items, claims, contact messages, ubigeo) | Claude inline | pending | — |
 | T2 | S8 | Storefront foundation: Tailwind v4 tokens, layout, header, footer, mobile action rail, WhatsApp FAB, product card, icons | Claude inline | pending | — |
 | T3 | S4 | Filament resources and pages for every S4 entity (claims with status, response and business-day countdown) | Codex (parallel with T4) | pending | — |
@@ -35,3 +35,5 @@ Route evidence: T3 and T4 are independent units with disjoint edit surfaces (`ap
 
 - L1 (2026-10-28, user): "repartamos las actividades con codex para no quedarse corto en tokens, opus seguirá siendo el orquestador principal"
 - L2 (2026-10-28): The repository has no commits yet, so Codex worktrees and diff-based review have no base. `Docs/public_html_mastersoft` (legacy copy with `vendor/`, session files and possibly credentials) is not git-ignored and must never be committed. T0 waits for the user's approval of the baseline commit on `main`.
+- L3 (2026-10-28, user): "crea el commit inicial, la carpeta de Docs\public_html_mastersoft es sólo referencial no se debe subir al repo"
+- L4 (2026-10-28): T0 done. `/Docs/public_html_mastersoft/` added to `.gitignore`; baseline `93a3c66` on `main` (188 files, legacy folder untracked); branch `feat/storefront-rebuild` created. `.env.example` could not be inspected (local permission rule blocks `.env*` reads); it is the stock template file.
