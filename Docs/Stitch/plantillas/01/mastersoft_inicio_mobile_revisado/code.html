@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;family=Roboto+Flex:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container": "#f0eded", "on-tertiary-container": "#9c1300", "on-background": "#1b1b1c", "on-tertiary": "#ffffff", "surface-variant": "#e5e2e1", "secondary-container": "#c7ed73", "surface-container-highest": "#e5e2e1", "on-primary-fixed": "#151f00", "tertiary-fixed": "#ffdad3", "surface-container-low": "#f6f3f2", "primary-fixed-dim": "#abd541", "surface-container-high": "#eae7e7", "surface-bright": "#fcf9f8", "tertiary": "#bb1900", "outline": "#747965", "surface-tint": "#4d6700", "inverse-primary": "#abd541", "on-tertiary-fixed": "#3f0300", "inverse-surface": "#303030", "on-primary-fixed-variant": "#394d00", "on-error-container": "#93000a", "on-secondary": "#ffffff", "on-primary": "#ffffff", "error-container": "#ffdad6", "on-secondary-fixed-variant": "#384e00", "surface-container-lowest": "#ffffff", "outline-variant": "#c4c9b1", "on-secondary-container": "#4f6c00", "tertiary-fixed-dim": "#ffb4a6", "on-secondary-fixed": "#141f00", "on-surface": "#1b1b1c", "secondary": "#4c6700", "primary": "#4d6700", "background": "#fcf9f8", "on-tertiary-fixed-variant": "#8f1000", "secondary-fixed-dim": "#aed45c", "secondary-fixed": "#caf075", "surface-dim": "#dcd9d9", "inverse-on-surface": "#f3f0ef", "on-error": "#ffffff", "on-primary-container": "#3f5500", "on-surface-variant": "#444937", "primary-container": "#a4ce3a", "error": "#ba1a1a", "primary-fixed": "#c6f25b", "tertiary-container": "#ffaa9a", "surface": "#fcf9f8" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-md": "1rem", "margin-tablet": "1.5rem", "space-xl": "2rem", "space-xs": "0.25rem", "gutter": "1rem", "margin-desktop": "2rem", "gutter-desktop": "1.5rem", "space-2xl": "3rem", "margin": "1rem", "space-sm": "0.5rem", "space-lg": "1.5rem" }, fontFamily: { "price-card": ["Roboto Flex"], "headline-md": ["Roboto Flex"], "headline-sm": ["Roboto Flex"], "price-hero": ["Roboto Flex"], "label-sm": ["Roboto Flex"], "headline-lg": ["Roboto Flex"], "headline-xl": ["Roboto Flex"], "headline-lg-mobile": ["Roboto Flex"], "headline-xl-mobile": ["Roboto Flex"], "body-md": ["Open Sans"], "caption": ["Open Sans"], "body-lg": ["Open Sans"], "body-md-semibold": ["Open Sans"], "body-sm": ["Open Sans"], "label-md": ["Roboto Flex"] }, fontSize: { "price-card": ["1.25rem", { lineHeight: "1.5rem", fontWeight: "700" }], "headline-md": ["1.25rem", { lineHeight: "1.625rem", fontWeight: "500" }], "headline-sm": ["1rem", { lineHeight: "1.375rem", fontWeight: "500" }], "price-hero": ["1.875rem", { lineHeight: "2rem", fontWeight: "700" }], "label-sm": ["0.75rem", { lineHeight: "1rem", fontWeight: "700" }], "headline-lg": ["1.75rem", { lineHeight: "2.25rem", fontWeight: "700" }], "headline-xl": ["2.25rem", { lineHeight: "2.75rem", fontWeight: "700" }], "headline-lg-mobile": ["1.375rem", { lineHeight: "1.75rem", fontWeight: "700" }], "headline-xl-mobile": ["1.75rem", { lineHeight: "2.125rem", fontWeight: "700" }], "body-md": ["0.875rem", { lineHeight: "1.375rem", fontWeight: "400" }], "caption": ["0.6875rem", { lineHeight: "0.875rem", fontWeight: "400" }], "body-lg": ["1rem", { lineHeight: "1.5rem", fontWeight: "400" }], "body-md-semibold": ["0.875rem", { lineHeight: "1.375rem", fontWeight: "600" }], "body-sm": ["0.75rem", { lineHeight: "1.125rem", fontWeight: "400" }], "label-md": ["0.875rem", { lineHeight: "1.125rem", fontWeight: "500" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-inverse-surface text-inverse-on-surface px-margin py-1 text-caption flex items-center justify-between font-caption"><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-primary-fixed">local_shipping</span><span>Envíos a todo el Perú</span></span><a class="flex items-center gap-1 hover:text-primary-fixed" href="tel:+51942123456"><span class="material-symbols-outlined text-[14px]">call</span><span>+51 942 123 456</span></a></div><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><button aria-label="Menú de categorías" class="w-11 h-11 flex items-center justify-center text-on-surface rounded-lg hover:bg-surface-container"><span class="material-symbols-outlined text-[24px]">menu</span></button><a class="flex items-center gap-1.5" data-path="inicio" href="#"><div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary-container text-[20px]">memory</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm leading-none text-on-surface font-bold tracking-tight">Mastersoft</span></div></a></div><div class="flex items-center gap-1"><button aria-label="Buscar componentes" class="w-11 h-11 flex items-center justify-center text-on-surface rounded-lg hover:bg-surface-container"><span class="material-symbols-outlined text-[22px]">search</span></button><a aria-label="Ver carrito" class="relative w-11 h-11 flex items-center justify-center text-on-surface rounded-lg hover:bg-surface-container" data-path="carrito" href="#"><span class="material-symbols-outlined text-[22px]">shopping_cart</span><span class="absolute top-1.5 right-1.5 bg-tertiary text-on-tertiary font-label-sm text-label-sm rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center leading-none">0</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-20 pb-28 bg-surface min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full">
+<!-- 1. HERO SECTION -->
+<section class="w-full px-margin pt-space-xs pb-space-sm flex flex-col gap-space-sm">
+<!-- Carousel Hero Container -->
+<div class="relative w-full rounded-xl bg-surface-container overflow-hidden shadow-sm">
+<div class="w-full flex transition-transform duration-500 ease-out" id="hero-slider">
+<!-- Slide 1: Brother Multifuncional -->
+<div class="w-full shrink-0 p-space-md flex flex-col justify-between relative bg-gradient-to-br from-surface-container via-surface-container-low to-surface-variant">
+<div class="flex items-center justify-between gap-2 mb-2">
+<span class="bg-tertiary text-on-tertiary px-2 py-0.5 rounded-full font-label-sm text-label-sm tracking-wide">
+              LANZAMIENTO
+            </span>
+</div>
+<div class="w-full h-44 my-1 rounded-lg bg-surface-container-lowest flex items-center justify-center overflow-hidden relative shadow-sm">
+<img class="w-full h-full object-contain p-2" data-alt="Professional studio photo of Brother DCP-T730DW multifunctional printer with visible continuous ink tanks, crisp white background, sharp tech lighting, high detail corporate office hardware setup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3ULJ8eFmFxYr7DPbQoexqm7cKQkyKdoUEXrOJPmW3rzpP-N1Hr0Tawczaqm_IquzjNEHLPMCMNVRb14LXOf2O-5vmtv1SBUXPjr7Q607UjpvTT27artlQIxq3eRhL0dQTomlq1BfuZxceKdDRQ1nCjnRN-muV5UvNTQ7ueJigfzcr5TeNsBbnILfeEdOkUIMLuy7rVfYirqHGu9GYVxJrapgmFWn0p6h9BXiEyvI"/>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface line-clamp-2">
+              Brother DCP-T730DW Multifuncional
+            </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+              Sistema continuo Wi-Fi dúplex de ultra alta velocidad. Diseñada para alto rendimiento empresarial.
+            </p>
+</div>
+<div class="mt-3 pt-2 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-outline line-through">Reg. S/. 1,049.00</span>
+<span class="font-price-hero text-price-hero text-on-surface leading-tight tracking-tight">S/. 899.00</span>
+</div>
+<a class="bg-primary-container text-on-primary-fixed font-headline-sm text-headline-sm font-bold px-5 py-2.5 rounded-full shadow-sm active:scale-95 transition-all flex items-center gap-1.5" href="#">
+<span>Ver Oferta</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Slide 2: Quick Preview Slide for carousel functionality -->
+<div class="w-full shrink-0 p-space-md flex flex-col justify-between relative bg-surface-container-high">
+<div class="flex items-center justify-between gap-2 mb-2">
+<span class="inline-flex items-center gap-1 bg-surface-container-lowest text-primary px-2.5 py-1 rounded-full font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+              Solución Redes WISP
+            </span>
+<span class="bg-tertiary text-on-tertiary px-2 py-0.5 rounded-full font-label-sm text-label-sm">
+              -15% OFERTA
+            </span>
+</div>
+<div class="w-full h-44 my-1 rounded-lg bg-surface-container-lowest flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-contain p-3" data-alt="Modern Ubiquiti wireless airMAX antenna white hardware dish isolated clean commercial hardware display with lime green technical lighting accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqAVUPnkjxNgTR-lsXOLR2lchWxDcjTpqOWLTC44RyzVJj7PCy3Fa3HQ9SAzAAWpRTjTJoJxfvrosWybQZUgx11m1CgxDutUGIHrwZVHhyeYJfxnZgPf3KUpZQw9GMiX019YJdacpbggBQod1cbevfWIZV10uo9ml17bt-mHH6UfLBnFeIBUCltna4Ej8e8U6NUGRsYpvSWWF-Ei442G0z5KbYfGHt_7KeCnGTnJI"/>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface line-clamp-2">
+              Antenas Ubiquiti airMAX Wireless
+            </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+              Infraestructura troncal de alto alcance y fiabilidad para proveedores de internet y enlaces punto a punto.
+            </p>
+</div>
+<div class="mt-3 pt-2 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-caption text-caption text-outline line-through">Reg. S/. 450.00</span>
+<span class="font-price-hero text-price-hero text-on-surface leading-tight tracking-tight">S/. 382.50</span>
+</div>
+<a class="bg-primary-container text-on-primary-fixed font-headline-sm text-headline-sm font-bold px-5 py-2.5 rounded-full shadow-sm active:scale-95 transition-all flex items-center gap-1.5" href="#">
+<span>Ver Equipos</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Carousel Indicators Dots -->
+<div class="w-full flex items-center justify-center gap-2 py-2.5 bg-surface-container/60 backdrop-blur-sm">
+<button aria-label="Slide 1" class="w-6 h-2 rounded-full bg-primary transition-all duration-300" id="dot-0" onclick="goToSlide(0)"></button>
+<button aria-label="Slide 2" class="w-2 h-2 rounded-full bg-outline-variant transition-all duration-300" id="dot-1" onclick="goToSlide(1)"></button>
+</div>
+</div>
+<!-- Stacked Compact Promo Card (Monitor Gamer) -->
+<div class="w-full rounded-xl bg-surface-container-lowest p-space-sm shadow-sm flex items-center gap-space-sm relative overflow-hidden">
+<div class="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-tertiary-container/30 pointer-events-none"></div>
+<div class="w-24 h-24 shrink-0 rounded-lg bg-surface-container flex items-center justify-center overflow-hidden p-1.5">
+<img class="w-full h-full object-contain" data-alt="Curved 27-inch gaming monitor with slender bezels vibrant ambient display dark modern chassis illuminated on neutral tabletop background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlW0Zk-aUA7CikQ0RX0owlihNPD2VzgUWbsknpZnCjQ7pswgTcPdVNpjDOtUOEeL4N6z0jyO6XUBxhkIXV8Jtj3859Rlc4LD-HvRuhXWAG3vNrGwkgx8Uhi3SJkesl9Z8_UmnYkVvUYgAdpk5Z_xpeLB9TXY1ZuZM5Wy7ZXCeT6ORvR-SQWsHVWap61U_2qVnhsy1tg6ird7IW5sSF9dGYmmO8ucB0ocMRA74MoHY"/>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0 pr-1">
+<div class="flex items-center gap-1.5 mb-0.5">
+<span class="bg-tertiary text-on-tertiary font-label-sm text-label-sm px-2 py-0.5 rounded-full">
+            SÚPER OFERTA -28%
+          </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface line-clamp-1 font-bold">
+          Monitor Curvo Gamer 27" 165Hz
+        </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+          1ms Full HD / HDMI &amp; DisplayPort
+        </p>
+<div class="flex items-center justify-between gap-1 mt-1">
+<div class="flex items-baseline gap-1.5">
+<span class="font-price-card text-price-card text-tertiary">S/. 749.00</span>
+<span class="font-caption text-caption text-outline line-through">S/. 1,040.00</span>
+</div>
+<button class="bg-primary-container text-on-primary-fixed font-label-sm text-label-sm px-3 py-1.5 rounded-full font-bold active:scale-95 transition-transform shrink-0">
+            Comprar ahora
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. SERVICIOS (Service strip snap-scroll) -->
+<section class="w-full py-space-sm">
+<div class="w-full overflow-x-auto flex gap-space-sm px-margin snap-x snap-mandatory no-scrollbar" style="scrollbar-width: none;">
+<!-- Service 1 -->
+<div class="snap-start shrink-0 w-52 p-3 rounded-xl bg-surface-container-low flex items-center gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Devolución gratuita</span>
+<span class="font-caption text-caption text-on-surface-variant">Garantía de 30 días</span>
+</div>
+</div>
+<!-- Service 2 -->
+<div class="snap-start shrink-0 w-52 p-3 rounded-xl bg-surface-container-low flex items-center gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">local_shipping</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Envío gratis</span>
+<span class="font-caption text-caption text-on-surface-variant">Pedidos seleccionados</span>
+</div>
+</div>
+<!-- Service 3 -->
+<div class="snap-start shrink-0 w-52 p-3 rounded-xl bg-surface-container-low flex items-center gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">headset_mic</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Soporte 24/7</span>
+<span class="font-caption text-caption text-on-surface-variant">Atención técnica en línea</span>
+</div>
+</div>
+<!-- Service 4 -->
+<div class="snap-start shrink-0 w-52 p-3 rounded-xl bg-surface-container-low flex items-center gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-[#25D366]/20 text-[#1F2A0A] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px] text-[#25D366]">chat</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Pedidos WhatsApp</span>
+<span class="font-caption text-caption text-on-surface-variant">Rápido y sin registro</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. COMPRA POR CATEGORÍA -->
+<section class="w-full px-margin py-space-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-5 rounded-full bg-primary inline-block"></span>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Explora Categorías</h2>
+</div>
+<a class="font-label-sm text-label-sm text-primary font-bold hover:underline flex items-center" href="#">
+        Ver todo
+        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+<!-- Category horizontal chips with touch targets -->
+<div class="w-full overflow-x-auto flex gap-2.5 pb-1 no-scrollbar" style="scrollbar-width: none;">
+<a class="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-primary-container text-on-primary-fixed font-body-md-semibold text-body-md shadow-sm active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">router</span>
+<span>Access Point</span>
+</a>
+<a class="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low text-on-surface font-body-md text-body-md shadow-sm active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">cable</span>
+<span>Adaptadores</span>
+</a>
+<a class="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low text-on-surface font-body-md text-body-md shadow-sm active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">wifi</span>
+<span>USB Inalámbrico</span>
+</a>
+<a class="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low text-on-surface font-body-md text-body-md shadow-sm active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">build</span>
+<span>Herramientas</span>
+</a>
+<a class="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low text-on-surface font-body-md text-body-md shadow-sm active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">print</span>
+<span>Suministros</span>
+</a>
+<a class="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low text-on-surface font-body-md text-body-md shadow-sm active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">sensors</span>
+<span>Sensores</span>
+</a>
+<a class="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low text-on-surface font-body-md text-body-md shadow-sm active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">sanitizer</span>
+<span>Alcohol Isoprop.</span>
+</a>
+<a class="shrink-0 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-surface-container-low text-on-surface font-body-md text-body-md shadow-sm active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">volume_up</span>
+<span>Parlantes</span>
+</a>
+<a class="shrink-0 flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm active:scale-95 transition-transform" href="#">
+<span>Ver todas</span>
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</a>
+</div>
+</section>
+<!-- 4. BANNERS PROMOCIONALES APILADOS -->
+<section class="w-full px-margin py-space-sm flex flex-col gap-space-sm">
+<!-- Banner 1: Ubiquiti & Mikrotik -->
+<div class="w-full rounded-xl bg-gradient-to-r from-inverse-surface to-[#243303] text-surface-container-lowest p-space-md shadow-sm flex flex-col justify-between gap-space-sm relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 w-36 h-36 rounded-full bg-primary/20 blur-xl pointer-events-none"></div>
+<div class="flex items-center gap-2">
+<span class="bg-primary-container text-on-primary-fixed px-2.5 py-0.5 rounded-full font-label-sm text-label-sm uppercase">
+          Hasta 20% Dcto
+        </span>
+<span class="font-caption text-caption text-secondary-container tracking-wider">LÍNEA WISP PERÚ</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-surface-container-lowest leading-tight">
+          Conectividad Ubiquiti y MikroTik
+        </h3>
+<p class="font-body-sm text-body-sm text-surface-variant mt-1">
+          Torres, switches gestionables y enlaces para telecomunicaciones rurales y urbanas.
+        </p>
+</div>
+<div>
+<a class="inline-flex items-center gap-2 bg-primary text-on-primary font-headline-sm text-headline-sm px-4 py-2 rounded-full shadow-sm active:scale-95 transition-transform" href="#">
+<span>Ver Equipos WISP</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Banner 2: Cajas de mantenimiento Epson -->
+<div class="w-full rounded-xl bg-surface-container-highest p-space-md shadow-sm flex flex-col justify-between gap-space-sm relative overflow-hidden">
+<div class="absolute right-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none flex items-center justify-center">
+<span class="material-symbols-outlined text-[100px] text-primary">print</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-secondary text-on-secondary px-2.5 py-0.5 rounded-full font-label-sm text-label-sm uppercase">
+          Stock Inmediato
+        </span>
+<span class="font-caption text-caption text-on-surface-variant font-bold">100% ORIGINAL</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface leading-tight">
+          Cajas de Mantenimiento Epson
+        </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          Tanques de desecho T6710, T6711, T04D1 y chips de reseteo para flotas empresariales.
+        </p>
+</div>
+<div>
+<a class="inline-flex items-center gap-2 bg-surface-container-lowest text-primary font-headline-sm text-headline-sm px-4 py-2 rounded-full shadow-sm active:scale-95 transition-transform font-bold" href="#">
+<span>Consultar Modelos</span>
+<span class="material-symbols-outlined text-[18px]">search</span>
+</a>
+</div>
+</div>
+</section>
+<!-- 5. NUESTROS PRODUCTOS (GRILLA 2 COLUMNAS) -->
+<section class="w-full px-margin py-space-sm flex flex-col gap-space-sm">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-5 rounded-full bg-primary inline-block"></span>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Nuestros Productos</h2>
+</div>
+<span class="font-caption text-caption text-outline font-bold">8 Destacados</span>
+</div>
+<!-- Segmented Pill Tabs -->
+<div class="flex items-center gap-2 bg-surface-container p-1 rounded-full w-full">
+<button class="flex-1 py-1.5 rounded-full bg-primary-container text-on-primary-fixed font-headline-sm text-headline-sm font-bold text-center transition-all shadow-sm" id="tab-destacados" onclick="switchProductTab('destacados')">
+          Destacados
+        </button>
+<button class="flex-1 py-1.5 rounded-full text-on-surface-variant font-headline-sm text-headline-sm text-center transition-all hover:text-on-surface" id="tab-recien" onclick="switchProductTab('recien')">
+          Recién llegados
+        </button>
+</div>
+</div>
+<!-- Product Grid: 2 Columns for mobile -->
+<div class="grid grid-cols-2 gap-3 w-full">
+<!-- Item 1: Ubiquiti PowerBeam -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest p-2.5 shadow-sm relative justify-between">
+<span class="absolute top-2 left-2 z-10 bg-tertiary text-on-tertiary font-label-sm text-label-sm px-2 py-0.5 rounded-full">
+          Oferta
+        </span>
+<div class="w-full aspect-square rounded-lg bg-[#F5F5F5] flex items-center justify-center p-2 mb-2">
+<img class="w-full h-full object-contain" data-alt="Ubiquiti PowerBeam M5 400 long-range wireless bridge dish product isolated high fidelity tech hardware visual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHR9rhmB4JO-n7t_CFAyXwNuvQ4heidgqic08UknPCYA-ju7kguHAzxfLpWdIoLUjsQJBuFSJRCmiEI32UqBO_VbZR0C4_JrVQhgQB22jMZqkh4GruxsI_MhouwHfXg-wu9F-bhcqOReNgC-QQKJiR_4DKhRQ2eVxj_iqy7DigdIk4dwhnoY9ywRHw6SWcVXEK3AQYNZb43pz2kAm4PaG9xTvVUHMAFbOJFnw3iko"/>
+</div>
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<span class="font-caption text-caption text-outline uppercase font-bold tracking-wider">Ubiquiti</span>
+<h3 class="font-body-md-semibold text-body-md-semibold text-on-surface line-clamp-2 leading-snug">
+              PowerBeam M5 400 25dBi 5GHz
+            </h3>
+</div>
+<div class="mt-2 pt-1">
+<div class="flex items-baseline gap-1">
+<span class="font-price-card text-price-card text-tertiary">S/. 380.00</span>
+<span class="font-caption text-caption text-outline line-through">S/. 456.00</span>
+</div>
+<button class="mt-2 w-full py-2 bg-primary-container text-on-primary-fixed font-label-sm text-label-sm rounded-full flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 2: Adaptador USB 3.0 a VGA -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest p-2.5 shadow-sm relative justify-between">
+<div class="w-full aspect-square rounded-lg bg-[#F5F5F5] flex items-center justify-center p-2 mb-2">
+<img class="w-full h-full object-contain" data-alt="USB 3.0 to VGA adapter cable compact accessory isolated on clean neutral white surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLVR8cnltSD7VbQYJHdJ07JxDugZVADxbxVGx-lCtfmcw7LQHYcbBs1mjVQWkNSe9ZB-M5qSMix5GJYHQqOM84SuJtwUGBUgA9tgLumvuIK1WG_y769flAxFCAvZk6O43pkv7QnkNYHE9pIm_-L6U1ApGOvBbLsQWViuZ-_39dsr9R-2ysZNBlFlNzCCQbgNBEkYequ5_zC6k2k3V1sphntSh-o20d5shd24J-VL0"/>
+</div>
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<span class="font-caption text-caption text-outline uppercase font-bold tracking-wider">Genérico Pro</span>
+<h3 class="font-body-md-semibold text-body-md-semibold text-on-surface line-clamp-2 leading-snug">
+              Adaptador USB 3.0 a VGA Full HD 1080P
+            </h3>
+</div>
+<div class="mt-2 pt-1">
+<span class="font-price-card text-price-card text-on-surface block">S/. 45.00</span>
+<button class="mt-2 w-full py-2 bg-primary-container text-on-primary-fixed font-label-sm text-label-sm rounded-full flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 3: Adaptador HDMI a VGA Audio -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest p-2.5 shadow-sm relative justify-between">
+<div class="w-full aspect-square rounded-lg bg-[#F5F5F5] flex items-center justify-center p-2 mb-2">
+<img class="w-full h-full object-contain" data-alt="HDMI male to VGA female converter dongle with aux audio cable clean background studio product shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARAPSf0P18Ld67D_BULYaEPzBQn_ZdLJGiX03wIZggHrSM1dg9Ex5fxoPHz0ukPMOcNK2ej1FgPfAbTeBy-cA3MMDR-prwXL6-6QZtxzzoM6PEgO5UjccbgDgiGaRYKM2kI8fMOLWrxd62tuTygW2l9xH7nH3Zz6t_RVEyonFCIvg91w191yPNvfq8qLrX25cfv2cnJfRva7iAoJsCBJxM2mvH1K00I0LnxdtClo8"/>
+</div>
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<span class="font-caption text-caption text-outline uppercase font-bold tracking-wider">Conectividad</span>
+<h3 class="font-body-md-semibold text-body-md-semibold text-on-surface line-clamp-2 leading-snug">
+              Adaptador Conversor HDMI a VGA + Audio Jack
+            </h3>
+</div>
+<div class="mt-2 pt-1">
+<span class="font-price-card text-price-card text-on-surface block">S/. 25.00</span>
+<button class="mt-2 w-full py-2 bg-primary-container text-on-primary-fixed font-label-sm text-label-sm rounded-full flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 4: Adaptador USB a RJ45 Gigabit -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest p-2.5 shadow-sm relative justify-between">
+<div class="w-full aspect-square rounded-lg bg-[#F5F5F5] flex items-center justify-center p-2 mb-2">
+<img class="w-full h-full object-contain" data-alt="Compact aluminum USB to Gigabit Ethernet LAN RJ45 network adapter centered product shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX60qYKRSRuTh8xcW66g2sLLZsDwozZqJIPy0uMs33-fZ5q2yGeSUBmre25OTOwcYqzVFWmuf06w8YRKZYnsNZQgBMjzNQuqibqQ1HlPlUSlKSf1Jp-_Y4B_AQLkVAmksZ6Mue0dyYBqtrcQBJL4W9Tq8LEa1KPiF6V4NvID5gYuPZ391byzZaKNU-gmWTHIgdxbOobEL8YpKRH-fF-zrNfMcjvpO1INDQDoN8C6I"/>
+</div>
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<span class="font-caption text-caption text-outline uppercase font-bold tracking-wider">Redes</span>
+<h3 class="font-body-md-semibold text-body-md-semibold text-on-surface line-clamp-2 leading-snug">
+              Adaptador USB a Ethernet Gigabit RJ45 1000Mbps
+            </h3>
+</div>
+<div class="mt-2 pt-1">
+<span class="font-price-card text-price-card text-on-surface block">S/. 48.00</span>
+<button class="mt-2 w-full py-2 bg-primary-container text-on-primary-fixed font-label-sm text-label-sm rounded-full flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 5: Caja Epson T6711 -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest p-2.5 shadow-sm relative justify-between">
+<div class="w-full aspect-square rounded-lg bg-[#F5F5F5] flex items-center justify-center p-2 mb-2">
+<img class="w-full h-full object-contain" data-alt="Original Epson T6711 maintenance box unit with chip authentic consumables box shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvZxVg3OHD3ZZUrL4Qspa5W5cchDb5SM94auB7C0OFR_YUc8l9wJiAeZ6_YM-6_ZCVoqetvQ1Wo95_llVjl_LOA1UyVTftxztQZN_Iw5GKBYbzN4_u_N5ifS8EXz0dHR91jDqgyu5H7iCjsOlXZsk8_c5Qa6oi4cGqTdxKgX_Apji5Lg21cPjS1HTuQqLgG7oIdMcwfTvRbMyNTAj2dWrQmZErkwqnnStQPBgMzZw"/>
+</div>
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<span class="font-caption text-caption text-outline uppercase font-bold tracking-wider">Epson Original</span>
+<h3 class="font-body-md-semibold text-body-md-semibold text-on-surface line-clamp-2 leading-snug">
+              Caja de Mantenimiento Epson T6711 WorkForce
+            </h3>
+</div>
+<div class="mt-2 pt-1">
+<span class="font-price-card text-price-card text-on-surface block">S/. 110.00</span>
+<button class="mt-2 w-full py-2 bg-primary-container text-on-primary-fixed font-label-sm text-label-sm rounded-full flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 6: Adaptador USB Wi-Fi D-Link -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest p-2.5 shadow-sm relative justify-between">
+<div class="w-full aspect-square rounded-lg bg-[#F5F5F5] flex items-center justify-center p-2 mb-2">
+<img class="w-full h-full object-contain" data-alt="Miniature D-Link DWA-131 nano USB Wi-Fi dongle receiver sleek hardware item isolated" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvi8cbbfVsyAckFRVBmpyHN8rbxI4XRcFgdDQq21ZlaOHaAMV5bWzhhEHtHM4R6TmyYhg69gw4MZUGDCUXaPnAcH0R8jfqJOL7brbxSXvdat_Zl7j28HKZUne7ordRYcsYRIyouDwH_m_Plzdubn9sao2VN454j04guDi2dvmqMjGUQS5PvSBCs9CqBoZTPPLylnLWLLR1CIbc-3TqcL2LOI7c7HDFA1d8KjM3sSY"/>
+</div>
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<span class="font-caption text-caption text-outline uppercase font-bold tracking-wider">D-Link</span>
+<h3 class="font-body-md-semibold text-body-md-semibold text-on-surface line-clamp-2 leading-snug">
+              Adaptador USB Wi-Fi D-Link DWA-131 Nano N300
+            </h3>
+</div>
+<div class="mt-2 pt-1">
+<span class="font-price-card text-price-card text-on-surface block">S/. 38.00</span>
+<button class="mt-2 w-full py-2 bg-primary-container text-on-primary-fixed font-label-sm text-label-sm rounded-full flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 7: Cable Patch Cord Cat6 -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest p-2.5 shadow-sm relative justify-between">
+<div class="w-full aspect-square rounded-lg bg-[#F5F5F5] flex items-center justify-center p-2 mb-2">
+<img class="w-full h-full object-contain" data-alt="Coiled blue Cat6 RJ45 patch cord ethernet cable 3 meters with molded connectors clean layout" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs6Ir__ocM7K9pW5ZNuFeJJ8CejcTbIpNMAP0laNPFG_ir942FF6tBhJMciAe5DFS_-jonJ2B3Dr428dmwc88e8z4f5YYH8HaRZ99DYjy-9GOizgQA4qiyZd_wtkLh9VWNQ0irXBDCywmqhTxDshtXmLr0UbXiyGZ0nHAWaTNIx2l02NxN8eergdkfgxtvw3DWlPnNuyeyf9voLcduuxTBzAPvk0Bcx-NXz4Mo4MQ"/>
+</div>
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<span class="font-caption text-caption text-outline uppercase font-bold tracking-wider">Cableado</span>
+<h3 class="font-body-md-semibold text-body-md-semibold text-on-surface line-clamp-2 leading-snug">
+              Cable Patch Cord Cat6 UTP 3 Metros Certificado
+            </h3>
+</div>
+<div class="mt-2 pt-1">
+<span class="font-price-card text-price-card text-on-surface block">S/. 12.00</span>
+<button class="mt-2 w-full py-2 bg-primary-container text-on-primary-fixed font-label-sm text-label-sm rounded-full flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 8: Alcohol Isopropílico 1 Litro -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest p-2.5 shadow-sm relative justify-between">
+<span class="absolute top-2 left-2 z-10 bg-tertiary text-on-tertiary font-label-sm text-label-sm px-2 py-0.5 rounded-full">
+          Oferta
+        </span>
+<div class="w-full aspect-square rounded-lg bg-[#F5F5F5] flex items-center justify-center p-2 mb-2">
+<img class="w-full h-full object-contain" data-alt="Chemical bottle of 99.8 percent pure isopropyl alcohol 1 liter container for electronics cleaning" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6m3_ROgQ6wNQzeYwzbOsYz_LUy7jx8nitzK7UdMRMOJI8XjA1WXFv895tlFdNvitChI4-X03aTx1oAUkqu2kkhsytFS-fGNvZRHSazlfv7zx_kGScR5BokaFCbMm1rG--Y6mriCsEbKGkN1Rdf-yRWuCM3FRQE7kCTdV3rJ9fNFhZQ9MHAqcRCZgzrIYq5Y3XEMEtuz28oQ_lGJe_30L03_sMMQlf3EuesA7Arbo"/>
+</div>
+<div class="flex flex-col flex-1 justify-between">
+<div>
+<span class="font-caption text-caption text-outline uppercase font-bold tracking-wider">Mantenimiento</span>
+<h3 class="font-body-md-semibold text-body-md-semibold text-on-surface line-clamp-2 leading-snug">
+              Alcohol Isopropílico al 99.8% 1 Litro Puro
+            </h3>
+</div>
+<div class="mt-2 pt-1">
+<div class="flex items-baseline gap-1">
+<span class="font-price-card text-price-card text-tertiary">S/. 22.00</span>
+<span class="font-caption text-caption text-outline line-through">S/. 28.00</span>
+</div>
+<button class="mt-2 w-full py-2 bg-primary-container text-on-primary-fixed font-label-sm text-label-sm rounded-full flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Centered Full-Width CTA -->
+<a class="mt-space-xs w-full py-3.5 rounded-full bg-surface-container-highest text-on-surface font-headline-sm text-headline-sm font-bold flex items-center justify-center gap-2 shadow-sm active:scale-98 transition-all hover:bg-surface-variant" href="#">
+<span>Ver toda la tienda</span>
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+</a>
+</section>
+<!-- 6. PRODUCTOS MÁS VENDIDOS -->
+<section class="w-full px-margin py-space-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-5 rounded-full bg-secondary inline-block"></span>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Más Vendidos en Tienda</h2>
+</div>
+<span class="font-label-sm text-label-sm text-outline-variant uppercase">Top Ventas</span>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Item 1 -->
+<div class="w-full p-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center gap-3">
+<div class="w-16 h-16 rounded-lg bg-[#F5F5F5] p-1.5 shrink-0 flex items-center justify-center">
+<img class="w-full h-full object-contain" data-alt="Epson maintenance cartridge consumable box isolated" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJol23kiXqTngsGmDqAsE33WdPMiZbxAHlG0VnmEzmHki_m5lS4NZLdsNKCYtcLSNoN5yYtofKNZybRaSe90g_fg-1pHHxTU7rraMMwX18VI_ODRrd26_y3isSLtInoAQPjw5nRWXgchahIKdtg0acgxdelDYfwte3bbqqyYhYnS5QM3dS-hyq-uBAnxKY_z9mDBtbzKgHo5hVN-BuYPr-dJXMO20zvuI6q_X-GTs"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-[14px]">star</span>
+<span class="font-caption text-caption text-on-surface-variant">Top #1</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Caja de mantenimiento Epson</h4>
+<span class="font-price-card text-price-card text-primary font-bold">S/. 110.00</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-primary-container text-on-surface flex items-center justify-center shrink-0 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<!-- Item 2 -->
+<div class="w-full p-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center gap-3">
+<div class="w-16 h-16 rounded-lg bg-[#F5F5F5] p-1.5 shrink-0 flex items-center justify-center">
+<img class="w-full h-full object-contain" data-alt="Professional RJ45 crimper network tool pliers steel body yellow rubber handle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcGN8KNXdjQcQtyvPYpysZ6Qyy61BOVIro7AysCnh4qPX6OQj88ENLzJBgllqHgyZphxeRm5SRudMIonxgCnfNwrLxj1jWQ8bZZQrlMwPOT0fT8jkbP8uaNvVniW4me08fgAokUoddc-RoP_A4wiDxL0TxozToKfICyglFq_2yMoqlb7frV9AIxGmN4c1n62YsamX-7HlCR_Rnk9PZ0rF2C6edAMWdE3tAeXEGSx4"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-[14px]">star</span>
+<span class="font-caption text-caption text-on-surface-variant">Top #2</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Kit Crimpadora RJ45 Pro</h4>
+<span class="font-price-card text-price-card text-primary font-bold">S/. 55.00</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-primary-container text-on-surface flex items-center justify-center shrink-0 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<!-- Item 3 -->
+<div class="w-full p-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center gap-3">
+<div class="w-16 h-16 rounded-lg bg-[#F5F5F5] p-1.5 shrink-0 flex items-center justify-center">
+<img class="w-full h-full object-contain" data-alt="1 liter bottle of pure technical isopropyl alcohol electronics cleaning" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJahoygt348RhBzcn9NJeB1tohUwK9yQcnphTBkBcAMV2YruAeqZBDHGuQVWCO-bKa-L0aQ9rb2Xwi_UTGHYqtvOhGJcr28zyDgJbpIFx-Ih4YMiU9Ua9J7uQiZ5dnj1RzRo6bBWOkWztbbClPQKFNN26_4kI8j77W3ljDm1AsIhVbPxjrYJMNhGjGZ3QDErvJ2m30DLTXW3mXmQMN9SBazcQhM7IRSIU_4aXPER0"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-[14px]">star</span>
+<span class="font-caption text-caption text-on-surface-variant">Top #3</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Alcohol Isopropílico 1 Litro</h4>
+<span class="font-price-card text-price-card text-primary font-bold">S/. 22.00</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-primary-container text-on-surface flex items-center justify-center shrink-0 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<!-- Item 4 -->
+<div class="w-full p-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center gap-3">
+<div class="w-16 h-16 rounded-lg bg-[#F5F5F5] p-1.5 shrink-0 flex items-center justify-center">
+<img class="w-full h-full object-contain" data-alt="D-Link wireless N300 USB wifi adapter micro size" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXCxCQZEwVwmi_iIZsbGhM3tD16hQzCFsgP2a7MN_Ugp10cMjIh47ZMi_cgFYzUkeFm9DkZf60mIVRfcD2cCzZg9619_K3rszYx2xBVdiamF2VfpdFalWTghT-0l3Z6R-hst7ippSrdPYZ9vAP20X57maEeArRRvNT_YOCCcOEvHukHsM80QgcosryLhLr0C9LDz3O8QGJjGVWVEZWQYIu_m_Ave8tsEHT5IWcAp8"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-[14px]">star</span>
+<span class="font-caption text-caption text-on-surface-variant">Top #4</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Adaptador USB Wi-Fi D-Link</h4>
+<span class="font-price-card text-price-card text-primary font-bold">S/. 38.00</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-primary-container text-on-surface flex items-center justify-center shrink-0 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<!-- Item 5 -->
+<div class="w-full p-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center gap-3">
+<div class="w-16 h-16 rounded-lg bg-[#F5F5F5] p-1.5 shrink-0 flex items-center justify-center">
+<img class="w-full h-full object-contain" data-alt="Black HDMI to VGA converter dongle audio jack port" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDzOvVbK9k-gaUTwOl4EKwlHOXGqVUPxXc0XxlX2G-P4bXVh9ZgUq0AmMN0dxqxI3nxRYNbxbTneC_t_HYeS3QW9rxmmqJ4saZkQleZHDDx0qBGJEqgaRXDWSNhn0uHXw62I-pb5O58s28HhamRWMeYoy5F95Xm6RhiQSifggbx07DwSH-53QegBJieTeDkBU5RPghpPVHcCwasg8mrEfpksnX-AI4ebmZ59gW2xw"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-[14px]">star</span>
+<span class="font-caption text-caption text-on-surface-variant">Top #5</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Conversor HDMI a VGA + Audio</h4>
+<span class="font-price-card text-price-card text-primary font-bold">S/. 25.00</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-primary-container text-on-surface flex items-center justify-center shrink-0 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<!-- Item 6 -->
+<div class="w-full p-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center gap-3">
+<div class="w-16 h-16 rounded-lg bg-[#F5F5F5] p-1.5 shrink-0 flex items-center justify-center">
+<img class="w-full h-full object-contain" data-alt="Ubiquiti LiteBeam 5AC Gen2 long distance outdoor wireless station unit antenna" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBezZ7L4rVZ7tCMjeph7xu6T0MLJfVQNtKy7yayxpy_PzeMqrlj5tkFqZlTMt5Cqlu324C_xBAzt3Gt_TBhy3CS6pnFBDIba4IOj_0-wwQZvbUwwPltn-im93J2BVgPD7ORddCJJrIUPKhrkMGS8GJhdDvvnqxXYy-oCzXu1NEJvSkKBuEIXyCfaXiBLuzKyx2wyL4F5pKz4yfcPNsTJ-v7PSQV0pyhQTann2SwtOI"/>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-[14px]">star</span>
+<span class="font-caption text-caption text-on-surface-variant">Top #6</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Ubiquiti LiteBeam 5AC Gen2</h4>
+<span class="font-price-card text-price-card text-primary font-bold">S/. 295.00</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-primary-container text-on-surface flex items-center justify-center shrink-0 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 7. BANDA DE ATENCIÓN INMEDIATA WHATSAPP -->
+<section class="w-full px-margin pt-space-sm pb-space-lg">
+<div class="w-full rounded-2xl bg-secondary-container/40 p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden">
+<div class="flex items-start gap-3">
+<div class="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-md">
+<span class="material-symbols-outlined text-[28px]">support_agent</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface leading-tight">
+            ¿No encuentras lo que buscas?
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Escríbenos y te ayudamos a encontrar tu repuesto técnico o generamos tu cotización con precios corporativos.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-lowest/80 text-on-surface-variant font-caption text-caption self-start">
+<span class="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
+<span>Atención rápida en tienda física / Respuesta en &lt; 3 min</span>
+</div>
+<!-- Full-Width WhatsApp CTA Button -->
+<a class="w-full py-3.5 rounded-full bg-[#25D366] text-white font-headline-sm text-headline-sm font-bold flex items-center justify-center gap-2 shadow-[0_4px_14px_0_rgba(37,211,102,0.38)] active:scale-95 transition-all" href="https://wa.me/51942123456?text=Hola%20Mastersoft%20Store%2C%20necesito%20cotizar%20un%20producto" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[24px]">chat</span>
+<span>Chatear con un Asesor (+51 942 123 456)</span>
+</a>
+</div>
+</section>
+<!-- 8. FLOATING WHATSAPP BUTTON (Quick tap action) -->
+</div>
+<script>
+  // Simple Micro-interaction Script for Carousel & Tabs
+  function goToSlide(index) {
+    const slider = document.getElementById('hero-slider');
+    const dot0 = document.getElementById('dot-0');
+    const dot1 = document.getElementById('dot-1');
+    if (!slider || !dot0 || !dot1) return;
+
+    slider.style.transform = `translateX(-${index * 100}%)`;
+    if (index === 0) {
+      dot0.className = 'w-6 h-2 rounded-full bg-primary transition-all duration-300';
+      dot1.className = 'w-2 h-2 rounded-full bg-outline-variant transition-all duration-300';
+    } else {
+      dot0.className = 'w-2 h-2 rounded-full bg-outline-variant transition-all duration-300';
+      dot1.className = 'w-6 h-2 rounded-full bg-primary transition-all duration-300';
+    }
+  }
+
+  function switchProductTab(tab) {
+    const tabDestacados = document.getElementById('tab-destacados');
+    const tabRecien = document.getElementById('tab-recien');
+    if (!tabDestacados || !tabRecien) return;
+
+    if (tab === 'destacados') {
+      tabDestacados.className = 'flex-1 py-1.5 rounded-full bg-primary-container text-on-primary-fixed font-headline-sm text-headline-sm font-bold text-center transition-all shadow-sm';
+      tabRecien.className = 'flex-1 py-1.5 rounded-full text-on-surface-variant font-headline-sm text-headline-sm text-center transition-all hover:text-on-surface';
+    } else {
+      tabRecien.className = 'flex-1 py-1.5 rounded-full bg-primary-container text-on-primary-fixed font-headline-sm text-headline-sm font-bold text-center transition-all shadow-sm';
+      tabDestacados.className = 'flex-1 py-1.5 rounded-full text-on-surface-variant font-headline-sm text-headline-sm text-center transition-all hover:text-on-surface';
+    }
+  }
+</script><footer class="w-full bg-[#2B2B2B] text-surface-container-low px-margin py-space-xl mt-space-xl flex flex-col gap-space-lg"><div class="flex flex-col gap-space-xs"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-fixed text-[24px]">computer</span><span class="font-headline-md text-headline-md text-surface-container-lowest font-bold">Mastersoft Store</span></div><p class="font-body-sm text-body-sm text-surface-variant">Especialistas en hardware informático, infraestructura corporativa de redes y suministros para impresoras en la selva y todo el Perú.</p></div><div class="flex flex-col gap-space-xs"><h4 class="font-headline-sm text-headline-sm text-surface-container-lowest font-bold">Enlaces Directos</h4><div class="flex flex-col gap-1.5 font-body-sm text-body-sm text-surface-container"><a class="hover:text-primary-fixed" data-path="catalogo-de-productos" href="#">Catálogo de Cómputo</a><a class="hover:text-primary-fixed" data-path="redes-y-conectividad" href="#">Redes &amp; Conectividad</a><a class="hover:text-primary-fixed" data-path="suministros" href="#">Tintas y Toners Originales</a><a class="hover:text-primary-fixed" data-path="cotizaciones" href="#">Cotización Corporativa</a></div></div><div class="flex flex-col gap-space-xs"><h4 class="font-headline-sm text-headline-sm text-surface-container-lowest font-bold">Contacto en Nueva Cajamarca</h4><p class="font-body-sm text-body-sm text-surface-variant flex items-start gap-2"><span class="material-symbols-outlined text-[18px] text-primary-fixed">location_on</span><span>Av. Cajamarca Sur / Jr. Comercio, Nueva Cajamarca, San Martín, Perú</span></p><p class="font-body-sm text-body-sm text-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-primary-fixed">call</span><span>+51 942 123 456 / (042) 556789</span></p><p class="font-body-sm text-body-sm text-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-primary-fixed">mail</span><span>ventas@mastersoft.pe</span></p></div><div class="p-space-sm rounded-xl bg-inverse-surface/60 flex items-center gap-space-sm"><span class="material-symbols-outlined text-tertiary-fixed text-[32px]">menu_book</span><div class="flex flex-col font-caption text-caption"><span class="font-bold text-surface-container-lowest">Libro de Reclamaciones INDECOPI</span><span class="text-surface-variant">RUC: 20614007584</span><span class="text-surface-container-high">TROYA COMPANY E.I.R.L.</span></div></div><div class="pt-space-sm flex flex-col gap-1 text-center font-caption text-caption text-outline-variant"><p>© 2025 Mastersoft Store. Todos los derechos reservados.</p><p class="text-primary-fixed">Distribuido por Grupo VesergenPerú</p></div></footer></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-body-md-semibold"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center w-20 h-12 text-on-surface-variant hover:text-primary transition-colors" data-path="categorias" href="#"><span class="material-symbols-outlined text-[22px]">category</span><span class="font-label-sm text-label-sm">Categorías</span></a><a class="flex flex-col items-center justify-center w-20 h-12 text-on-surface-variant hover:text-primary transition-colors" data-path="buscar" href="#"><span class="material-symbols-outlined text-[22px]">search</span><span class="font-label-sm text-label-sm">Buscar</span></a><a class="relative flex flex-col items-center justify-center w-20 h-12 text-on-surface-variant hover:text-primary transition-colors" data-path="carrito" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">shopping_bag</span><span class="absolute -top-1 -right-2 bg-tertiary text-on-tertiary font-label-sm text-label-sm rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center leading-none">3</span></div><span class="font-label-sm text-label-sm">Carrito</span></a><a class="flex flex-col items-center justify-center w-20 h-12 text-[#25D366] transition-colors" href="https://wa.me/51942123456?text=Hola%20Mastersoft%2C%20deseo%20consultar%20por%20un%20producto" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[22px]">chat</span><span class="font-label-sm text-label-sm font-bold">WhatsApp</span></a></div></nav></body></html>

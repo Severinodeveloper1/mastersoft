@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>Mastersoft Perú | Tecnología y Cómputo</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=Roboto+Flex:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-fixed":"#ffdad3","outline-variant":"#c4c9b1","surface-container":"#f0eded","on-primary":"#ffffff","inverse-on-surface":"#f3f0ef","on-background":"#1b1b1c","surface":"#fcf9f8","on-secondary":"#ffffff","secondary-fixed":"#caf075","secondary-fixed-dim":"#aed45c","on-secondary-fixed-variant":"#384e00","on-tertiary":"#ffffff","secondary-container":"#c7ed73","surface-variant":"#e5e2e1","tertiary":"#bb1900","inverse-primary":"#abd541","primary-fixed-dim":"#abd541","outline":"#747965","primary-container":"#a4ce3a","surface-dim":"#dcd9d9","error-container":"#ffdad6","on-tertiary-fixed-variant":"#8f1000","surface-tint":"#4d6700","secondary":"#4c6700","surface-bright":"#fcf9f8","on-error":"#ffffff","on-tertiary-fixed":"#3f0300","tertiary-container":"#ffaa9a","surface-container-low":"#f6f3f2","background":"#fcf9f8","error":"#ba1a1a","inverse-surface":"#303030","on-surface":"#1b1b1c","surface-container-high":"#eae7e7","on-surface-variant":"#444937","on-primary-fixed":"#151f00","on-primary-container":"#3f5500","surface-container-lowest":"#ffffff","surface-container-highest":"#e5e2e1","on-secondary-fixed":"#141f00","primary":"#4d6700","on-secondary-container":"#4f6c00","on-primary-fixed-variant":"#394d00","primary-fixed":"#c6f25b","on-error-container":"#93000a","tertiary-fixed-dim":"#ffb4a6","on-tertiary-container":"#9c1300"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-2xl":"3rem","gutter-desktop":"1.5rem","margin-tablet":"1.5rem","margin":"1rem","gutter":"1rem","space-xs":"0.25rem","margin-desktop":"2rem","space-xl":"2rem","space-sm":"0.5rem","space-md":"1rem","space-lg":"1.5rem"},"fontFamily":{"body-md":["Open Sans"],"body-sm":["Open Sans"],"body-md-semibold":["Open Sans"],"label-sm":["Roboto Flex"],"headline-xl-mobile":["Roboto Flex"],"headline-lg":["Roboto Flex"],"price-hero":["Roboto Flex"],"body-lg":["Open Sans"],"headline-md":["Roboto Flex"],"price-card":["Roboto Flex"],"label-md":["Roboto Flex"],"headline-xl":["Roboto Flex"],"caption":["Open Sans"],"headline-sm":["Roboto Flex"],"headline-lg-mobile":["Roboto Flex"]},"fontSize":{"body-md":["0.875rem",{"lineHeight":"1.375rem","fontWeight":"400"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","fontWeight":"400"}],"body-md-semibold":["0.875rem",{"lineHeight":"1.375rem","fontWeight":"600"}],"label-sm":["0.75rem",{"lineHeight":"1rem","fontWeight":"700"}],"headline-xl-mobile":["1.75rem",{"lineHeight":"2.125rem","fontWeight":"700"}],"headline-lg":["1.75rem",{"lineHeight":"2.25rem","fontWeight":"700"}],"price-hero":["1.875rem",{"lineHeight":"2rem","fontWeight":"700"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"headline-md":["1.25rem",{"lineHeight":"1.625rem","fontWeight":"500"}],"price-card":["1.25rem",{"lineHeight":"1.5rem","fontWeight":"700"}],"label-md":["0.875rem",{"lineHeight":"1.125rem","fontWeight":"500"}],"headline-xl":["2.25rem",{"lineHeight":"2.75rem","fontWeight":"700"}],"caption":["0.6875rem",{"lineHeight":"0.875rem","fontWeight":"400"}],"headline-sm":["1rem",{"lineHeight":"1.375rem","fontWeight":"500"}],"headline-lg-mobile":["1.375rem",{"lineHeight":"1.75rem","fontWeight":"700"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-inverse-surface text-inverse-on-surface py-1"><div class="max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop flex items-center justify-between font-body-sm"><div class="flex items-center gap-space-lg"><span class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[15px] text-primary-fixed">call</span><span>+51 942 123 456</span></span><span class="hidden sm:flex items-center gap-space-xs text-surface-dim"><span class="material-symbols-outlined text-[15px] text-primary-fixed">local_shipping</span><span>Envíos a todo el Perú</span></span></div><div class="flex items-center gap-space-md"><span class="flex items-center gap-space-xs text-primary-fixed"><span class="material-symbols-outlined text-[15px]">chat</span><span class="font-body-md-semibold">Atención WhatsApp</span></span><span class="hidden md:inline text-surface-dim">|</span><span class="hidden md:inline text-surface-dim">Lun - Sáb: 8:30am - 7:30pm</span></div></div></div><div class="max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop py-space-sm flex items-center justify-between gap-space-md lg:gap-space-lg"><div class="flex items-center gap-space-md"><img alt="Mastersoft Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vk_E_IZYdJ7VfDE0_cL-HjlphuKmFwxXiMlmOaiOJSYlRmWtAAsKle2mvkFDATPzsg604nmsU69qNdoLyxjHG9kSPTYToHT1esxUPKK1aIGe26Al5U9csHJ00lFWA4OV7fvA_KEvyWhFd5DInxdGbN9MQ8g0VcFn6lO5nxz-dCv_-VXUaajqEURW84RFYy_m0NUVIVXap9Dfnz2BtsgVnjOMaGDyWHj-vlMQZktm4i"/><div class="flex flex-col"><span class="font-headline-sm tracking-tight text-on-surface leading-none uppercase font-bold">Mastersoft</span></div></div><div class="hidden md:flex flex-1 max-w-2xl mx-space-md"><div class="w-full flex items-center bg-surface-container-low rounded-lg px-space-md py-space-xs"><span class="material-symbols-outlined text-outline mr-space-sm text-[20px]">search</span><input class="w-full bg-transparent font-body-md text-on-surface placeholder:text-outline focus:outline-none" placeholder="Buscar producto por nombre, marca o modelo..." type="text"/><button class="bg-primary-container text-on-primary-container px-space-md py-space-xs rounded-full font-label-md hover:bg-primary hover:text-on-primary transition-all" type="button">Buscar</button></div></div><div class="flex items-center gap-space-sm sm:gap-space-md"><a class="hidden sm:inline-flex items-center gap-space-xs bg-[#25D366] text-surface-container-lowest px-space-md py-space-sm rounded-full font-body-md-semibold hover:opacity-95 transition-opacity shadow-[0_2px_8px_rgba(37,211,102,0.25)]" href="https://wa.me/51942123456" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[18px]">chat</span><span class="hidden lg:inline">WhatsApp</span></a><a class="flex items-center gap-space-sm bg-surface-container-low hover:bg-surface-container px-space-md py-space-sm rounded-full transition-colors" data-path="carrito" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-on-surface text-[22px]">shopping_cart</span><span class="absolute -top-2 -right-2 bg-tertiary text-on-tertiary font-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]">0</span></div><div class="hidden sm:flex flex-col text-left"><span class="font-caption text-outline">Mi Carrito</span><span class="font-label-md text-on-surface">S/. 0.00</span></div></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div><div class="bg-surface-container-lowest shadow-[0_1px_4px_rgba(0,0,0,0.03)]"><div class="max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop flex items-center justify-between h-11"><div class="flex items-center gap-space-lg"><button class="bg-primary-container text-on-primary-container px-space-md py-space-xs rounded-lg font-label-md flex items-center gap-space-xs hover:bg-primary hover:text-on-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">menu</span><span>Todas las Categorías</span><span class="material-symbols-outlined text-[16px]">expand_more</span></button><nav class="hidden md:flex items-center gap-space-lg font-body-md" data-active-classes="text-on-primary-container font-body-md-semibold underline decoration-2 underline-offset-8 decoration-primary-container"><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="home" href="#">Inicio</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="tienda" href="#">Tienda</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="nosotros" href="#">Nosotros</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="contacto" href="#">Contáctanos</a></nav></div></div></div></header><main class="w-full pt-36 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Content Area -->
+<div class="max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop py-space-md w-full">
+<!-- 1. Breadcrumb -->
+<nav aria-label="Breadcrumb" class="flex items-center gap-space-xs text-outline font-body-sm mb-space-lg select-none">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">home</span>
+<span>Inicio</span>
+</a>
+<span class="text-surface-dim">/</span>
+<a class="hover:text-primary transition-colors" href="#">Tienda</a>
+<span class="text-surface-dim">/</span>
+<a class="hover:text-primary transition-colors" href="#">Access Point</a>
+<span class="text-surface-dim">/</span>
+<span class="text-on-surface font-body-md-semibold truncate max-w-[200px] sm:max-w-none">Ubiquiti PowerBeam M5</span>
+</nav>
+<!-- 2. Two-Column Product Spotlight -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl mb-space-2xl">
+<!-- Left: Interactive Gallery -->
+<div class="lg:col-span-6 flex flex-col gap-space-md">
+<!-- Main Viewer Well -->
+<div class="relative bg-surface-container-low rounded-xl p-space-lg flex items-center justify-center min-h-[380px] md:min-h-[460px] overflow-hidden group shadow-sm">
+<div class="absolute top-space-md left-space-md z-10 flex flex-col gap-space-xs">
+<span class="bg-tertiary text-on-tertiary font-label-sm px-space-md py-1 rounded-full uppercase tracking-wider text-[11px] shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+              Oferta -16%
+            </span>
+<span class="bg-surface-container-lowest text-on-surface font-caption px-space-sm py-0.5 rounded shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-primary">verified</span>
+              100% Original
+            </span>
+</div>
+<div class="absolute top-space-md right-space-md z-10">
+<button class="w-9 h-9 rounded-full bg-surface-container-lowest text-outline hover:text-primary hover:bg-surface-container-high transition-colors flex items-center justify-center shadow-sm" title="Ampliar imagen" type="button">
+<span class="material-symbols-outlined text-[20px]">zoom_in</span>
+</button>
+</div>
+<div class="w-full h-full flex items-center justify-center">
+<img alt="Ubiquiti PowerBeam M5 PBE-M5-400" class="max-h-[360px] w-auto object-contain transition-transform duration-300 ease-out group-hover:scale-105" data-alt="Professional studio photograph of Ubiquiti PowerBeam M5 PBE-M5-400 wireless bridge dish antenna on a clean neutral white background with subtle natural drop shadow. Clear industrial plastic casing, airMAX logo visible, sleek white feed horn, metallic mounting bracket, crisp studio lighting highlighting textures and engineering precision." id="main-product-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd8jMAqyTrvLBy2yo1F-4JGLWxIVP7my-L-E9GQOhU6EfA_X62R7rg2998YeJoPOqsBb3-AAPQE_wEauSI4a3Yh_GyNxqdKnIaBRLIvQQpiLyvJAtc7Wd84IsUrIVLJIpMOxkEFygaxijBbqqox9JoC2xGNQSesC9AZnZpqhItBa4pcLFwCRTJSAQmyRRqxxxAMNj2mpMKo1P9v87YGpKu0GKJ-p1D9jRVzcGPjME"/>
+</div>
+<!-- Beam Angle Visual Badge -->
+<div class="absolute bottom-space-md right-space-md bg-surface-container-lowest/90 backdrop-blur-sm px-space-sm py-1 rounded-lg shadow-sm flex items-center gap-space-xs font-caption text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px] text-primary">wifi_tethering</span>
+<span>Rango: 25+ Km PtP</span>
+</div>
+</div>
+<!-- Thumbnail Strip -->
+<div class="grid grid-cols-4 gap-space-sm sm:gap-space-md">
+<button class="gallery-thumb bg-surface-container-lowest rounded-lg p-space-xs shadow-sm ring-2 ring-primary-container transition-all hover:bg-surface-container flex items-center justify-center aspect-square" onclick="switchImage(this, 'vista frontal')" type="button">
+<img alt="Frontal Ubiquiti PowerBeam M5" class="w-full h-full object-contain p-1" data-alt="Frontal direct view of Ubiquiti PowerBeam M5 dish antenna showing radial parabolic grid and white center horn against crisp high-key white studio surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC54EvQbrKHRjKFXTzc6bDhIxUVcukWOcL3PJtHk97_Wr9yprltYMiNM-uSGta-oxNfQIVp6CdrDf98RB7QE2CxFR_slApRFDtlDiNQv9z5gBjCO_9fkg55npo8FlfUoWQqHJmguRJF2K8JravlU7i9rDlYIp6tUdIfVCOfa_I6iu26yfOBLkLw5frNT2c6WjKaoHUcZM7WRjnrbBbsyxpDAwHU9-GrYVRk41e0s0U"/>
+</button>
+<button class="gallery-thumb bg-surface-container-lowest rounded-lg p-space-xs shadow-sm hover:ring-2 hover:ring-primary-container transition-all hover:bg-surface-container flex items-center justify-center aspect-square" onclick="switchImage(this, 'vista posterior')" type="button">
+<img alt="Posterior montaje Ubiquiti PowerBeam M5" class="w-full h-full object-contain p-1" data-alt="Rear view of Ubiquiti PowerBeam M5 showing heavy duty pole mounting bracket, alignment hardware, ethernet port weather shroud, and industrial grade metal clamps." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7A-d4pLzTXFzt0DyetbTKfnGESyVDU6GWAQMV5bWeXanV0cuYNlIp6UhsNZnH6WGGl-bh-w7hahBGj3GhvYzo1EX-gBS-Jsa40IrSYRTemJozr_dhEW8tLpMHrCkLVd-yzXZQZ7ynaTKA5zVyZTFccSwU3KcEBN6xMwhqFf9nvEWV7EjHAYlDlYKDsTpKG0OsOGbGwLZGThpREIxShEkdUoqE_XUH9E74LPse35s"/>
+</button>
+<button class="gallery-thumb bg-surface-container-lowest rounded-lg p-space-xs shadow-sm hover:ring-2 hover:ring-primary-container transition-all hover:bg-surface-container flex items-center justify-center aspect-square" onclick="switchImage(this, 'vista feedhorn y detalle')" type="button">
+<img alt="Detalle feedhorn Ubiquiti PowerBeam" class="w-full h-full object-contain p-1" data-alt="Close up macro technical shot of Ubiquiti InnerFeed feedhorn receiver showing metallic RF shielding, airMAX logo imprint, and clean aerodynamic molding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCerES5lkJ74WSzYIjtEnwzlCFJBBaudCIApKhl4iwPGBf-7iA67XgszlPr0N4WK1_-iBWnBA30jnoB-32kL2n4Wq5hlbotSeAPikuOikfsd5kYG6VqBAWMoqYwdcSaOlsoujwMQ_URZwmcDlwL8TbcRp7wPEVapwRJzBJsOUyw19a6kMW9giBZgTuiM_KGlqpRW-TQR7WSDTfBd7jk-7AaFSrUZ1iy2t9WXrzR-is"/>
+</button>
+<button class="gallery-thumb bg-surface-container-lowest rounded-lg p-space-xs shadow-sm hover:ring-2 hover:ring-primary-container transition-all hover:bg-surface-container flex items-center justify-center aspect-square" onclick="switchImage(this, 'empaque y accesorios')" type="button">
+<img alt="Empaque y accesorios completos PoE Ubiquiti" class="w-full h-full object-contain p-1" data-alt="Complete box bundle contents of Ubiquiti PowerBeam M5 including original box, 24V PoE passive injector adapter, power cord, mounting strap, and quick start guide neatly arranged." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi9ch7zAkklJB40QdD31ZsgT52qZ-_a2zr_wj5Ti0pSR3dCUA4JlqfvIR-si0YfqvSAPz1eRRO8BLvguqXXU3Au8xfYibqjobB5d_bNbrAs5Abxw9ujgxbWb7RsncFWKRKgJqlskWEWKtOwmg30Gt-_hHIc3oHiuqd_G92x-2kG8Axs1Sruni_54dDWZ-7G0K5woBlET_bqUiGIOS1mnxEGvSiD9wRTyXQV-Uad6w"/>
+</button>
+</div>
+</div>
+<!-- Right: Product Purchase Panel -->
+<div class="lg:col-span-6 flex flex-col justify-between">
+<div class="flex flex-col">
+<!-- Tag & Category -->
+<div class="flex flex-wrap items-center gap-space-sm mb-space-xs">
+<span class="bg-surface-container text-on-surface-variant font-label-sm px-space-sm py-0.5 rounded-full uppercase tracking-wide text-[11px]">
+              Access Point &amp; Redes WISP
+            </span>
+<span class="text-surface-dim font-caption">•</span>
+<span class="text-outline font-caption">Enlaces de Larga Distancia</span>
+</div>
+<!-- Product Title -->
+<h1 class="font-headline-xl text-on-surface tracking-tight mb-space-sm leading-snug">
+            Ubiquiti PowerBeam M5 PBE-M5-400 25dBi 5GHz
+          </h1>
+<!-- Meta row: Brand, SKU & Condition -->
+<div class="flex flex-wrap items-center gap-space-md py-space-xs mb-space-md text-on-surface-variant font-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="text-outline">Marca:</span>
+<span class="font-body-md-semibold text-on-surface bg-surface-container-high/40 px-2 py-0.5 rounded text-[13px]">Ubiquiti Networks</span>
+</div>
+<span class="text-surface-dim font-caption">|</span>
+<div class="flex items-center gap-1.5">
+<span class="text-outline">SKU:</span>
+<span class="font-mono text-[13px] text-on-surface bg-surface-container-low px-2 py-0.5 rounded">PBE-M5-400</span>
+</div>
+<span class="text-surface-dim font-caption">|</span>
+<div class="flex items-center gap-1 text-[#25D366]">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<span class="font-body-md-semibold text-[13px] text-on-surface">Nuevo / Sellado</span>
+</div>
+</div>
+<!-- Pricing Cluster -->
+<div class="bg-surface-container-low/70 rounded-xl p-space-md mb-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div>
+<div class="flex items-baseline gap-space-sm">
+<span class="font-price-hero text-[2.25rem] text-tertiary leading-none tracking-tight">S/. 380.00</span>
+<span class="font-body-md text-outline line-through">S/. 456.00</span>
+</div>
+<div class="font-caption text-outline mt-1">Precio incluye IGV. Entregamos Boleta y Factura electrónica.</div>
+</div>
+<div class="bg-surface-container-lowest px-space-md py-space-xs rounded-lg shadow-sm flex flex-col items-start sm:items-end">
+<span class="font-caption text-outline uppercase tracking-wider text-[10px]">Ahorro Directo</span>
+<span class="font-label-md text-primary font-bold">S/. 76.00 (16%)</span>
+</div>
+</div>
+<!-- Live Stock Indicator -->
+<div class="flex items-center gap-space-sm mb-space-md bg-secondary-container/20 p-space-sm rounded-lg">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+<span class="font-body-sm text-on-surface font-semibold">
+              Disponible: <span class="text-primary font-bold">12 unidades en stock</span> para despacho express hoy
+            </span>
+</div>
+<!-- Short Technical Pitch -->
+<p class="font-body-md text-on-surface-variant leading-relaxed mb-space-lg">
+            Puente inalámbrico <strong class="text-on-surface font-semibold">airMAX®</strong> de alto rendimiento ideal para enlaces de largo alcance punto a punto (PtP) de hasta <strong>25+ km</strong>. Antena directiva integrada de <strong>25 dBi</strong> y procesador de 560 MHz para máximo throughput libre de interferencias.
+          </p>
+<!-- Purchase Controls -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-md mb-space-lg">
+<!-- Counter Pill -->
+<div class="flex items-center justify-between bg-surface-container-low rounded-full px-space-sm py-1 shadow-sm w-full sm:w-36">
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors active:scale-95" onclick="decrementQty()" title="Disminuir cantidad" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="font-label-md text-on-surface text-center font-bold px-2 select-none" id="product-quantity">1</span>
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors active:scale-95" onclick="incrementQty()" title="Aumentar cantidad" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<!-- Primary Add Cart Button -->
+<button class="flex-1 bg-primary-container hover:bg-primary-fixed text-[#1F2A0A] font-label-md py-space-sm px-space-lg rounded-full flex items-center justify-center gap-space-sm shadow-md transition-all active:scale-[0.98]" id="btn-add-cart" onclick="addToCartAnimation()" type="button">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+<span class="font-bold">Agregar al Carrito</span>
+</button>
+<!-- WhatsApp Direct Outline Button -->
+<a class="bg-surface-container-lowest text-[#1d823e] hover:bg-[#25D366] hover:text-white px-space-md py-space-sm rounded-full font-label-md flex items-center justify-center gap-space-xs shadow-sm transition-all active:scale-95" href="https://wa.me/51942123456?text=Hola%20Mastersoft,%20deseo%20comprar%20el%20Ubiquiti%20PowerBeam%20M5%20(SKU:%20PBE-M5-400)%20por%20S/.%20380.00" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span class="whitespace-nowrap font-bold">Consultar WhatsApp</span>
+</a>
+</div>
+</div>
+<!-- Trust Badges Block -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm pt-space-md bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px] mt-0.5">local_shipping</span>
+<div class="flex flex-col">
+<span class="font-body-md-semibold text-on-surface text-[13px] leading-tight">Envíos a todo el Perú</span>
+<span class="font-caption text-outline">Olva Courier / Shalom / Agencias</span>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px] mt-0.5">verified</span>
+<div class="flex flex-col">
+<span class="font-body-md-semibold text-on-surface text-[13px] leading-tight">Garantía Local 12 Meses</span>
+<span class="font-caption text-outline">Soporte directo Mastersoft</span>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px] mt-0.5">flash_on</span>
+<div class="flex flex-col">
+<span class="font-body-md-semibold text-on-surface text-[13px] leading-tight">Pedido Rápido sin Registro</span>
+<span class="font-caption text-outline">Coordinación directa por WhatsApp</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Technical Specs and Description Tabs -->
+<div class="w-full bg-surface-container-lowest rounded-2xl p-space-lg md:p-space-xl shadow-sm mb-space-2xl">
+<!-- Tabs Navigation -->
+<div class="flex items-center gap-space-md pb-space-sm mb-space-lg overflow-x-auto">
+<button class="font-headline-sm pb-space-xs font-bold text-primary border-b-2 border-primary transition-colors flex items-center gap-space-xs whitespace-nowrap" id="tab-btn-desc" onclick="activateTab('desc')" type="button">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span>Descripción Detallada</span>
+</button>
+<button class="font-headline-sm pb-space-xs font-medium text-outline hover:text-on-surface transition-colors flex items-center gap-space-xs whitespace-nowrap" id="tab-btn-tech" onclick="activateTab('tech')" type="button">
+<span class="material-symbols-outlined text-[20px]">settings_ethernet</span>
+<span>Información Técnica</span>
+</button>
+</div>
+<!-- Tab Content: Descripción Detallada -->
+<div class="flex flex-col gap-space-lg" id="tab-content-desc">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<h2 class="font-headline-lg text-on-surface leading-tight">
+              Potencia directiva y máxima inmunidad al ruido en enlaces 5GHz
+            </h2>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+              El <strong>Ubiquiti PowerBeam M5 (PBE-M5-400)</strong> integra el radio directamente en la bocina de alimentación del reflector (tecnología <em>InnerFeed®</em>), eliminando por completo la necesidad de cables coaxiales de RF. Esto minimiza las pérdidas por atenuación del cable y entrega una relación costo-beneficio inmejorable para enlaces troncales WISP e interconexión de sedes corporativas.
+            </p>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+              Equipado con la tecnología de procesamiento <strong>airMAX TDMA</strong> con protocolo propietario de Ubiquiti, permite que cada estación transmita y reciba usando ranuras de tiempo previamente asignadas, solucionando el histórico problema del nodo oculto y manteniendo latencias uniformes aún con alto tráfico.
+            </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md pt-space-xs">
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-[#1F2A0A]">
+<span class="material-symbols-outlined text-[20px]">alt_route</span>
+</div>
+<div>
+<span class="font-body-md-semibold text-on-surface block">Directividad Óptima</span>
+<span class="font-caption text-outline">Haz estrecho que bloquea interferencias</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-[#1F2A0A]">
+<span class="material-symbols-outlined text-[20px]">security</span>
+</div>
+<div>
+<span class="font-body-md-semibold text-on-surface block">Construcción Industrial</span>
+<span class="font-caption text-outline">Protección UV y corrosión extrema</span>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 bg-surface-container-low rounded-xl p-space-md flex flex-col items-center justify-center">
+<img alt="Diagrama de enlace inalámbrico PtP airMAX Ubiquiti" class="w-full h-56 object-cover rounded-lg mb-space-sm" data-alt="Technical application diagram showing two Ubiquiti PowerBeam M5 units establishing a high speed wireless point to point connection across a wide landscape between two communication towers with signal beam waves." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg6YGqcH5Y_6IujNq-iW2Q5nOnvfWRZX7QsCMMsMG-S7aixtifUc6Tb1zn9HxzyJvaetjFrtFnYpEfi5ZllyiuxHfBItPqN_2tNv31xapahFSpV2G245RVkdHo_M0EGOdUdx1LdNIjfxWM0kWz1aR2IokALfxeiZPV7zUySY-3UeOhM7wfqETSdSs5Sp2HMwQJ0stuFTmWzSQaD_We12URbo0G4ZSEcOZZWkYn36Y"/>
+<span class="font-caption text-outline text-center">Topología de Enlace Punto a Punto (PtP) de largo alcance hasta 25+ Kilómetros</span>
+</div>
+</div>
+</div>
+<!-- Tab Content: Información Técnica -->
+<div class="hidden flex flex-col gap-space-md" id="tab-content-tech">
+<h3 class="font-headline-md text-on-surface mb-space-xs">Ficha de Especificaciones de Ingeniería</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md font-body-md">
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm">
+<span class="font-label-md text-primary font-bold uppercase tracking-wider text-[12px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+              Rendimiento de Radiofrecuencia (RF)
+            </span>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Frecuencia de Operación:</span>
+<span class="font-body-md-semibold">5150 - 5875 MHz (5 GHz)</span>
+</div>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Ganancia de Antena:</span>
+<span class="font-body-md-semibold text-primary">25 dBi</span>
+</div>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Potencia TX Máxima:</span>
+<span class="font-body-md-semibold">26 dBm (400 mW)</span>
+</div>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">VSWR Máximo:</span>
+<span class="font-body-md-semibold">1.5 : 1</span>
+</div>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Throughput Máximo:</span>
+<span class="font-body-md-semibold">150+ Mbps reales TCP/IP</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm">
+<span class="font-label-md text-primary font-bold uppercase tracking-wider text-[12px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">hardware</span>
+              Hardware y Arquitectura
+            </span>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Procesador / CPU:</span>
+<span class="font-body-md-semibold">Atheros MIPS 74Kc, 560 MHz</span>
+</div>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Memoria RAM:</span>
+<span class="font-body-md-semibold">64 MB DDR2</span>
+</div>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Almacenamiento Flash:</span>
+<span class="font-body-md-semibold">8 MB SPI Flash</span>
+</div>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Interfaz de Red:</span>
+<span class="font-body-md-semibold">1x Puerto 10/100 Ethernet RJ-45</span>
+</div>
+<div class="flex justify-between py-1 text-on-surface">
+<span class="text-outline">Alimentación eléctrica:</span>
+<span class="font-body-md-semibold">PoE Pasivo 24V, 0.5A (Inyector Incluido)</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm md:col-span-2">
+<span class="font-label-md text-primary font-bold uppercase tracking-wider text-[12px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">ac_unit</span>
+              Factores Físicos y Ambientales
+            </span>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md pt-1">
+<div>
+<span class="text-outline font-caption block">Dimensiones de la parábola:</span>
+<span class="font-body-md-semibold text-on-surface">420 x 420 x 275 mm</span>
+</div>
+<div>
+<span class="text-outline font-caption block">Peso completo con anclajes:</span>
+<span class="font-body-md-semibold text-on-surface">1.75 kg (3.86 lbs)</span>
+</div>
+<div>
+<span class="text-outline font-caption block">Resistencia al viento:</span>
+<span class="font-body-md-semibold text-on-surface">200 km/h (125 mph)</span>
+</div>
+<div>
+<span class="text-outline font-caption block">Rango de temperatura:</span>
+<span class="font-body-md-semibold text-on-surface">-40 °C a 70 °C</span>
+</div>
+<div>
+<span class="text-outline font-caption block">Humedad de operación:</span>
+<span class="font-body-md-semibold text-on-surface">5 a 95% sin condensación</span>
+</div>
+<div>
+<span class="text-outline font-caption block">Protección ESD/EMP:</span>
+<span class="font-body-md-semibold text-on-surface">± 24 kV Contacto / Aire</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Related Products Section ("También te puede interesar") -->
+<div class="w-full mb-space-2xl">
+<div class="flex items-center justify-between mb-space-lg">
+<div>
+<span class="font-caption text-primary font-bold uppercase tracking-widest block">Equipos complementarios</span>
+<h2 class="font-headline-lg text-on-surface">También te puede interesar</h2>
+</div>
+<a class="hidden sm:flex items-center gap-1 font-label-md text-primary hover:text-on-primary-fixed-variant transition-colors" href="#">
+<span>Ver catálogo de redes</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md">
+<!-- Product 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col justify-between shadow-sm hover:-translate-y-1 transition-transform group">
+<div>
+<div class="relative bg-[#F5F5F5] rounded-lg aspect-square flex items-center justify-center p-space-sm mb-space-sm overflow-hidden">
+<span class="absolute top-2 left-2 bg-primary-container text-[#1F2A0A] font-label-sm px-2 py-0.5 rounded-full text-[10px] font-bold">5AC Gen2</span>
+<img alt="Ubiquiti LiteBeam 5AC Gen2" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200" data-alt="Ubiquiti LiteBeam 5AC Gen2 23dBi wireless bridge CPE antenna white sleek body isolated on gray studio background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxF5qBG8zF7cZejPbcXMKbp7_I-L_HXZyzVnRTKpf0SJGHpxOKdHZSDp5trs3i2Eu9Ayt1V6qBtPy6D3zV9j2Ra9WiFtXK4pn2DU1XVb9bgaU3SmZomkNC4yv6_8pLXOhSVhixGY2pYbu-ltyrZLE-9RgGzqQpPBMKgenyNAQJti3GYK45TeUEytGM_r-MtFsRjIJXmWKKQuhExySVG5J4R0AFgw6ox4yh0zl7LK8"/>
+</div>
+<span class="font-caption text-outline block mb-0.5">Ubiquiti Networks</span>
+<h3 class="font-body-md-semibold text-on-surface line-clamp-2 mb-space-xs leading-snug">
+              Ubiquiti LiteBeam 5AC Gen2 23dBi
+            </h3>
+</div>
+<div class="pt-space-sm flex flex-col gap-space-sm">
+<div class="flex items-baseline justify-between">
+<span class="font-price-card text-on-surface text-[1.125rem]">S/. 295.00</span>
+<span class="font-caption text-outline">Stock: 8</span>
+</div>
+<button class="w-full bg-primary-container hover:bg-primary-fixed text-[#1F2A0A] font-label-sm py-2 rounded-full font-bold transition-colors flex items-center justify-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col justify-between shadow-sm hover:-translate-y-1 transition-transform group">
+<div>
+<div class="relative bg-[#F5F5F5] rounded-lg aspect-square flex items-center justify-center p-space-sm mb-space-sm overflow-hidden">
+<span class="absolute top-2 left-2 bg-surface-container-high text-on-surface-variant font-label-sm px-2 py-0.5 rounded-full text-[10px]">MikroTik</span>
+<img alt="Mikrotik SXTsq 5 ac" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200" data-alt="MikroTik SXTsq 5 ac compact CPE antenna integrated dual chain radio white casing isolated studio light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrTW8_uio41oBQcvVBDLyoNsfBSbR9w5t2QbstnZM2cRjk-3AylIDJOzQLVREoOwSKDS5Xg2sqpVxEbgGTMvbBC8sVU3-cl03VoIG3VA6U_nGQKB6tth_d2qFvPKdNAPf4jRlIgiHFhBL-EDyFG5tmg27aaII9dKHTIrR_RWweAg03jqcV6MTMs7HV8NewHm3kUYhD_-usE5kFcmc_3lHoODItrS6fg0lAuFEmY_o"/>
+</div>
+<span class="font-caption text-outline block mb-0.5">MikroTik RouterBOARD</span>
+<h3 class="font-body-md-semibold text-on-surface line-clamp-2 mb-space-xs leading-snug">
+              Mikrotik SXTsq 5 ac (RBSXTsqG-5acD)
+            </h3>
+</div>
+<div class="pt-space-sm flex flex-col gap-space-sm">
+<div class="flex items-baseline justify-between">
+<span class="font-price-card text-on-surface text-[1.125rem]">S/. 230.00</span>
+<span class="font-caption text-outline">Stock: 15</span>
+</div>
+<button class="w-full bg-primary-container hover:bg-primary-fixed text-[#1F2A0A] font-label-sm py-2 rounded-full font-bold transition-colors flex items-center justify-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col justify-between shadow-sm hover:-translate-y-1 transition-transform group">
+<div>
+<div class="relative bg-[#F5F5F5] rounded-lg aspect-square flex items-center justify-center p-space-sm mb-space-sm overflow-hidden">
+<span class="absolute top-2 left-2 bg-surface-container-high text-on-surface-variant font-label-sm px-2 py-0.5 rounded-full text-[10px]">Cables</span>
+<img alt="Cable Patch Cord Cat6 3M" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200" data-alt="High quality blue Cat6 Ethernet patch cord cable 3 meters with gold plated RJ45 connectors isolated on pure gray background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2dQi1Xx7M0fn3AYu8KQJe41PcPTfFmv9ggwq1eMoU3caYtsRplIxiLXTQUQgkH-T8Oh4PJ2kKUTyxDvE6v7GPWak6N-8jr0IuVcqETaMLgG55HqJ2PRhMTz_Ha_f5ULp4zml-AGVmZVIcDCoWd7LJw4GEQJjstO-93pnJcWBXR-_hL0a26YCdPocG32vDph8jduVkMr4XGX-8MpBK-gcmEVEGk6vg7Q7UnJKxaBU"/>
+</div>
+<span class="font-caption text-outline block mb-0.5">Dixon / CommScope</span>
+<h3 class="font-body-md-semibold text-on-surface line-clamp-2 mb-space-xs leading-snug">
+              Cable Patch Cord Cat6 UTP 3 Metros
+            </h3>
+</div>
+<div class="pt-space-sm flex flex-col gap-space-sm">
+<div class="flex items-baseline justify-between">
+<span class="font-price-card text-on-surface text-[1.125rem]">S/. 12.00</span>
+<span class="font-caption text-outline">Stock: 50+</span>
+</div>
+<button class="w-full bg-primary-container hover:bg-primary-fixed text-[#1F2A0A] font-label-sm py-2 rounded-full font-bold transition-colors flex items-center justify-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+<!-- Product 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md flex flex-col justify-between shadow-sm hover:-translate-y-1 transition-transform group">
+<div>
+<div class="relative bg-[#F5F5F5] rounded-lg aspect-square flex items-center justify-center p-space-sm mb-space-sm overflow-hidden">
+<span class="absolute top-2 left-2 bg-tertiary text-on-tertiary font-label-sm px-2 py-0.5 rounded-full text-[10px]">Herramienta</span>
+<img alt="Kit Crimpador RJ45 Pro" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200" data-alt="Professional networking toolkit including heavy duty RJ45 crimping tool with wire stripper and tester accessories clean studio shot." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCvlp1pSMdEgDtZooOIpZKo2YZO_CGLEjJyLC_RHhp58NW5jPayhkadkrDTd6bClz3QEn-YJMTMR5uQeSgOV9s0ibzJRhI5zPnWj8IQEHtdFjMCGvZB-WFPmw2iXsH56DKNRGucvZLdsNo6PUce0UUlah_dvjLOI8-fkdVDfIjWSjyz-98LWNMrvzR3OCTS_I6-l2VQnY7h9L84hRii7wTqtDz_s_cS7nRpcdA0HU"/>
+</div>
+<span class="font-caption text-outline block mb-0.5">Pro'sKit Tools</span>
+<h3 class="font-body-md-semibold text-on-surface line-clamp-2 mb-space-xs leading-snug">
+              Kit Crimpador RJ45 Pro + Pelador
+            </h3>
+</div>
+<div class="pt-space-sm flex flex-col gap-space-sm">
+<div class="flex items-baseline justify-between">
+<span class="font-price-card text-on-surface text-[1.125rem]">S/. 55.00</span>
+<span class="font-caption text-outline">Stock: 20</span>
+</div>
+<button class="w-full bg-primary-container hover:bg-primary-fixed text-[#1F2A0A] font-label-sm py-2 rounded-full font-bold transition-colors flex items-center justify-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+<span>Agregar</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 5. Specialized WhatsApp Technical Advisor Banner -->
+<div class="w-full bg-surface-container-lowest rounded-2xl p-space-lg md:p-space-xl shadow-sm mb-space-2xl overflow-hidden relative">
+<div class="absolute -right-8 -bottom-8 w-48 h-48 bg-primary-container/20 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex flex-col lg:flex-row items-center justify-between gap-space-lg relative z-10">
+<div class="flex items-start gap-space-md max-w-2xl">
+<div class="w-12 h-12 rounded-xl bg-[#25D366]/15 flex items-center justify-center text-[#25D366] shrink-0">
+<span class="material-symbols-outlined text-[28px]">support_agent</span>
+</div>
+<div>
+<h3 class="font-headline-md text-on-surface font-bold mb-1">
+              ¿Tienes dudas técnicas sobre la instalación de este radioenlace?
+            </h3>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+              Escríbenos directamente a WhatsApp y un ingeniero especialista en telecomunicaciones te asesorará en cálculo de distancias, línea de vista (Fresnel) y compatibilidad de torres.
+            </p>
+</div>
+</div>
+<a class="bg-[#25D366] hover:bg-[#20ba59] text-white px-space-xl py-space-sm rounded-full font-body-md-semibold flex items-center gap-space-sm shadow-md hover:shadow-lg transition-all transform active:scale-95 shrink-0" href="https://wa.me/51942123456?text=Hola%20Mastersoft,%20necesito%20asesor%C3%ADa%20t%C3%A9cnica%20sobre%20el%20radioenlace%20Ubiquiti%20PowerBeam%20M5" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[22px]">chat</span>
+<span>Chatear con un Asesor (+51 942 123 456)</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Interactive JavaScript logic for Quantity & Tabs -->
+<script>
+    function activateTab(tabId) {
+      const descContent = document.getElementById('tab-content-desc');
+      const techContent = document.getElementById('tab-content-tech');
+      const btnDesc = document.getElementById('tab-btn-desc');
+      const btnTech = document.getElementById('tab-btn-tech');
+
+      if (tabId === 'desc') {
+        descContent.classList.remove('hidden');
+        techContent.classList.add('hidden');
+
+        btnDesc.className = 'font-headline-sm pb-space-xs font-bold text-primary border-b-2 border-primary transition-colors flex items-center gap-space-xs whitespace-nowrap';
+        btnTech.className = 'font-headline-sm pb-space-xs font-medium text-outline hover:text-on-surface transition-colors flex items-center gap-space-xs whitespace-nowrap';
+      } else {
+        descContent.classList.add('hidden');
+        techContent.classList.remove('hidden');
+
+        btnTech.className = 'font-headline-sm pb-space-xs font-bold text-primary border-b-2 border-primary transition-colors flex items-center gap-space-xs whitespace-nowrap';
+        btnDesc.className = 'font-headline-sm pb-space-xs font-medium text-outline hover:text-on-surface transition-colors flex items-center gap-space-xs whitespace-nowrap';
+      }
+    }
+
+    let currentQty = 1;
+    function incrementQty() {
+      if (currentQty < 12) {
+        currentQty++;
+        document.getElementById('product-quantity').textContent = currentQty;
+      }
+    }
+
+    function decrementQty() {
+      if (currentQty > 1) {
+        currentQty--;
+        document.getElementById('product-quantity').textContent = currentQty;
+      }
+    }
+
+    function switchImage(buttonElement, viewDescription) {
+      document.querySelectorAll('.gallery-thumb').forEach(el => {
+        el.classList.remove('ring-2', 'ring-primary-container');
+      });
+      buttonElement.classList.add('ring-2', 'ring-primary-container');
+    }
+
+    function addToCartAnimation() {
+      const btn = document.getElementById('btn-add-cart');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">autorenew</span><span class="font-bold">Agregando...</span>';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check</span><span class="font-bold">¡Agregado!</span>';
+        btn.classList.add('bg-secondary-fixed');
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.disabled = false;
+          btn.classList.remove('bg-secondary-fixed');
+        }, 1500);
+      }, 500);
+    }
+  </script>
+</div></main><footer class="w-full bg-[#2B2B2B] text-surface-dim pt-space-2xl pb-space-lg"><div class="max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl pb-space-2xl"><div class="flex flex-col gap-space-md"><div class="flex items-center gap-space-sm"><div class="w-7 h-7 rounded-lg bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary-container text-[18px]">memory</span></div><span class="font-headline-md text-surface-bright">Mastersoft</span></div><p class="font-body-sm text-surface-dim leading-relaxed">Tienda especializada en accesorios de cómputo, redes, suministros de impresión y herramientas técnicas en el Perú. Garantía real y despacho express.</p><div class="flex items-center gap-space-sm pt-space-xs"><span class="inline-flex items-center gap-space-xs text-surface-bright font-label-sm bg-surface-container-high/20 px-space-sm py-space-xs rounded"><span class="material-symbols-outlined text-[14px] text-primary-fixed">check_circle</span>RUC Verificado</span></div></div><div class="flex flex-col gap-space-sm"><span class="font-headline-sm text-surface-bright uppercase tracking-wider mb-space-xs">Enlaces</span><a class="font-body-sm text-surface-dim hover:text-primary-fixed transition-colors" data-path="home" href="#">Inicio</a><a class="font-body-sm text-surface-dim hover:text-primary-fixed transition-colors" data-path="tienda" href="#">Tienda</a><a class="font-body-sm text-surface-dim hover:text-primary-fixed transition-colors" data-path="pedido" href="#">Pedido por WhatsApp</a><a class="font-body-sm text-surface-dim hover:text-primary-fixed transition-colors" data-path="carrito" href="#">Carrito de Compras</a><a class="font-body-sm text-surface-dim hover:text-primary-fixed transition-colors" href="#">Políticas de privacidad</a><a class="font-body-sm text-surface-dim hover:text-primary-fixed transition-colors" href="#">Términos y condiciones</a></div><div class="flex flex-col gap-space-sm"><span class="font-headline-sm text-surface-bright uppercase tracking-wider mb-space-xs">Contacto</span><div class="flex items-start gap-space-sm font-body-sm"><span class="material-symbols-outlined text-[18px] text-primary-fixed mt-0.5">location_on</span><span>Nueva Cajamarca, San Martín - Perú</span></div><div class="flex items-center gap-space-sm font-body-sm"><span class="material-symbols-outlined text-[18px] text-primary-fixed">call</span><span>+51 942 123 456 (WhatsApp)</span></div><div class="flex items-center gap-space-sm font-body-sm"><span class="material-symbols-outlined text-[18px] text-primary-fixed">mail</span><span>ventas@mastersoft.com.pe</span></div><div class="flex items-center gap-space-md pt-space-sm"><span class="w-8 h-8 rounded-full bg-surface-container-high/20 flex items-center justify-center text-surface-bright hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer"><span class="material-symbols-outlined text-[18px]">play_circle</span></span><span class="w-8 h-8 rounded-full bg-surface-container-high/20 flex items-center justify-center text-surface-bright hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer"><span class="material-symbols-outlined text-[18px]">public</span></span><span class="w-8 h-8 rounded-full bg-surface-container-high/20 flex items-center justify-center text-surface-bright hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer"><span class="material-symbols-outlined text-[18px]">share</span></span><span class="w-8 h-8 rounded-full bg-surface-container-high/20 flex items-center justify-center text-surface-bright hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer"><span class="material-symbols-outlined text-[18px]">camera</span></span></div></div><div class="flex flex-col gap-space-sm bg-surface-container-high/10 p-space-md rounded-xl"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-primary-fixed text-[28px]">menu_book</span><div><span class="font-headline-sm text-surface-bright block leading-tight">Libro de Reclamaciones</span><span class="font-caption text-surface-dim">Conforme a INDECOPI</span></div></div><p class="font-caption text-surface-dim leading-snug">Conforme a lo establecido en el Código de Protección y Defensa del Consumidor contamos con un Libro de Reclamaciones Virtual.</p><div class="font-body-sm text-surface-bright flex flex-col gap-space-xs pt-space-xs"><span class="font-body-md-semibold">RUC: 20614007584</span><span class="text-surface-dim font-caption">TROYA COMPANY E.I.R.L.</span></div><a class="mt-space-xs inline-flex items-center justify-center gap-space-xs bg-surface-container-high/30 hover:bg-surface-container-high/50 text-surface-bright py-space-xs px-space-sm rounded font-label-sm transition-colors" href="#"><span>Registrar Reclamo</span><span class="material-symbols-outlined text-[16px]">open_in_new</span></a></div></div><div class="border-t border-surface-container-high/20 pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-sm text-center font-caption text-surface-dim"><div>© Mastersoft, Todos los derechos reservados.</div><div>Distribuido por Grupo VesergenPerú</div></div></div></footer><div class="fixed bottom-6 right-6 z-50"><a class="relative flex items-center justify-center w-14 h-14 bg-[#25D366] text-surface-container-lowest rounded-full shadow-[0_4px_14px_0_rgba(37,211,102,0.38)] hover:scale-105 active:scale-95 transition-transform" href="https://wa.me/51942123456?text=Hola%20Mastersoft,%20deseo%20consultar%20un%20producto" rel="noopener noreferrer" target="_blank"><span class="absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-30 animate-ping"></span><span class="material-symbols-outlined text-[30px] relative z-10">chat</span></a></div></body></html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;family=Roboto+Flex:opsz,wght@8..144,100..1000&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-variant": "#e5e2e1", "outline-variant": "#c4c9b1", "secondary-container": "#c7ed73", "secondary-fixed": "#caf075", "outline": "#747965", "on-surface-variant": "#444937", "tertiary-container": "#ffaa9a", "surface": "#fcf9f8", "tertiary-fixed-dim": "#ffb4a6", "inverse-on-surface": "#f3f0ef", "tertiary-fixed": "#ffdad3", "surface-container-highest": "#e5e2e1", "secondary": "#4c6700", "surface-bright": "#fcf9f8", "error": "#ba1a1a", "primary-fixed-dim": "#abd541", "surface-tint": "#4d6700", "on-primary-fixed": "#151f00", "surface-container-lowest": "#ffffff", "on-primary": "#ffffff", "on-secondary": "#ffffff", "on-secondary-fixed-variant": "#384e00", "on-secondary-fixed": "#141f00", "on-primary-container": "#3f5500", "inverse-surface": "#303030", "surface-container-high": "#eae7e7", "on-tertiary": "#ffffff", "surface-container": "#f0eded", "surface-container-low": "#f6f3f2", "on-surface": "#1b1b1c", "surface-dim": "#dcd9d9", "error-container": "#ffdad6", "on-tertiary-fixed": "#3f0300", "on-tertiary-fixed-variant": "#8f1000", "inverse-primary": "#abd541", "on-background": "#1b1b1c", "on-secondary-container": "#4f6c00", "on-error": "#ffffff", "on-primary-fixed-variant": "#394d00", "background": "#fcf9f8", "primary": "#4d6700", "tertiary": "#bb1900", "on-tertiary-container": "#9c1300", "on-error-container": "#93000a", "secondary-fixed-dim": "#aed45c", "primary-container": "#a4ce3a", "primary-fixed": "#c6f25b" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "1rem", "gutter-desktop": "1.5rem", "gutter": "1rem", "space-lg": "1.5rem", "space-md": "1rem", "space-sm": "0.5rem", "space-2xl": "3rem", "space-xl": "2rem", "space-xs": "0.25rem", "margin-desktop": "2rem", "margin-tablet": "1.5rem" }, "fontFamily": { "label-md": ["Roboto Flex"], "headline-md": ["Roboto Flex"], "body-lg": ["Open Sans"], "headline-sm": ["Roboto Flex"], "headline-xl": ["Roboto Flex"], "price-hero": ["Roboto Flex"], "body-sm": ["Open Sans"], "headline-lg": ["Roboto Flex"], "price-card": ["Roboto Flex"], "body-md-semibold": ["Open Sans"], "caption": ["Open Sans"], "label-sm": ["Roboto Flex"], "body-md": ["Open Sans"], "headline-lg-mobile": ["Roboto Flex"], "headline-xl-mobile": ["Roboto Flex"] }, "fontSize": { "label-md": ["0.875rem", { "lineHeight": "1.125rem", "fontWeight": "500" }], "headline-md": ["1.25rem", { "lineHeight": "1.625rem", "fontWeight": "500" }], "body-lg": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }], "headline-sm": ["1rem", { "lineHeight": "1.375rem", "fontWeight": "500" }], "headline-xl": ["2.25rem", { "lineHeight": "2.75rem", "fontWeight": "700" }], "price-hero": ["1.875rem", { "lineHeight": "2rem", "fontWeight": "700" }], "body-sm": ["0.75rem", { "lineHeight": "1.125rem", "fontWeight": "400" }], "headline-lg": ["1.75rem", { "lineHeight": "2.25rem", "fontWeight": "700" }], "price-card": ["1.25rem", { "lineHeight": "1.5rem", "fontWeight": "700" }], "body-md-semibold": ["0.875rem", { "lineHeight": "1.375rem", "fontWeight": "600" }], "caption": ["0.6875rem", { "lineHeight": "0.875rem", "fontWeight": "400" }], "label-sm": ["0.75rem", { "lineHeight": "1rem", "fontWeight": "700" }], "body-md": ["0.875rem", { "lineHeight": "1.375rem", "fontWeight": "400" }], "headline-lg-mobile": ["1.375rem", { "lineHeight": "1.75rem", "fontWeight": "700" }], "headline-xl-mobile": ["1.75rem", { "lineHeight": "2.125rem", "fontWeight": "700" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-14 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><button aria-label="Menú principal" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface hover:bg-surface-container active:scale-95 transition-transform" type="button"><span class="material-symbols-outlined text-[24px]">menu</span></button><a class="flex items-center tracking-tight font-headline-md text-headline-md text-on-surface select-none pl-space-xs" data-path="inicio" href="#"><span class="tracking-tighter">Master</span><span class="text-primary-container font-headline-lg text-headline-lg -ml-[1px]">soft</span><span class="w-1.5 h-1.5 rounded-full bg-primary-container ml-0.5"></span></a></div><div class="flex items-center gap-space-xs"><a aria-label="Buscar productos" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-transform" data-path="buscar" href="#"><span class="material-symbols-outlined text-[22px]">search</span></a><a aria-label="Ver carrito de compras" class="relative w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-transform" data-path="carrito" href="#"><span class="material-symbols-outlined text-[22px]">shopping_bag</span><span class="absolute top-1.5 right-1.5 min-w-[1.125rem] h-[1.125rem] px-1 flex items-center justify-center rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm leading-none">3</span></a></div></div></header><main class="flex flex-col relative w-full pt-14 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="px-margin pt-space-md pb-space-xs">
+<nav class="flex items-center gap-1.5 text-on-surface-variant font-caption text-caption">
+<a class="hover:text-primary transition-colors flex items-center gap-1" data-path="inicio" href="#">
+<span class="material-symbols-outlined text-[14px]">home</span>
+<span>Inicio</span>
+</a>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-body-md-semibold">Nosotros</span>
+</nav>
+<div class="mt-space-xs flex items-center justify-between">
+<h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface tracking-tight">Nosotros</h1>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-[0.6875rem]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+        Soporte Activo
+      </span>
+</div>
+</div>
+<section class="px-margin pt-space-sm pb-space-lg flex flex-col gap-space-md">
+<div class="relative w-full rounded-xl overflow-hidden shadow-sm bg-surface-container">
+<img class="w-full h-52 object-cover" data-alt="Professional IT technical lab and hardware supply warehouse in Peru with engineers inspecting Ubiquiti routers, networking racks, fiber cables and printer cartridges under bright modern workshop lighting with subtle lime green brand details" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH9Kc0axcE5NVt9_HWGg6qY8WusR4TIWUB05xlCALA3qJek9HcOei0KshFVtS12yRf-peIh88oa0Q4M-N5VgB2ILzEJlIeAHcv0tILunM4qCx8c0AV-3P_fVlKXB2y0efT4N-y1lqqjSAcAAddzxF9CxEkjeaK46dV7BRFIYCTuUsnqNP1t3XMTc_8BymFVAoLGn6_hsn64e6ON-umGacMgqqsRColgxYmtenJpzA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/85 via-inverse-surface/20 to-transparent"></div>
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-container text-on-primary-fixed font-label-sm text-label-sm shadow-md">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+          Desde 2018 al servicio del Perú
+        </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface/90 backdrop-blur-md text-on-surface font-caption text-caption shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-primary">pin_drop</span>
+          San Martín
+        </span>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Quiénes Somos</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface leading-tight">
+        Tecnología, conectividad y suministros confiables para empresas y hogares
+      </h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mt-1">
+        En <strong class="text-on-surface font-body-md-semibold">Mastersoft</strong> proveemos infraestructura de cómputo, telecomunicaciones y repuestos esenciales con cobertura en todo el territorio peruano. Nacimos para simplificar el abastecimiento de integradores WISP, empresas corporativas y usuarios domésticos con equipamiento probado y soporte técnico cercano.
+      </p>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-xs">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[24px]">history</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-caption">Comprobado</span>
+</div>
+<div class="mt-1">
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold">8</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">Años</span>
+</div>
+<p class="font-body-md-semibold text-body-md-semibold text-on-surface">De experiencia en el mercado tecnológico</p>
+<div class="mt-2 flex items-center gap-1.5 text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px] text-primary">local_shipping</span>
+<span>Cobertura costa, sierra y selva con despachos diarios</span>
+</div>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-[#25D366]/15 flex items-center justify-center text-[#25D366]">
+<span class="material-symbols-outlined text-[24px]">support_agent</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Atención Inmediata</p>
+<p class="font-body-md-semibold text-body-md-semibold text-on-surface truncate">¿Tienes alguna pregunta o requerimiento?</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div>
+<span class="font-caption text-caption text-on-surface-variant block">Línea Directa / Central</span>
+<a class="font-headline-sm text-headline-sm text-on-surface hover:text-primary transition-colors" href="tel:+51942123456">+51 942 123 456</a>
+</div>
+<a class="px-4 py-2 rounded-full bg-[#25D366] text-white font-label-sm text-label-sm flex items-center gap-1.5 shadow-sm active:scale-95 transition-transform" href="https://wa.me/51942123456" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+<span>Escribir ahora</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<section class="px-margin py-space-lg bg-surface-container-low flex flex-col gap-space-md">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider block">Pilares Fundamentales</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight mt-0.5">
+        Principios que orientan nuestro servicio
+      </h2>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-primary-container/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Misión</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed pl-11">
+          Proveer soluciones integrales de conectividad, cómputo y suministros tecnológicos garantizados, con asesoría especializada y despacho rápido a nivel nacional.
+        </p>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-secondary-container/50 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Visión</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed pl-11">
+          Consolidarnos como el referente tecnológico líder en suministros y redes del oriente peruano y con alcance a todo el territorio nacional, destacando por confianza y capacidad de respuesta.
+        </p>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">workspace_premium</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Valores</h3>
+</div>
+<div class="grid grid-cols-1 gap-2.5 pl-11">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[16px] mt-0.5">check_circle</span>
+<div class="font-body-md text-body-md">
+<strong class="font-body-md-semibold text-on-surface">Compromiso:</strong>
+<span class="text-on-surface-variant"> Cumplimiento riguroso de acuerdos y plazos pactados.</span>
+</div>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[16px] mt-0.5">check_circle</span>
+<div class="font-body-md text-body-md">
+<strong class="font-body-md-semibold text-on-surface">Transparencia técnica:</strong>
+<span class="text-on-surface-variant"> Especificaciones reales sin exageraciones comerciales.</span>
+</div>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[16px] mt-0.5">check_circle</span>
+<div class="font-body-md text-body-md">
+<strong class="font-body-md-semibold text-on-surface">Eficiencia en envíos:</strong>
+<span class="text-on-surface-variant"> Embalaje seguro multicapa y trazabilidad hasta destino.</span>
+</div>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[16px] mt-0.5">check_circle</span>
+<div class="font-body-md text-body-md">
+<strong class="font-body-md-semibold text-on-surface">Trato personalizado:</strong>
+<span class="text-on-surface-variant"> Asesoría técnica directa persona a persona sin intermediarios.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="px-margin py-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider block">Ecosistema Tecnológico</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight mt-0.5">
+          Marcas que confían y distribuimos
+        </h2>
+</div>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-caption text-caption self-start">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+      Stock Permanente en Almacén Propio
+    </div>
+<div class="grid grid-cols-2 gap-2.5">
+<div class="h-20 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center p-2 text-center group active:scale-95 transition-transform">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-wider">UBIQUITI</span>
+<span class="font-caption text-[0.625rem] text-on-surface-variant mt-0.5">Redes &amp; Enlaces WISP</span>
+</div>
+<div class="h-20 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center p-2 text-center group active:scale-95 transition-transform">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-wider">TP-LINK</span>
+<span class="font-caption text-[0.625rem] text-on-surface-variant mt-0.5">Routers &amp; Switches</span>
+</div>
+<div class="h-20 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center p-2 text-center group active:scale-95 transition-transform">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-wider">MIKROTIK</span>
+<span class="font-caption text-[0.625rem] text-on-surface-variant mt-0.5">RouterOS &amp; Racks</span>
+</div>
+<div class="h-20 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center p-2 text-center group active:scale-95 transition-transform">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-wider">EPSON</span>
+<span class="font-caption text-[0.625rem] text-on-surface-variant mt-0.5">EcoTank &amp; Tintas</span>
+</div>
+<div class="h-20 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center p-2 text-center group active:scale-95 transition-transform">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-wider">BROTHER</span>
+<span class="font-caption text-[0.625rem] text-on-surface-variant mt-0.5">Láser &amp; Consumibles</span>
+</div>
+<div class="h-20 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center p-2 text-center group active:scale-95 transition-transform">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-wider">D-LINK</span>
+<span class="font-caption text-[0.625rem] text-on-surface-variant mt-0.5">Conectividad PYME</span>
+</div>
+</div>
+<a class="w-full p-3 rounded-xl bg-surface-container-high hover:bg-surface-variant flex items-center justify-between text-on-surface font-body-md-semibold text-body-md active:scale-98 transition-all" data-path="marcas" href="#">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">tune</span>
+<span>¿Buscas repuestos específicos?</span>
+</div>
+<div class="flex items-center text-primary font-label-sm text-label-sm gap-0.5">
+<span>Consultar</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</div>
+</a>
+</section>
+<section class="px-margin pb-space-lg">
+<div class="p-space-lg rounded-2xl bg-inverse-surface text-inverse-on-surface shadow-md relative overflow-hidden flex flex-col gap-space-md">
+<div class="relative z-10 flex flex-col gap-space-xs">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-container text-on-primary-fixed font-label-sm text-caption w-fit">
+<span class="material-symbols-outlined text-[14px]">flash_on</span>
+          Respuesta en minutos
+        </span>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-white">
+          ¿No encuentras lo que buscas?
+        </h3>
+<p class="font-body-md text-body-md text-surface-variant/90 leading-relaxed">
+          Escríbenos directamente y te ayudamos a cotizar o validar compatibilidad técnica de tus equipos.
+        </p>
+</div>
+<div class="relative z-10 flex flex-col gap-2.5">
+<a class="w-full py-3.5 px-space-md rounded-full bg-[#25D366] text-white font-body-md-semibold text-body-md flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(37,211,102,0.35)] active:scale-95 transition-transform" href="https://wa.me/51942123456?text=Hola%20Mastersoft,%20necesito%20cotizar%20equipamiento" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span>Consultar por WhatsApp</span>
+</a>
+<a class="w-full py-3 px-space-md rounded-full bg-surface/10 hover:bg-surface/20 text-white font-body-md-semibold text-body-md flex items-center justify-center gap-2 active:scale-95 transition-transform backdrop-blur-sm" data-path="categorias" href="#">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+<span>Ver Catálogo Completo</span>
+</a>
+</div>
+<div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-primary/20 blur-2xl pointer-events-none"></div>
+</div>
+</section>
+<footer class="mt-auto px-margin pt-space-lg pb-space-xl bg-surface-container-high flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-1 font-headline-md text-headline-md text-on-surface">
+<span class="tracking-tighter font-bold">Master</span>
+<span class="text-primary font-bold">soft</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary ml-0.5"></span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+        Soluciones en infraestructura de cómputo, redes y suministros con garantía directa y distribución nacional.
+      </p>
+</div>
+<div class="grid grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-2">
+<h4 class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Enlaces Rápidos</h4>
+<ul class="flex flex-col gap-1.5 font-body-sm text-body-sm text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" data-path="inicio" href="#">Inicio</a></li>
+<li><a class="hover:text-primary transition-colors" data-path="categorias" href="#">Categorías</a></li>
+<li><a class="hover:text-primary transition-colors" data-path="marcas" href="#">Marcas Oficiales</a></li>
+<li><a class="hover:text-primary transition-colors" data-path="garantia" href="#">Políticas de Garantía</a></li>
+</ul>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Contacto &amp; Sede</h4>
+<div class="flex flex-col gap-1.5 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-start gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary mt-0.5">location_on</span>
+<span>Nueva Cajamarca, San Martín - Perú</span>
+</div>
+<div class="flex items-start gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary mt-0.5">mail</span>
+<span>ventas@mastersoft.pe</span>
+</div>
+<div class="flex items-start gap-1">
+<span class="material-symbols-outlined text-[16px] text-[#25D366] mt-0.5">call</span>
+<span>+51 942 123 456</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">menu_book</span>
+</div>
+<div>
+<span class="font-body-md-semibold text-body-md-semibold text-on-surface block">Libro de Reclamaciones</span>
+<span class="font-caption text-caption text-on-surface-variant">Conforme a ley N° 29571</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[20px]">chevron_right</span>
+</div>
+<div class="pt-space-xs border-t-0 flex flex-col gap-1 text-center font-caption text-caption text-on-surface-variant">
+<p>RUC 20614007584 - TROYA COMPANY E.I.R.L.</p>
+<p class="text-outline">Distribuido por Grupo VesergenPerú</p>
+<p class="text-[0.625rem] text-outline mt-1">© 2024 Mastersoft. Todos los derechos reservados.</p>
+</div>
+</footer>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)]" data-active-classes="text-on-surface font-body-md-semibold"><div class="h-16 px-space-sm flex items-center justify-around"><a class="group flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" data-path="categorias" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm tracking-normal">Categorías</span></a><a class="group flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" data-path="buscar" href="#"><span class="material-symbols-outlined text-[22px]">search</span><span class="font-label-sm text-label-sm tracking-normal">Buscar</span></a><a class="group relative flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" data-path="carrito" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">shopping_cart</span><span class="absolute -top-1 -right-2 min-w-[1rem] h-[1rem] px-0.5 flex items-center justify-center rounded-full bg-tertiary text-on-tertiary font-label-sm text-[0.625rem] leading-none">3</span></div><span class="font-label-sm text-label-sm tracking-normal">Carrito</span></a><a class="group flex flex-col items-center justify-center min-w-[56px] h-12 text-[#25D366] active:scale-95 transition-all" data-path="whatsapp-atencion" href="#"><div class="w-7 h-7 rounded-full bg-[#25D366] flex items-center justify-center shadow-[0_2px_8px_rgba(37,211,102,0.35)]"><span class="material-symbols-outlined text-white text-[18px]">chat</span></div><span class="font-label-sm text-label-sm text-[#25D366] font-body-md-semibold">WhatsApp</span></a></div></nav></body></html>
