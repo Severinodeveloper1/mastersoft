@@ -21,9 +21,9 @@ Assumptions (to confirm): admin-written description is kept when the ERP sends n
 
 | ID | Specs | Unit | Route | Status | Commit |
 |---|---|---|---|---|---|
-| T1 | S1 | Ignore `Docs/info/` | inline | pending | |
-| T2 | S2 | Admin uploads on the `public` disk | inline | pending | |
-| T3 | S3-S9 | ERP client, catalog sync command, schedule, image merge in the store | inline (sequential, no Writer trigger) | pending | |
+| T1 | S1 | Ignore `Docs/info/` | inline | done | `609dd06` |
+| T2 | S2 | Admin uploads on the `public` disk | inline | done (RED: disk `local`; GREEN 63 tests) | `ba43cbf` |
+| T3 | S3-S9 | ERP client, catalog sync command, schedule, image merge in the store | inline (sequential, no Writer trigger) | done, independent verification pending (Risk items 1, 2, 5) | `1037a4a` |
 | T4 | S10 | Orders to ERP quotations | blocked: awaiting authorization | pending | |
 
 ## Log
@@ -31,3 +31,7 @@ Assumptions (to confirm): admin-written description is kept when the ERP sends n
 - L1 (2026-10-29, user): "sí, arrancá con los tres pasos" (1. ignore `Docs/info/`, 2. public disk fix, 3. `erp:sync-products` tested first against the sample response, live API only with explicit authorization).
 - L2 (2026-10-29, user answers): "correcto, todos los precios ya incluyen IGV" / "aparentemente no vencen" / "concuerdo con tu propuesta" / "los productos que cargaremos para este proyecto de mastersoft sólo contarán con una presentación ... sin embargo controlemos estas excepciones por si en algún momento ocurre" / "la categoría a la que debe apuntar y relacionar son las que te muestro en el archivo /info/categoria_grupo.md" / "el endpoint que usaremos será el de cotización: /info/cotizacion_pedido.md".
 - L3 (2026-10-29): Root cause of invisible images: `SpatieMediaLibraryFileUpload` falls back to `config('filament.default_filesystem_disk')` = `env('FILESYSTEM_DISK', 'local')`, so files land in `storage/app/private`; `public/storage` links to the empty `storage/app/public`.
+- L4 (2026-10-29): T1 done (`609dd06`). T2 done (`ba43cbf`): RED test uploaded a product image and got disk `local`; `->disk('public')` on the 6 `SpatieMediaLibraryFileUpload` fields.
+- L5 (2026-10-29): T3 done (`1037a4a`). RED: 12 ERP tests failing (nothing existed); GREEN: full suite 76 tests / 454 assertions. Design: `App\Services\Erp\ErpClient` (login, `list`, paginated `all`; Bearer token in memory only; retries only on connection errors and 5xx), `App\Services\Erp\CatalogSync` (fetch everything first, then one DB transaction; deactivation scoped to rows with `external_id`), command `erp:sync-products`, schedule `dailyAt(ERP_SYNC_TIME)` + `withoutOverlapping()` in `routes/console.php` (app timezone `America/Lima`). New column `products.external_image_urls` (json). `Product::imageUrls()` / `primaryImageUrl()` replace `getFirstMediaUrl('images')` in the store. ERP text is escaped with `e()` + `nl2br` because the store renders `description` / `information` unescaped. Brand is now optional in the product form (ERP products mostly have `marca: null`); RED observed ("El campo marca es obligatorio."). Assumption: the token is sent as `Authorization: Bearer` (Sanctum-style `82|...`).
+- L6 (2026-10-29): Smoke run against the sample responses in `Docs/info` (no network, scratch SQLite, removed after): 9 categories, 2 brands, 13 products; second run reported 13 unchanged (idempotent). Product 15 (ROUTER HIKVISION) skipped and logged: its only presentation has no price. Product 2 logged the several-presentations warning and used Unidad at S/ 1.50.
+- L7 (2026-10-29): `.env.example` could not be edited (local permission rule). Variables to add: `ERP_BASE_URL`, `ERP_TENANT`, `ERP_USERNAME`, `ERP_PASSWORD`, `ERP_APPLICATION` (W), `ERP_DEVICE`, `ERP_PER_PAGE` (50), `ERP_TIMEOUT` (30), `ERP_SYNC_TIME` (03:00). Production needs the scheduler cron: `* * * * * php /path/artisan schedule:run`. Native assess on `6b837cb..1037a4a`: high (agent escalation item 1), review due.
