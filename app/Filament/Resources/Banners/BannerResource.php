@@ -37,7 +37,7 @@ class BannerResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('placement')->label('Ubicación')->options(collect(BannerPlacement::cases())->mapWithKeys(fn ($v) => [$v->value => $v->getLabel()]))->required(), TextInput::make('title')->label('Título')->maxLength(255), TextInput::make('link_url')->label('Enlace')->url(), TextInput::make('sort_order')->label('Orden')->numeric()->default(0), Toggle::make('is_active')->label('Activo')->default(true), SpatieMediaLibraryFileUpload::make('image')->label('Imagen')->collection('image')->image()->required()]);
+        return $schema->components([Select::make('placement')->label('Ubicación')->options(collect(BannerPlacement::cases())->mapWithKeys(fn ($v) => [$v->value => $v->getLabel()]))->required(), TextInput::make('title')->label('Título')->maxLength(255), TextInput::make('link_url')->label('Enlace')->url(), TextInput::make('sort_order')->label('Orden')->numeric()->default(0), Toggle::make('is_active')->label('Activo')->default(true), SpatieMediaLibraryFileUpload::make('image')->label('Imagen')->collection('image')->disk('public')->image()->required()]);
     }
 
     public static function table(Table $table): Table

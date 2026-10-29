@@ -16,6 +16,8 @@ use App\Models\CompanySetting;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
@@ -67,6 +69,26 @@ class FilamentAdminTest extends TestCase
             ->assertHasNoFormErrors();
 
         $this->assertDatabaseHas('products', ['slug' => 'equipo-prueba', 'price' => '80.00', 'regular_price' => '100.00']);
+    }
+
+    public function test_product_images_uploaded_in_admin_are_stored_on_the_public_disk(): void
+    {
+        Storage::fake('public');
+        Storage::fake('local');
+
+        Livewire::test(CreateProduct::class)
+            ->fillForm([
+                'category_id' => Category::factory()->create()->id, 'brand_id' => Brand::factory()->create()->id,
+                'name' => 'Equipo con foto', 'slug' => 'equipo-con-foto', 'price' => 80, 'stock' => 5, 'unit' => 'unidad', 'is_active' => true,
+                'images' => [UploadedFile::fake()->image('foto.jpg')],
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $media = Product::where('slug', 'equipo-con-foto')->firstOrFail()->getFirstMedia('images');
+        $this->assertSame('public', $media->disk);
+        Storage::disk('public')->assertExists($media->getPathRelativeToRoot());
+        $this->assertStringContainsString('/storage/', $media->getUrl());
     }
 
     public function test_claim_edit_locks_consumer_fields_and_sets_response_date(): void

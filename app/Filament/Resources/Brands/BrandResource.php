@@ -36,7 +36,7 @@ class BrandResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([TextInput::make('name')->label('Nombre')->required()->live(onBlur: true)->afterStateUpdated(fn ($state, callable $set, callable $get) => blank($get('slug')) ? $set('slug', Str::slug($state)) : null), TextInput::make('slug')->label('URL')->required()->unique(ignoreRecord: true), Toggle::make('is_active')->label('Activa')->default(true), SpatieMediaLibraryFileUpload::make('logo')->label('Logo')->collection('logo')->image()]);
+        return $schema->components([TextInput::make('name')->label('Nombre')->required()->live(onBlur: true)->afterStateUpdated(fn ($state, callable $set, callable $get) => blank($get('slug')) ? $set('slug', Str::slug($state)) : null), TextInput::make('slug')->label('URL')->required()->unique(ignoreRecord: true), Toggle::make('is_active')->label('Activa')->default(true), SpatieMediaLibraryFileUpload::make('logo')->label('Logo')->collection('logo')->disk('public')->image()]);
     }
 
     public static function table(Table $table): Table

@@ -32,7 +32,7 @@ class ProductForm
                 TextInput::make('unit')->label('Unidad')->required()->maxLength(40),
                 Toggle::make('is_active')->label('Activo')->default(true),
                 Toggle::make('is_featured')->label('Destacado'),
-                SpatieMediaLibraryFileUpload::make('images')->label('Imágenes')->collection('images')->multiple()->reorderable()->image()->imageEditor()->columnSpanFull(),
+                SpatieMediaLibraryFileUpload::make('images')->label('Imágenes')->collection('images')->disk('public')->multiple()->reorderable()->image()->imageEditor()->columnSpanFull(),
             ])->columns(2),
         ]);
     }

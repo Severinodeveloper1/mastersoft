@@ -36,7 +36,7 @@ class PromotionResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([TextInput::make('title')->label('Título')->required()->maxLength(255), Select::make('product_id')->label('Producto relacionado')->relationship('product', 'name')->searchable()->preload(), TextInput::make('link_url')->label('Enlace')->url(), TextInput::make('sort_order')->label('Orden')->numeric()->default(0), Toggle::make('is_active')->label('Activa')->default(true), SpatieMediaLibraryFileUpload::make('image')->label('Imagen')->collection('image')->image()->required()]);
+        return $schema->components([TextInput::make('title')->label('Título')->required()->maxLength(255), Select::make('product_id')->label('Producto relacionado')->relationship('product', 'name')->searchable()->preload(), TextInput::make('link_url')->label('Enlace')->url(), TextInput::make('sort_order')->label('Orden')->numeric()->default(0), Toggle::make('is_active')->label('Activa')->default(true), SpatieMediaLibraryFileUpload::make('image')->label('Imagen')->collection('image')->disk('public')->image()->required()]);
     }
 
     public static function table(Table $table): Table

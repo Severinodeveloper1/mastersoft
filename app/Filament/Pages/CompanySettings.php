@@ -30,7 +30,7 @@ class CompanySettings extends Page
             Textarea::make('description')->label('Descripción')->rows(4), TextInput::make('phone')->label('Teléfono'), TextInput::make('whatsapp_number')->label('WhatsApp')->helperText('Número con código de país, ej. 51942123456'),
             TextInput::make('email')->label('Correo')->email(), TextInput::make('claims_email')->label('Correo de reclamos')->email(), TextInput::make('address')->label('Dirección'), TextInput::make('opening_hours')->label('Horario'), TextInput::make('map_embed_url')->label('Mapa (URL)')->url(),
             TextInput::make('youtube_url')->label('YouTube')->url(), TextInput::make('facebook_url')->label('Facebook')->url(), TextInput::make('linkedin_url')->label('LinkedIn')->url(), TextInput::make('instagram_url')->label('Instagram')->url(),
-            SpatieMediaLibraryFileUpload::make('logo')->label('Logo')->collection('logo')->image(),
+            SpatieMediaLibraryFileUpload::make('logo')->label('Logo')->collection('logo')->disk('public')->image(),
         ])->fillForm(fn () => CompanySetting::current()->attributesToArray())->action(function (array $data): void {
             CompanySetting::current()->fill($data)->save();
             Notification::make()->title('Datos guardados')->success()->send();

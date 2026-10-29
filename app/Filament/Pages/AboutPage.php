@@ -24,7 +24,7 @@ class AboutPage extends Page
     protected function getHeaderActions(): array
     {
         return [Action::make('edit')->label('Editar contenido')->record(fn () => AboutContent::current())->form([
-            TextInput::make('kicker')->label('Antetítulo'), TextInput::make('title')->label('Título')->required(), Textarea::make('description')->label('Descripción')->rows(5), TextInput::make('years_of_experience')->label('Años de experiencia')->numeric(), TextInput::make('phone')->label('Teléfono'), Textarea::make('mission')->label('Misión')->rows(4), Textarea::make('vision')->label('Visión')->rows(4), Textarea::make('values')->label('Valores')->rows(4), SpatieMediaLibraryFileUpload::make('image')->label('Imagen')->collection('image')->image(),
+            TextInput::make('kicker')->label('Antetítulo'), TextInput::make('title')->label('Título')->required(), Textarea::make('description')->label('Descripción')->rows(5), TextInput::make('years_of_experience')->label('Años de experiencia')->numeric(), TextInput::make('phone')->label('Teléfono'), Textarea::make('mission')->label('Misión')->rows(4), Textarea::make('vision')->label('Visión')->rows(4), Textarea::make('values')->label('Valores')->rows(4), SpatieMediaLibraryFileUpload::make('image')->label('Imagen')->collection('image')->disk('public')->image(),
         ])->fillForm(fn () => AboutContent::current()->attributesToArray())->action(function (array $data): void {
             AboutContent::current()->fill($data)->save();
             Notification::make()->title('Contenido guardado')->success()->send();
