@@ -31,3 +31,6 @@ auth.json
 
 # Legacy site copy (reference only, never commit)
 /Docs/public_html_mastersoft/
+
+# ERP API notes with live test credentials (never commit)
+/Docs/info/
