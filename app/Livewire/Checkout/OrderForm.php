@@ -200,6 +200,7 @@ class OrderForm extends Component
 
             foreach ($snapshots as $snapshot) {
                 $order->items()->create($snapshot);
+                $products->get($snapshot['product_id'])->decrement('stock', $snapshot['quantity']);
             }
 
             return $order;

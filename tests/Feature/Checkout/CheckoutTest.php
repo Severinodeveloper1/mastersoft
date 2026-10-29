@@ -141,6 +141,7 @@ class CheckoutTest extends TestCase
         $this->assertSame('Adaptador HDMI a VGA', $order->items->first()->product_name);
         $this->assertSame('100.00', $order->total);
         $this->assertSame(0, app(Cart::class)->unitCount());
+        $this->assertSame(2, $product->fresh()->stock);
     }
 
     public function test_insufficient_stock_keeps_cart_and_shows_named_error(): void
@@ -162,6 +163,8 @@ class CheckoutTest extends TestCase
             ->assertSee('Teclado');
 
         $this->assertSame(2, app(Cart::class)->unitCount());
+        $this->assertSame(1, $product->fresh()->stock);
+        $this->assertSame(0, Order::count());
     }
 
     public function test_stock_dropping_to_zero_during_checkout_reports_error_and_preserves_cart(): void
