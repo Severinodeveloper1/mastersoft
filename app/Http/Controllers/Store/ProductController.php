@@ -14,7 +14,7 @@ class ProductController extends Controller
         abort_unless(Product::query()->visibleInStore()->whereKey($product->getKey())->exists(), 404);
 
         $product->load(['category', 'brand']);
-        $images = $product->getMedia('images')->map(fn ($media) => ['url' => $media->getUrl(), 'alt' => $product->name])->all();
+        $images = array_map(fn (string $url) => ['url' => $url, 'alt' => $product->name], $product->imageUrls());
         if ($images === []) {
             $images[] = ['url' => '', 'alt' => $product->name];
         }

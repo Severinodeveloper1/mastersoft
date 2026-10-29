@@ -18,7 +18,7 @@ class ProductForm
         return $schema->components([
             Section::make('Información del producto')->schema([
                 Select::make('category_id')->label('Categoría')->relationship('category', 'name')->searchable()->preload()->required(),
-                Select::make('brand_id')->label('Marca')->relationship('brand', 'name')->searchable()->preload()->required(),
+                Select::make('brand_id')->label('Marca')->relationship('brand', 'name')->searchable()->preload(),
                 TextInput::make('name')->label('Nombre')->required()->maxLength(255)->live(onBlur: true)->afterStateUpdated(fn ($state, callable $set, callable $get) => blank($get('slug')) ? $set('slug', Str::slug($state)) : null),
                 TextInput::make('slug')->label('URL')->required()->unique(ignoreRecord: true)->maxLength(255),
                 TextInput::make('summary')->label('Resumen')->maxLength(500),

@@ -14,6 +14,18 @@ return [
     |
     */
 
+    'erp' => [
+        'base_url' => env('ERP_BASE_URL', 'https://api.vesertech.com/api/v1'),
+        'tenant' => env('ERP_TENANT'),
+        'username' => env('ERP_USERNAME'),
+        'password' => env('ERP_PASSWORD'),
+        'application' => env('ERP_APPLICATION', 'W'),
+        'device' => env('ERP_DEVICE', 'Mastersoft sync'),
+        'per_page' => (int) env('ERP_PER_PAGE', 50),
+        'timeout' => (int) env('ERP_TIMEOUT', 30),
+        'sync_time' => env('ERP_SYNC_TIME', '03:00'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

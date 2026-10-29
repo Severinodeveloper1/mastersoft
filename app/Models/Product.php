@@ -33,6 +33,7 @@ class Product extends Model implements Auditable, HasMedia
         'unit',
         'is_active',
         'is_featured',
+        'external_image_urls',
     ];
 
     protected function casts(): array
@@ -43,7 +44,26 @@ class Product extends Model implements Auditable, HasMedia
             'stock' => 'integer',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
+            'external_image_urls' => 'array',
         ];
+    }
+
+    /**
+     * ERP image URLs first, then images uploaded in the admin.
+     *
+     * @return list<string>
+     */
+    public function imageUrls(): array
+    {
+        return [
+            ...($this->external_image_urls ?? []),
+            ...$this->getMedia('images')->map(fn ($media) => $media->getUrl())->all(),
+        ];
+    }
+
+    public function primaryImageUrl(): ?string
+    {
+        return $this->external_image_urls[0] ?? ($this->getFirstMediaUrl('images') ?: null);
     }
 
     public function registerMediaCollections(): void

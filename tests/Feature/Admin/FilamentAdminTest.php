@@ -8,6 +8,7 @@ use App\Filament\Resources\Claims\Pages\EditClaim;
 use App\Filament\Resources\Claims\Pages\ListClaims;
 use App\Filament\Resources\Orders\OrderResource;
 use App\Filament\Resources\Products\Pages\CreateProduct;
+use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;
 use App\Models\Brand;
 use App\Models\Category;
@@ -69,6 +70,19 @@ class FilamentAdminTest extends TestCase
             ->assertHasNoFormErrors();
 
         $this->assertDatabaseHas('products', ['slug' => 'equipo-prueba', 'price' => '80.00', 'regular_price' => '100.00']);
+    }
+
+    public function test_erp_product_without_brand_can_be_edited_in_admin(): void
+    {
+        $product = Product::factory()->create(['external_id' => '14', 'brand_id' => null]);
+
+        Livewire::test(EditProduct::class, ['record' => $product->getRouteKey()])
+            ->fillForm(['summary' => 'Resumen del admin'])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame('Resumen del admin', $product->fresh()->summary);
+        $this->assertNull($product->fresh()->brand_id);
     }
 
     public function test_product_images_uploaded_in_admin_are_stored_on_the_public_disk(): void

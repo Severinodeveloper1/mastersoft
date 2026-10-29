@@ -3,7 +3,7 @@
 @php
     use App\Support\Money;
 
-    $image = $product->getFirstMediaUrl('images');
+    $image = $product->primaryImageUrl();
     $url = route('products.show', $product);
 @endphp
 

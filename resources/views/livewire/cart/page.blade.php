@@ -28,7 +28,7 @@
                     <article wire:key="cart-{{ $line['product']->id }}" class="rounded-card border border-line bg-surface p-4 shadow-card sm:p-5">
                         <div class="flex gap-4">
                             <div class="size-20 shrink-0 overflow-hidden rounded-input bg-surface-alt sm:size-24">
-                                @if ($image = $line['product']->getFirstMediaUrl('images'))
+                                @if ($image = $line['product']->primaryImageUrl())
                                     <img src="{{ $image }}" alt="{{ $line['product']->name }}" class="size-full object-contain">
                                 @endif
                             </div>

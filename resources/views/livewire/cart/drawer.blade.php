@@ -47,7 +47,7 @@
                 @forelse ($this->lines() as $line)
                     <article wire:key="drawer-{{ $line['product']->id }}" class="flex gap-3 border-b border-line py-4">
                         <div class="size-16 shrink-0 overflow-hidden rounded-input bg-surface-alt">
-                            @if ($image = $line['product']->getFirstMediaUrl('images'))
+                            @if ($image = $line['product']->primaryImageUrl())
                                 <img src="{{ $image }}" alt="{{ $line['product']->name }}" class="size-full object-contain">
                             @endif
                         </div>
