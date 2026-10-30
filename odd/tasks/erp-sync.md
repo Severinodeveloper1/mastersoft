@@ -32,7 +32,7 @@ Assumptions (to confirm): admin-written description is kept when the ERP sends n
 | T7 | S9, S12 | Review advisories B1, B2, B4: short web lock + shutdown release, log refused runs, pin release after failure | inline | done (RED: B1 lock still held after 11 min, B2 no warning; GREEN 86 tests) | `e68e916` |
 | T8 | S9, S12 | Review advisory C1: stop before writing when the ERP download used the lock time minus a 120 s write margin | inline | done (RED: admin sync wrote after a 9 min download; GREEN 88 tests) | `53ba4b7` |
 | T9 | S10, S13 | Review advisories E1 (save the quotation id before releasing the order lock) and E2 ("Enviar al ERP" requires Update:Order) | inline | done (RED: lock free when the id was saved; action visible without permission; GREEN 102 tests) | `a6ed16d` |
-| T10 | S5-S9, S12 | Catalog follow-ups A3 (skip nameless), A4 (skip malformed record), A5 (log any failure), A6 (abort on paging drift), A7 thumbnail (ERP image in admin list), B3 (button reports any error), D1 (reject lock <= margin), D2 (budget boundary tests) | inline | done (RED: 8 failing; GREEN 113 tests) | pending |
+| T10 | S5-S9, S12 | Catalog follow-ups A3 (skip nameless), A4 (skip malformed record), A5 (log any failure), A6 (abort on paging drift), A7 thumbnail (ERP image in admin list), B3 (button reports any error), D1 (reject lock <= margin), D2 (budget boundary tests) | inline | done (RED: 8 failing; GREEN 113 tests) | `9e9966f` |
 | T4 | S10, S13 | Orders to ERP quotations at checkout + admin resend | inline | done (RED: 10 tests failing, nothing existed; GREEN 98 tests) | `a1d8c7c` |
 
 ## Log
