@@ -65,7 +65,7 @@ class ViewOrder extends ViewRecord
                 ->send(),
             QuotationResult::Failed => Notification::make()
                 ->title('No se pudo enviar el pedido al ERP')
-                ->body("El pedido sigue pendiente. Detalle: {$this->record->erp_error}")
+                ->body('El pedido sigue pendiente. Detalle: '.($this->record->erp_error ?? 'no se pudo registrar el motivo; revisa el log del servidor.'))
                 ->danger()
                 ->persistent()
                 ->send(),

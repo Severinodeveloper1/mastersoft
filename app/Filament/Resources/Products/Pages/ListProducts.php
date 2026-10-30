@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Products\Pages;
 
 use App\Filament\Resources\Products\ProductResource;
 use App\Services\Erp\CatalogSync;
+use App\Services\Erp\ErpException;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Notifications\Notification;
@@ -37,9 +38,14 @@ class ListProducts extends ListRecords
         try {
             $stats = $sync->run(CatalogSync::WEB_LOCK_SECONDS);
         } catch (Throwable $exception) {
+            // ERP messages are written for the admin; anything else (SQL, stack details) stays in the log.
+            $detail = $exception instanceof ErpException
+                ? "Detalle: {$exception->getMessage()}"
+                : 'Ocurrió un error interno; el detalle quedó en el log del servidor.';
+
             Notification::make()
                 ->title('No se pudo sincronizar con el ERP')
-                ->body("No se modificó ningún producto. Detalle: {$exception->getMessage()}")
+                ->body("No se modificó ningún producto. {$detail}")
                 ->danger()
                 ->persistent()
                 ->send();

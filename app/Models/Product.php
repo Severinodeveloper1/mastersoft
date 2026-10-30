@@ -54,6 +54,17 @@ class Product extends Model implements Auditable, HasMedia
      *
      * @return list<string>
      */
+    protected static function booted(): void
+    {
+        // Any visibility change saved through the model (admin toggle or form, or the sync itself) is a
+        // deliberate choice; only the sync's bulk deactivation, which skips model events, sets the mark.
+        static::saving(function (Product $product): void {
+            if ($product->exists && $product->isDirty('is_active')) {
+                $product->deactivated_by_sync = false;
+            }
+        });
+    }
+
     public function imageUrls(): array
     {
         return [

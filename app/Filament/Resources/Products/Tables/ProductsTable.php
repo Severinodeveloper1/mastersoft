@@ -15,7 +15,8 @@ class ProductsTable
 {
     public static function configure(Table $table): Table
     {
-        return $table->columns([
+        // The thumbnail falls back to media-library uploads; load them with the page, not once per row.
+        return $table->modifyQueryUsing(fn (Builder $query) => $query->with('media'))->columns([
             // Same image the store shows first: the ERP one, or the admin upload when there is none.
             ImageColumn::make('thumbnail')->label('Imagen')->state(fn ($record) => $record->primaryImageUrl())->imageSize(48)->square(),
             TextColumn::make('name')->label('Nombre')->searchable()->sortable(),

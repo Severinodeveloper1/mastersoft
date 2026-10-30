@@ -296,7 +296,7 @@ class QuotationSenderTest extends TestCase
         $this->assertStringContainsString('cache store unavailable', $order->erp_error);
     }
 
-    public function test_a_failed_save_after_the_erp_created_the_quotation_is_reported_clearly(): void
+    public function test_a_save_that_fails_once_after_the_erp_created_the_quotation_keeps_the_quotation_id(): void
     {
         $order = $this->pendingOrder();
         $this->fakeErp();
@@ -308,14 +308,40 @@ class QuotationSenderTest extends TestCase
             }
         });
 
-        $this->assertSame(QuotationResult::Failed, app(QuotationSender::class)->send($order));
+        // The id is what prevents a duplicate resend, so it must survive a brief database error.
+        $this->assertSame(QuotationResult::Sent, app(QuotationSender::class)->send($order));
 
         $order->refresh();
-        $this->assertSame(OrderStatus::Pending, $order->status);
-        $this->assertNull($order->erp_quotation_id);
-        $this->assertNull($order->erp_sent_at);
-        $this->assertStringContainsString('ERP created quotation 2', $order->erp_error);
-        $this->assertStringContainsString('database went away', $order->erp_error);
+        $this->assertSame(OrderStatus::SentToErp, $order->status);
+        $this->assertSame(2, $order->erp_quotation_id);
+        $this->assertNull($order->erp_error);
+    }
+
+    public function test_a_database_down_after_the_erp_created_the_quotation_fails_without_throwing(): void
+    {
+        $order = $this->pendingOrder();
+        $this->fakeErp();
+        Order::saving(function (Order $saving): void {
+            if ($saving->isDirty('erp_quotation_id') || $saving->isDirty('erp_error')) {
+                throw new \RuntimeException('database went away');
+            }
+        });
+
+        $this->assertSame(QuotationResult::Failed, app(QuotationSender::class)->send($order));
+
+        $this->assertNull($order->fresh()->erp_quotation_id);
+    }
+
+    public function test_invalid_quotation_days_keep_the_order_pending_without_calling_the_erp(): void
+    {
+        config(['services.erp.quotation.days' => 0]);
+        $order = $this->pendingOrder();
+        $this->fakeErp();
+
+        $this->assertSame(QuotationResult::Failed, app(QuotationSender::class)->send($order));
+
+        Http::assertNothingSent();
+        $this->assertStringContainsString('ERP_QUOTATION_DAYS', $order->fresh()->erp_error);
     }
 
     public function test_change_status_requires_permission_to_update_orders(): void

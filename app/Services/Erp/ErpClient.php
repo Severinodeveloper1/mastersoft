@@ -68,9 +68,11 @@ class ErpClient
             $lastPage = (int) $response->json('data.last_page', 1);
 
             // A different total means records were added or removed between pages, so offsets shifted.
-            $total = $response->json('data.total');
-            $firstTotal ??= $total;
-            if ($total !== $firstTotal) {
+            // Page 1 sets the baseline (even when it has no total); "4" and 4 count as the same total.
+            $total = is_numeric($response->json('data.total')) ? (int) $response->json('data.total') : null;
+            if ($page === 1) {
+                $firstTotal = $total;
+            } elseif ($total !== $firstTotal) {
                 throw new ErpException(self::CATALOG_CHANGED);
             }
             $page++;

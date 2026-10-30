@@ -8,6 +8,7 @@ use App\Models\Product;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -97,8 +98,7 @@ class CatalogSync
 
         // Offset paging repeats a product when the catalog shifts mid-read, and then another one is
         // missed and would be deactivated; a repeated id means the read is not trustworthy.
-        $productIds = array_map(fn ($item) => is_array($item) ? ($item['idproducto'] ?? null) : null, $products);
-        $productIds = array_filter($productIds, fn ($id) => $id !== null);
+        $productIds = array_filter(array_map($this->erpProductId(...), $products), fn ($id) => $id !== null);
         if (count($productIds) !== count(array_unique($productIds))) {
             throw new ErpException(ErpClient::CATALOG_CHANGED);
         }
@@ -117,9 +117,12 @@ class CatalogSync
             $seen = [];
             foreach ($products as $item) {
                 $result = $this->syncProductSafely($item, $categoryIds, $brandIds);
-                $stats[$result]++;
-                if ($result !== 'skipped') {
-                    $seen[] = (string) $item['idproducto'];
+                $stats[$result === 'malformed' ? 'skipped' : $result]++;
+                // A product the ERP no longer sells (no price, no name) is skipped and so hidden; a malformed
+                // record says nothing about the product, so an existing one keeps its current state.
+                $id = $this->erpProductId($item);
+                if ($result !== 'skipped' && $id !== null) {
+                    $seen[] = $id;
                 }
             }
 
@@ -138,15 +141,15 @@ class CatalogSync
     private function syncNamed(string $model, array $items, string $idKey): array
     {
         $ids = [];
+        // Admin-made records not linked to the ERP yet, loaded once per run and keyed by normalised name.
+        $unlinked = $model::whereNull('external_id')->orderBy('id')->get()
+            ->groupBy(fn (Model $record) => $this->normalisedName($record->name));
+
         foreach ($items as $item) {
             $externalId = (string) $item[$idKey];
             $name = trim((string) $item['descripcion']);
-            // The store mirrors the ERP: an admin-made record with the same name is linked, not duplicated,
-            // and takes the ERP name; its slug (and so its URL) stays the same.
-            // Names are compared in PHP: SQLite's LOWER() only folds A-Z, so "CATEGORÍA" would not match.
             $record = $model::where('external_id', $externalId)->first()
-                ?? $model::whereNull('external_id')->orderBy('id')->get()
-                    ->first(fn (Model $candidate) => mb_strtolower(trim($candidate->name)) === mb_strtolower($name))
+                ?? $this->takeUnlinked($unlinked, $name)
                 ?? new $model;
             $record->fill(['external_id' => $externalId, 'name' => $name, 'is_active' => true])->save();
             $ids[$externalId] = $record->id;
@@ -158,15 +161,39 @@ class CatalogSync
     }
 
     /**
+     * The store mirrors the ERP: an admin-made record with the same name is linked, not duplicated,
+     * and takes the ERP name; its slug (and so its URL) stays the same. Each record links only once.
+     *
+     * @param  Collection<string, Collection<int, Model>>  $unlinked
+     */
+    private function takeUnlinked(Collection $unlinked, string $name): ?Model
+    {
+        return $unlinked->get($this->normalisedName($name))?->shift();
+    }
+
+    /**
+     * Compared in PHP: SQLite's LOWER() only folds A-Z, so "CATEGORÍA" would not match.
+     */
+    private function normalisedName(string $name): string
+    {
+        return mb_strtolower(trim($name));
+    }
+
+    private function erpProductId(mixed $item): ?string
+    {
+        return is_array($item) && is_numeric($item['idproducto'] ?? null) ? (string) $item['idproducto'] : null;
+    }
+
+    /**
      * One malformed ERP record is skipped instead of aborting the whole catalog; database errors
      * still abort, because the transaction can no longer be trusted.
      *
-     * @return 'created'|'updated'|'unchanged'|'skipped'
+     * @return 'created'|'updated'|'unchanged'|'skipped'|'malformed'
      */
     private function syncProductSafely(mixed $item, array $categoryIds, array $brandIds): string
     {
         try {
-            if (! is_array($item) || ! is_numeric($item['idproducto'] ?? null)) {
+            if ($this->erpProductId($item) === null) {
                 throw new ErpException('record has no idproducto');
             }
 
@@ -179,7 +206,7 @@ class CatalogSync
                 'error' => $exception->getMessage(),
             ]);
 
-            return 'skipped';
+            return 'malformed';
         }
     }
 

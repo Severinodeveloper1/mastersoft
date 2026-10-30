@@ -62,12 +62,21 @@ class QuotationSender
                 'erp_error' => null,
             ])->save();
         } catch (Throwable $exception) {
-            // Drop the unsaved success fields so only the error is written and the order stays pending.
-            $order->discardChanges();
+            // The ERP already holds the quotation: its id is what stops a duplicate resend, so the save
+            // is retried once (still under the lock) before giving up.
+            if (is_numeric($quotation['idcotizacion'] ?? null) && $order->isDirty('erp_quotation_id')) {
+                if (rescue(fn () => $order->save(), false, report: false)) {
+                    Log::warning('ERP quotation saved on the second attempt.', ['order' => $order->code, 'error' => $exception->getMessage()]);
 
-            return $this->fail($order, is_numeric($quotation['idcotizacion'] ?? null)
-                ? "ERP created quotation {$quotation['idcotizacion']} but the order could not be updated; do not resend: {$exception->getMessage()}"
-                : $exception->getMessage());
+                    return QuotationResult::Sent;
+                }
+
+                $order->discardChanges();
+
+                return $this->fail($order, "ERP created quotation {$quotation['idcotizacion']} but the order could not be updated; do not resend: {$exception->getMessage()}");
+            }
+
+            return $this->fail($order, $exception->getMessage());
         } finally {
             rescue(fn () => $lock->release(), report: false);
         }
@@ -105,6 +114,9 @@ class QuotationSender
             if (blank($settings[$key] ?? null)) {
                 throw new ErpException("ERP quotation settings are not configured ({$env}).");
             }
+        }
+        if (! is_numeric($settings['days'] ?? null) || (int) $settings['days'] < 1) {
+            throw new ErpException('ERP quotation settings are not configured (ERP_QUOTATION_DAYS must be a whole number of days, 1 or more).');
         }
 
         $items = $order->items()->with('product')->get()->map(function ($item): array {

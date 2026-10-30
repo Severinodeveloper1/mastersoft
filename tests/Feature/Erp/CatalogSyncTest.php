@@ -9,7 +9,9 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\Erp\CatalogSync;
 use Closure;
+use Filament\Notifications\Notification;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Client\Request;
@@ -537,6 +539,76 @@ class CatalogSyncTest extends TestCase
         Log::shouldHaveReceived('warning')->withArgs(fn (string $message, array $context = []) => str_contains($message, 'malformed') && ($context['idproducto'] ?? null) === 2)->once();
     }
 
+    public function test_a_malformed_record_of_an_existing_product_does_not_hide_it(): void
+    {
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->fakeErp(products: [[$this->product(1), ['idproducto' => 2, 'descripcioninterna' => 'ROTO', 'presentaciones' => 'roto']]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $product = Product::where('external_id', '2')->firstOrFail();
+        $this->assertTrue($product->is_active);
+        $this->assertSame('PRODUCTO 2', $product->name);
+    }
+
+    public function test_an_admin_visibility_change_clears_the_sync_mark(): void
+    {
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        $this->fakeErp(products: [[$this->product(1)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        $product = Product::where('external_id', '2')->firstOrFail();
+        $product->update(['is_active' => true]);
+        $product->update(['is_active' => false]);
+
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertFalse($product->fresh()->is_active);
+    }
+
+    public function test_paging_drift_uses_the_first_page_total_and_ignores_number_formatting(): void
+    {
+        $this->freshHttp();
+        Http::fake([
+            self::BASE.'/auth/login' => Http::response($this->loginResponse()),
+            self::BASE.'/categorias*' => Http::response(['status' => 'success', 'data' => [$this->category(8, 'Desodorante')]]),
+            self::BASE.'/marcas*' => Http::response(['status' => 'success', 'data' => []]),
+            self::BASE.'/productos?*page=1&*' => Http::response($this->productsPage([$this->product(1), $this->product(2)], 1, 2, total: 4)),
+            self::BASE.'/productos?*page=2&*' => Http::response(['status' => 'success', 'data' => ['current_page' => 2, 'data' => [$this->product(3), $this->product(4)], 'last_page' => 2, 'per_page' => 2, 'total' => '4']]),
+        ]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->freshHttp();
+        Http::fake([
+            self::BASE.'/auth/login' => Http::response($this->loginResponse()),
+            self::BASE.'/categorias*' => Http::response(['status' => 'success', 'data' => [$this->category(8, 'Desodorante')]]),
+            self::BASE.'/marcas*' => Http::response(['status' => 'success', 'data' => []]),
+            self::BASE.'/productos?*page=1&*' => Http::response(['status' => 'success', 'data' => ['current_page' => 1, 'data' => [$this->product(1)], 'last_page' => 2, 'per_page' => 2, 'total' => null]]),
+            self::BASE.'/productos?*page=2&*' => Http::response($this->productsPage([$this->product(5)], 2, 2, total: 5)),
+        ]);
+        $this->artisan('erp:sync-products')->expectsOutputToContain('changed while it was being read')->assertFailed();
+    }
+
+    public function test_admin_sync_hides_internal_details_of_unexpected_errors(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->mock(CatalogSync::class)->shouldReceive('run')->andThrow(
+            new QueryException('sqlite', 'update "products" set "price" = ?', ['secret-value'], new \Exception('disk I/O error')),
+        );
+
+        Livewire::test(ListProducts::class)
+            ->callAction('syncErp')
+            ->assertNotified(
+                Notification::make()
+                    ->title('No se pudo sincronizar con el ERP')
+                    ->body('No se modificó ningún producto. Ocurrió un error interno; el detalle quedó en el log del servidor.')
+                    ->danger()
+                    ->persistent(),
+            );
+    }
+
     public function test_an_unexpected_error_is_logged_and_fails_the_command_without_changes(): void
     {
         $this->fakeErp(products: [[$this->product(1)]]);
@@ -602,7 +674,7 @@ class CatalogSyncTest extends TestCase
         $this->assertSame(0, Product::count());
     }
 
-    public function test_a_lock_shorter_than_the_write_margin_is_rejected(): void
+    public function test_a_lock_no_longer_than_the_write_margin_is_rejected(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
