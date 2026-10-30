@@ -464,6 +464,7 @@ class CatalogSyncTest extends TestCase
     private function freshHttp(): void
     {
         Http::swap(new HttpFactory);
+        Http::preventStrayRequests();
     }
 
     private function loginResponse(): array

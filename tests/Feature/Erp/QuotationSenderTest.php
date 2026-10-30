@@ -99,6 +99,20 @@ class QuotationSenderTest extends TestCase
         $this->assertSame(0, app(Cart::class)->unitCount());
     }
 
+    public function test_a_success_answer_without_a_quotation_id_keeps_the_order_pending(): void
+    {
+        $this->fakeErp(quotation: Http::response(['status' => 'success', 'data' => ['numero' => null]]));
+        $product = Product::factory()->create(['external_id' => '14', 'stock' => 6]);
+        app(Cart::class)->add($product->id, 1);
+
+        $this->placeOrder();
+
+        $order = Order::firstOrFail();
+        $this->assertSame(OrderStatus::Pending, $order->status);
+        $this->assertNull($order->erp_sent_at);
+        $this->assertStringContainsString('quotation id', $order->erp_error);
+    }
+
     public function test_an_unreachable_erp_keeps_the_order_pending(): void
     {
         $this->freshHttp();

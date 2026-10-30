@@ -40,6 +40,11 @@ class QuotationSender
             $payload = $this->payload($order);
             $this->client->login();
             $quotation = $this->client->create('/cotizaciones', $payload);
+
+            // Without the id the order would look sent yet stay resendable, risking a duplicate.
+            if (! is_numeric($quotation['idcotizacion'] ?? null)) {
+                throw new ErpException('ERP answered success but returned no quotation id; check the ERP before resending.');
+            }
         } catch (Throwable $exception) {
             Log::error('ERP quotation failed; the order stays pending.', ['order' => $order->code, 'error' => $exception->getMessage()]);
             $order->forceFill(['erp_error' => Str::limit($exception->getMessage(), 1000)])->save();
@@ -52,7 +57,7 @@ class QuotationSender
         $order->forceFill([
             // An admin may already have moved the order forward; only a pending order changes status.
             'status' => $order->status === OrderStatus::Pending ? OrderStatus::SentToErp : $order->status,
-            'erp_quotation_id' => $quotation['idcotizacion'] ?? null,
+            'erp_quotation_id' => (int) $quotation['idcotizacion'],
             'erp_quotation_number' => $quotation['numero'] ?? null,
             'erp_sent_at' => now(),
             'erp_error' => null,
