@@ -9,7 +9,8 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 /**
- * Read-only client for the Vesertech ERP API. The token lives only in memory for one run.
+ * Client for the Vesertech ERP API: catalog reads and quotation creation.
+ * The token lives only in memory for one run.
  */
 class ErpClient
 {
@@ -68,6 +69,28 @@ class ErpClient
         return $items;
     }
 
+    /**
+     * Creates a record. Never retried: a timeout or 5xx may come after the ERP already saved it,
+     * and resending would duplicate it.
+     *
+     * @return array<string, mixed> the response `data`
+     */
+    public function create(string $path, array $payload): array
+    {
+        if ($this->token === null) {
+            throw new ErpException('ERP client is not logged in.');
+        }
+
+        $response = $this->send(fn () => $this->request(retry: false)->withToken($this->token)->post($path, $payload), $path);
+        $data = $response->json('data');
+
+        if ($response->json('status') !== 'success' || ! is_array($data)) {
+            throw new ErpException("ERP request {$path} did not succeed.");
+        }
+
+        return $data;
+    }
+
     private function get(string $path, array $query): Response
     {
         if ($this->token === null) {
@@ -110,13 +133,16 @@ class ErpClient
         return $response;
     }
 
-    private function request(): PendingRequest
+    private function request(bool $retry = true): PendingRequest
     {
-        return Http::baseUrl(rtrim((string) config('services.erp.base_url'), '/'))
+        $request = Http::baseUrl(rtrim((string) config('services.erp.base_url'), '/'))
             ->withHeaders(['X-Tenant-Id' => config('services.erp.tenant')])
             ->acceptJson()
-            ->timeout(config('services.erp.timeout'))
-            ->retry(2, 1000, fn ($exception) => $exception instanceof ConnectionException
-                || ($exception instanceof RequestException && $exception->response->serverError()), throw: false);
+            ->timeout(config('services.erp.timeout'));
+
+        return $retry
+            ? $request->retry(2, 1000, fn ($exception) => $exception instanceof ConnectionException
+                || ($exception instanceof RequestException && $exception->response->serverError()), throw: false)
+            : $request;
     }
 }

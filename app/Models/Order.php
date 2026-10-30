@@ -58,6 +58,8 @@ class Order extends Model implements Auditable
             'tax' => 'decimal:2',
             'total' => 'decimal:2',
             'privacy_accepted_at' => 'datetime',
+            'erp_quotation_id' => 'integer',
+            'erp_sent_at' => 'datetime',
         ];
     }
 

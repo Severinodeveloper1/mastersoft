@@ -24,6 +24,13 @@ return [
         'per_page' => (int) env('ERP_PER_PAGE', 50),
         'timeout' => (int) env('ERP_TIMEOUT', 30),
         'sync_time' => env('ERP_SYNC_TIME', '03:00'),
+        // Store orders are registered in the ERP as quotations for this customer and terms.
+        'quotation' => [
+            'customer_id' => env('ERP_CUSTOMER_ID'),
+            'currency_id' => env('ERP_CURRENCY_ID'),
+            'payment_condition_id' => env('ERP_PAYMENT_CONDITION_ID'),
+            'days' => env('ERP_QUOTATION_DAYS', 15),
+        ],
     ],
 
     'postmark' => [

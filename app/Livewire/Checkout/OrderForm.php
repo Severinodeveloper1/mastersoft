@@ -8,6 +8,7 @@ use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\Cart;
+use App\Services\Erp\QuotationSender;
 use App\Support\Ubigeo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -206,6 +207,8 @@ class OrderForm extends Component
         });
 
         if ($order) {
+            // The order is already saved; an ERP failure only leaves it pending for the admin to resend.
+            app(QuotationSender::class)->send($order);
             $cart->clear();
             $this->redirect(URL::signedRoute('checkout.confirmation', ['order' => $order->code]));
         }
