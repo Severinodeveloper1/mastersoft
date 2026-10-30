@@ -332,9 +332,14 @@ class QuotationSenderTest extends TestCase
         $this->assertNull($order->fresh()->erp_quotation_id);
     }
 
-    public function test_invalid_quotation_days_keep_the_order_pending_without_calling_the_erp(): void
+    /**
+     * @testWith [0]
+     *           ["1.5"]
+     *           [""]
+     */
+    public function test_invalid_quotation_days_keep_the_order_pending_without_calling_the_erp(mixed $days): void
     {
-        config(['services.erp.quotation.days' => 0]);
+        config(['services.erp.quotation.days' => $days]);
         $order = $this->pendingOrder();
         $this->fakeErp();
 

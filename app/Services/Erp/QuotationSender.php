@@ -115,7 +115,7 @@ class QuotationSender
                 throw new ErpException("ERP quotation settings are not configured ({$env}).");
             }
         }
-        if (! is_numeric($settings['days'] ?? null) || (int) $settings['days'] < 1) {
+        if (filter_var($settings['days'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) === false) {
             throw new ErpException('ERP quotation settings are not configured (ERP_QUOTATION_DAYS must be a whole number of days, 1 or more).');
         }
 
