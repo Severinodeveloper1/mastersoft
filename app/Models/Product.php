@@ -43,6 +43,7 @@ class Product extends Model implements Auditable, HasMedia
             'regular_price' => 'decimal:2',
             'stock' => 'integer',
             'is_active' => 'boolean',
+            'deactivated_by_sync' => 'boolean',
             'is_featured' => 'boolean',
             'external_image_urls' => 'array',
         ];

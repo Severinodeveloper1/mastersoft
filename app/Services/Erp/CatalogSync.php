@@ -205,9 +205,15 @@ class CatalogSync
             'price' => $price,
             'stock' => max(0, (int) floor((float) ($item['stock_disponible'] ?? 0))),
             'unit' => $presentation['nombre'] ?? null,
-            'is_active' => true,
             'external_image_urls' => $this->imageUrls($item['imagenes'] ?? []),
         ]);
+
+        // New products go live; a product the sync itself switched off comes back; a product an
+        // admin hid keeps its visibility, while its ERP data above keeps updating.
+        if (! $product->exists || $product->deactivated_by_sync) {
+            $product->is_active = true;
+        }
+        $product->deactivated_by_sync = false;
 
         if ($description = $this->escapedText([$item['descripcionadicional'] ?? null])) {
             $product->description = $description;
@@ -304,6 +310,10 @@ class CatalogSync
             ->whereNotNull('external_id')
             ->whereNotIn('external_id', $seenExternalIds)
             ->where('is_active', true)
-            ->update(['is_active' => false, 'updated_at' => now()]);
+            ->update([
+                'is_active' => false,
+                ...($model === Product::class ? ['deactivated_by_sync' => true] : []),
+                'updated_at' => now(),
+            ]);
     }
 }

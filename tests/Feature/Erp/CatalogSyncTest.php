@@ -393,6 +393,64 @@ class CatalogSyncTest extends TestCase
         Livewire::test(ListProducts::class)->assertActionHidden('syncErp');
     }
 
+    public function test_a_product_hidden_in_the_admin_stays_hidden_but_keeps_updating(): void
+    {
+        $this->fakeErp(products: [[$this->product(1, price: '18.00', stock: '8.000')]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        Product::where('external_id', '1')->firstOrFail()->update(['is_active' => false]);
+
+        $this->fakeErp(products: [[$this->product(1, name: 'AXE NUEVO', price: '20.00', stock: '3.000')]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $product = Product::where('external_id', '1')->firstOrFail();
+        $this->assertFalse($product->is_active);
+        $this->assertSame('AXE NUEVO', $product->name);
+        $this->assertSame('20.00', $product->price);
+        $this->assertSame(3, $product->stock);
+    }
+
+    public function test_a_product_the_sync_deactivated_comes_back_when_it_returns_to_the_erp(): void
+    {
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        $this->fakeErp(products: [[$this->product(1)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        $this->assertFalse(Product::where('external_id', '2')->value('is_active'));
+
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertTrue(Product::where('external_id', '2')->value('is_active'));
+    }
+
+    public function test_a_hidden_product_that_leaves_and_returns_to_the_erp_stays_hidden(): void
+    {
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        Product::where('external_id', '2')->firstOrFail()->update(['is_active' => false]);
+        $this->fakeErp(products: [[$this->product(1)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertFalse(Product::where('external_id', '2')->value('is_active'));
+    }
+
+    public function test_a_product_shown_again_in_the_admin_stays_visible(): void
+    {
+        $this->fakeErp(products: [[$this->product(1)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        $product = Product::where('external_id', '1')->firstOrFail();
+        $product->update(['is_active' => false]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        $product->update(['is_active' => true]);
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertTrue($product->fresh()->is_active);
+    }
+
     public function test_a_product_without_a_name_is_skipped_and_logged(): void
     {
         Log::spy();
