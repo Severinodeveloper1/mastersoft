@@ -5,6 +5,7 @@ namespace App\Services\Erp;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,9 @@ class CatalogSync
      */
     public const WEB_LOCK_SECONDS = 600;
 
+    /** Time kept back for the write transaction after the ERP download. */
+    public const WRITE_MARGIN_SECONDS = 120;
+
     public function __construct(private readonly ErpClient $client) {}
 
     /**
@@ -53,7 +57,7 @@ class CatalogSync
         register_shutdown_function(fn () => $lock->release());
 
         try {
-            $stats = $this->load();
+            $stats = $this->load(now()->addSeconds($lockSeconds - self::WRITE_MARGIN_SECONDS));
         } catch (ErpException $exception) {
             Log::error('ERP catalog sync failed; the store was not changed.', ['error' => $exception->getMessage()]);
 
@@ -70,7 +74,7 @@ class CatalogSync
     /**
      * @return array<string, int>
      */
-    private function load(): array
+    private function load(CarbonInterface $writeDeadline): array
     {
         $this->client->login();
 
@@ -82,6 +86,12 @@ class CatalogSync
         // everything on it would empty the store, so the run stops instead.
         $this->guardAgainstEmpty(Category::class, $categories, 'categories');
         $this->guardAgainstEmpty(Product::class, $products, 'products');
+
+        // PHP's time limit ignores time spent waiting on the ERP, so a slow download could outlive
+        // the lock; writing then could overlap another run, so the run stops before any write.
+        if (now()->greaterThan($writeDeadline)) {
+            throw new ErpException('The ERP download took too long; nothing was written to keep runs from overlapping.');
+        }
 
         return DB::transaction(function () use ($categories, $brands, $products): array {
             $categoryIds = $this->syncNamed(Category::class, $categories, 'idcategoria');

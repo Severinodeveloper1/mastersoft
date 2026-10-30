@@ -320,6 +320,28 @@ class CatalogSyncTest extends TestCase
         $this->assertTrue($freeAfterElevenMinutes);
     }
 
+    public function test_an_admin_sync_whose_download_outlasts_its_lock_writes_nothing(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->fakeErp(products: [[$this->product(1)]], onLogin: fn () => $this->travel(9)->minutes());
+
+        Livewire::test(ListProducts::class)
+            ->callAction('syncErp')
+            ->assertNotified('No se pudo sincronizar con el ERP');
+
+        $this->assertSame(0, Product::count());
+        $this->assertSame(0, Category::count());
+    }
+
+    public function test_a_slow_nightly_download_still_syncs(): void
+    {
+        $this->fakeErp(products: [[$this->product(1)]], onLogin: fn () => $this->travel(9)->minutes());
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertSame(1, Product::count());
+    }
+
     public function test_the_nightly_run_keeps_its_lock_for_long_loads(): void
     {
         $freeAfterElevenMinutes = null;
