@@ -40,6 +40,7 @@ class ViewOrder extends ViewRecord
                 ->requiresConfirmation()
                 ->modalDescription('Se registrará este pedido como cotización en el ERP. Si el envío anterior falló por tiempo de espera, revisa primero en el ERP que la cotización no se haya creado, para no duplicarla.')
                 ->visible(fn (): bool => $this->record->erp_quotation_id === null)
+                ->authorize('update')
                 ->action(fn (QuotationSender $sender) => $this->sendToErp($sender)),
             Action::make('editStatus')->label('Cambiar estado')->form([Select::make('status')->label('Estado')->options(collect(OrderStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->getLabel()]))->required()])->fillForm(fn () => ['status' => $this->record->status->value])->action(fn (array $data) => $this->record->update($data)),
         ];

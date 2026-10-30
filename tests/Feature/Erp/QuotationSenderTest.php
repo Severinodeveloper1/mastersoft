@@ -14,10 +14,12 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Defer\DeferredCallbackCollection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -204,6 +206,42 @@ class QuotationSenderTest extends TestCase
         $this->assertSame(OrderStatus::SentToErp, $order->status);
         $this->assertSame('CT01-00000002', $order->erp_quotation_number);
         $this->assertNull($order->erp_error);
+    }
+
+    public function test_the_quotation_id_is_saved_while_the_order_lock_is_still_held(): void
+    {
+        $order = $this->pendingOrder();
+        $this->fakeErp();
+        $lockFreeWhenSaved = null;
+        Order::saving(function (Order $saving) use (&$lockFreeWhenSaved): void {
+            if ($saving->isDirty('erp_quotation_id') && $saving->erp_quotation_id !== null) {
+                $probe = Cache::lock("erp-quotation-{$saving->id}", 5);
+                $lockFreeWhenSaved = $probe->get();
+                $lockFreeWhenSaved && $probe->release();
+            }
+        });
+
+        $this->assertTrue(app(QuotationSender::class)->send($order));
+
+        $this->assertFalse($lockFreeWhenSaved);
+        $this->assertSame(2, $order->fresh()->erp_quotation_id);
+    }
+
+    public function test_send_to_erp_requires_permission_to_update_orders(): void
+    {
+        $this->artisan('db:seed', ['--class' => 'Database\\Seeders\\ShieldSeeder']);
+        $role = Role::findOrCreate('order_viewer', 'web');
+        $role->givePermissionTo([Permission::findOrCreate('ViewAny:Order', 'web'), Permission::findOrCreate('View:Order', 'web')]);
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
+        $order = $this->pendingOrder();
+        $this->fakeErp();
+
+        Livewire::test(ViewOrder::class, ['record' => $order->getRouteKey()])
+            ->assertActionHidden('sendToErp');
+
+        Http::assertNothingSent();
     }
 
     public function test_admin_resend_failure_is_reported_and_the_order_stays_pending(): void

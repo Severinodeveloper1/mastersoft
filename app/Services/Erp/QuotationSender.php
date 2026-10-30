@@ -31,6 +31,8 @@ class QuotationSender
             return false;
         }
 
+        $quotation = null;
+
         try {
             $order->refresh();
             if ($order->erp_quotation_id !== null) {
@@ -45,23 +47,28 @@ class QuotationSender
             if (! is_numeric($quotation['idcotizacion'] ?? null)) {
                 throw new ErpException('ERP answered success but returned no quotation id; check the ERP before resending.');
             }
+
+            // Saved before the lock is released, so a racing resend always sees the order as sent.
+            $order->forceFill([
+                // An admin may already have moved the order forward; only a pending order changes status.
+                'status' => $order->status === OrderStatus::Pending ? OrderStatus::SentToErp : $order->status,
+                'erp_quotation_id' => (int) $quotation['idcotizacion'],
+                'erp_quotation_number' => $quotation['numero'] ?? null,
+                'erp_sent_at' => now(),
+                'erp_error' => null,
+            ])->save();
         } catch (Throwable $exception) {
-            Log::error('ERP quotation failed; the order stays pending.', ['order' => $order->code, 'error' => $exception->getMessage()]);
-            $order->forceFill(['erp_error' => Str::limit($exception->getMessage(), 1000)])->save();
+            $error = is_numeric($quotation['idcotizacion'] ?? null)
+                ? "ERP created quotation {$quotation['idcotizacion']} but the order could not be updated: {$exception->getMessage()}"
+                : $exception->getMessage();
+            Log::error('ERP quotation failed; the order stays pending.', ['order' => $order->code, 'error' => $error]);
+            $order->forceFill(['erp_error' => Str::limit($error, 1000)])->save();
 
             return false;
         } finally {
             $lock->release();
         }
 
-        $order->forceFill([
-            // An admin may already have moved the order forward; only a pending order changes status.
-            'status' => $order->status === OrderStatus::Pending ? OrderStatus::SentToErp : $order->status,
-            'erp_quotation_id' => (int) $quotation['idcotizacion'],
-            'erp_quotation_number' => $quotation['numero'] ?? null,
-            'erp_sent_at' => now(),
-            'erp_error' => null,
-        ])->save();
         Log::info('ERP quotation created.', ['order' => $order->code, 'quotation' => $order->erp_quotation_number]);
 
         return true;
