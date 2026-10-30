@@ -13,6 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Defer\DeferredCallbackCollection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Livewire\Features\SupportTesting\Testable;
@@ -47,6 +48,26 @@ class QuotationSenderTest extends TestCase
                 'days' => 15,
             ],
         ]]);
+    }
+
+    public function test_checkout_answers_the_customer_before_calling_the_erp(): void
+    {
+        $this->fakeErp();
+        $product = Product::factory()->create(['external_id' => '14', 'stock' => 6]);
+        app(Cart::class)->add($product->id, 1);
+
+        $component = $this->placeOrder(runDeferred: false);
+
+        // The send is deferred until the response has gone out, so a slow ERP never blocks checkout.
+        $order = Order::firstOrFail();
+        $component->assertRedirect(URL::signedRoute('checkout.confirmation', ['order' => $order->code]));
+        $this->assertSame(0, app(Cart::class)->unitCount());
+        Http::assertNothingSent();
+        $this->assertCount(1, app(DeferredCallbackCollection::class));
+
+        app(DeferredCallbackCollection::class)->invoke();
+
+        $this->assertSame(OrderStatus::SentToErp, $order->fresh()->status);
     }
 
     public function test_placed_order_is_sent_to_the_erp_as_a_quotation_and_marked_as_sent(): void
@@ -224,9 +245,12 @@ class QuotationSenderTest extends TestCase
         $this->assertSame('Enviado al ERP', OrderStatus::SentToErp->getLabel());
     }
 
-    private function placeOrder(): Testable
+    /**
+     * Deferred callbacks run once the response is sent; tests run them right after the submit.
+     */
+    private function placeOrder(bool $runDeferred = true): Testable
     {
-        return Livewire::test('checkout.order-form')
+        $component = Livewire::test('checkout.order-form')
             ->set('first_name', 'Ana')
             ->set('last_name', 'Pérez')
             ->set('phone', '912345678')
@@ -235,6 +259,12 @@ class QuotationSenderTest extends TestCase
             ->set('notes', 'Llamar al llegar')
             ->set('privacy_accepted', true)
             ->call('submit');
+
+        if ($runDeferred) {
+            app(DeferredCallbackCollection::class)->invoke();
+        }
+
+        return $component;
     }
 
     private function pendingOrder(?string $erpError = null): Order

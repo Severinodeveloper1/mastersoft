@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
+use function Illuminate\Support\defer;
+
 class OrderForm extends Component
 {
     public string $customer_type = 'person';
@@ -207,9 +209,10 @@ class OrderForm extends Component
         });
 
         if ($order) {
-            // The order is already saved; an ERP failure only leaves it pending for the admin to resend.
-            app(QuotationSender::class)->send($order);
             $cart->clear();
+            // Sent after the response goes out, so a slow or unreachable ERP never delays or breaks
+            // the confirmation; a failure only leaves the order pending for the admin to resend.
+            defer(fn () => app(QuotationSender::class)->send($order));
             $this->redirect(URL::signedRoute('checkout.confirmation', ['order' => $order->code]));
         }
     }
