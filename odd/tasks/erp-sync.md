@@ -37,7 +37,7 @@ Assumptions (to confirm): admin-written description is kept when the ERP sends n
 | T10 | S5-S9, S12 | Catalog follow-ups A3 (skip nameless), A4 (skip malformed record), A5 (log any failure), A6 (abort on paging drift), A7 thumbnail (ERP image in admin list), B3 (button reports any error), D1 (reject lock <= margin), D2 (budget boundary tests) | inline | done (RED: 8 failing; GREEN 113 tests) | `9e9966f` |
 | T11 | S10, S13 | Quotation follow-ups E3 (lock TTL from ERP_TIMEOUT), E4 (Busy result + message), E5 (cache/DB failures never throw), E6 (single days default), E7 (contention + kept status tests), F1/F2 (failed save after ERP success stays pending, clear message, tested), "Cambiar estado" requires Update:Order | inline | done (RED: 7 failing; GREEN 119 tests) | `e99eb4e` |
 | T12 | S7, S14 | Admin-hidden products survive the sync (`products.deactivated_by_sync`) | inline | done (RED: hidden product reactivated; GREEN 123 tests) | `be7b6d7` |
-| T13 | S4, S15 | Link same-name admin categories/brands to the ERP record | inline | done (RED: duplicates created; GREEN 126 tests) | pending |
+| T13 | S4, S15 | Link same-name admin categories/brands to the ERP record | inline | done (RED: duplicates created; GREEN 126 tests) | `f289e3e` |
 | T4 | S10, S13 | Orders to ERP quotations at checkout + admin resend | inline | done (RED: 10 tests failing, nothing existed; GREEN 98 tests) | `a1d8c7c` |
 
 ## Log
