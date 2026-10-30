@@ -31,7 +31,7 @@ Assumptions (to confirm): admin-written description is kept when the ERP sends n
 | T6 | S12 | Shared lock + "Sincronizar con ERP" button on the products list | inline | done (RED: no lock, no action; GREEN 82 tests) | `be48dcf` |
 | T7 | S9, S12 | Review advisories B1, B2, B4: short web lock + shutdown release, log refused runs, pin release after failure | inline | done (RED: B1 lock still held after 11 min, B2 no warning; GREEN 86 tests) | `e68e916` |
 | T8 | S9, S12 | Review advisory C1: stop before writing when the ERP download used the lock time minus a 120 s write margin | inline | done (RED: admin sync wrote after a 9 min download; GREEN 88 tests) | `53ba4b7` |
-| T4 | S10, S13 | Orders to ERP quotations at checkout + admin resend | inline | done (RED: 10 tests failing, nothing existed; GREEN 98 tests) | pending |
+| T4 | S10, S13 | Orders to ERP quotations at checkout + admin resend | inline | done (RED: 10 tests failing, nothing existed; GREEN 98 tests) | `a1d8c7c` |
 
 ## Log
 
