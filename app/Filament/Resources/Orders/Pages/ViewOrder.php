@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Orders\Pages;
 
 use App\Enums\OrderStatus;
 use App\Filament\Resources\Orders\OrderResource;
+use App\Services\Erp\QuotationResult;
 use App\Services\Erp\QuotationSender;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
@@ -42,30 +43,32 @@ class ViewOrder extends ViewRecord
                 ->visible(fn (): bool => $this->record->erp_quotation_id === null)
                 ->authorize('update')
                 ->action(fn (QuotationSender $sender) => $this->sendToErp($sender)),
-            Action::make('editStatus')->label('Cambiar estado')->form([Select::make('status')->label('Estado')->options(collect(OrderStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->getLabel()]))->required()])->fillForm(fn () => ['status' => $this->record->status->value])->action(fn (array $data) => $this->record->update($data)),
+            Action::make('editStatus')->label('Cambiar estado')->form([Select::make('status')->label('Estado')->options(collect(OrderStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->getLabel()]))->required()])->fillForm(fn () => ['status' => $this->record->status->value])->authorize('update')->action(fn (array $data) => $this->record->update($data)),
         ];
     }
 
     private function sendToErp(QuotationSender $sender): void
     {
-        $sent = $sender->send($this->record);
+        $result = $sender->send($this->record);
         $this->record->refresh();
 
-        if (! $sent) {
-            Notification::make()
+        match ($result) {
+            QuotationResult::Sent => Notification::make()
+                ->title('Pedido enviado al ERP')
+                ->body("Cotización {$this->record->erp_quotation_number}.")
+                ->success()
+                ->send(),
+            QuotationResult::Busy => Notification::make()
+                ->title('El pedido ya se está enviando al ERP')
+                ->body('Espera unos segundos y recarga la página para ver el resultado.')
+                ->warning()
+                ->send(),
+            QuotationResult::Failed => Notification::make()
                 ->title('No se pudo enviar el pedido al ERP')
-                ->body('El pedido sigue pendiente. Detalle: '.($this->record->erp_error ?? 'otro envío de este pedido está en curso.'))
+                ->body("El pedido sigue pendiente. Detalle: {$this->record->erp_error}")
                 ->danger()
                 ->persistent()
-                ->send();
-
-            return;
-        }
-
-        Notification::make()
-            ->title('Pedido enviado al ERP')
-            ->body("Cotización {$this->record->erp_quotation_number}.")
-            ->success()
-            ->send();
+                ->send(),
+        };
     }
 }

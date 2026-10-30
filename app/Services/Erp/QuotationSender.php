@@ -19,16 +19,20 @@ class QuotationSender
 {
     public function __construct(private readonly ErpClient $client) {}
 
-    public function send(Order $order): bool
+    public function send(Order $order): QuotationResult
     {
         if ($order->erp_quotation_id !== null) {
-            return true;
+            return QuotationResult::Sent;
         }
 
-        // A double click on "resend" must not create two quotations for one order.
-        $lock = Cache::lock("erp-quotation-{$order->id}", 120);
-        if (! $lock->get()) {
-            return false;
+        try {
+            // A double click on "resend" must not create two quotations for one order.
+            $lock = Cache::lock("erp-quotation-{$order->id}", $this->lockSeconds());
+            if (! $lock->get()) {
+                return QuotationResult::Busy;
+            }
+        } catch (Throwable $exception) {
+            return $this->fail($order, $exception->getMessage());
         }
 
         $quotation = null;
@@ -36,7 +40,7 @@ class QuotationSender
         try {
             $order->refresh();
             if ($order->erp_quotation_id !== null) {
-                return true;
+                return QuotationResult::Sent;
             }
 
             $payload = $this->payload($order);
@@ -58,20 +62,37 @@ class QuotationSender
                 'erp_error' => null,
             ])->save();
         } catch (Throwable $exception) {
-            $error = is_numeric($quotation['idcotizacion'] ?? null)
-                ? "ERP created quotation {$quotation['idcotizacion']} but the order could not be updated: {$exception->getMessage()}"
-                : $exception->getMessage();
-            Log::error('ERP quotation failed; the order stays pending.', ['order' => $order->code, 'error' => $error]);
-            $order->forceFill(['erp_error' => Str::limit($error, 1000)])->save();
+            // Drop the unsaved success fields so only the error is written and the order stays pending.
+            $order->discardChanges();
 
-            return false;
+            return $this->fail($order, is_numeric($quotation['idcotizacion'] ?? null)
+                ? "ERP created quotation {$quotation['idcotizacion']} but the order could not be updated; do not resend: {$exception->getMessage()}"
+                : $exception->getMessage());
         } finally {
-            $lock->release();
+            rescue(fn () => $lock->release(), report: false);
         }
 
         Log::info('ERP quotation created.', ['order' => $order->code, 'quotation' => $order->erp_quotation_number]);
 
-        return true;
+        return QuotationResult::Sent;
+    }
+
+    /**
+     * Login may try twice with a pause, then the POST runs once, each up to the configured timeout;
+     * the lock must outlive that whole send or a resend could race it.
+     */
+    private function lockSeconds(): int
+    {
+        return 3 * (int) config('services.erp.timeout', 30) + 60;
+    }
+
+    private function fail(Order $order, string $error): QuotationResult
+    {
+        Log::error('ERP quotation failed; the order stays pending.', ['order' => $order->code, 'error' => $error]);
+        // The order itself is already saved; failing to note the error must not break the caller.
+        rescue(fn () => $order->forceFill(['erp_error' => Str::limit($error, 1000)])->save(), report: false);
+
+        return QuotationResult::Failed;
     }
 
     /**
@@ -111,7 +132,7 @@ class QuotationSender
             'idcliente' => (int) $settings['customer_id'],
             'idmoneda' => (int) $settings['currency_id'],
             'idcondicionpago' => (int) $settings['payment_condition_id'],
-            'dias' => (int) ($settings['days'] ?? 15),
+            'dias' => (int) $settings['days'],
             'reservarstock' => false,
             'observacion' => Str::limit($observation, 500),
             'items' => $items,

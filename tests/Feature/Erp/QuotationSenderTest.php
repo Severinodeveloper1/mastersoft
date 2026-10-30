@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\Cart;
+use App\Services\Erp\QuotationResult;
 use App\Services\Erp\QuotationSender;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\ConnectionException;
@@ -221,10 +222,114 @@ class QuotationSenderTest extends TestCase
             }
         });
 
-        $this->assertTrue(app(QuotationSender::class)->send($order));
+        $this->assertSame(QuotationResult::Sent, app(QuotationSender::class)->send($order));
 
         $this->assertFalse($lockFreeWhenSaved);
         $this->assertSame(2, $order->fresh()->erp_quotation_id);
+    }
+
+    public function test_a_send_already_in_progress_is_reported_as_busy_and_changes_nothing(): void
+    {
+        $this->actingAsSuperAdmin();
+        $order = $this->pendingOrder(erpError: 'old failure');
+        $this->fakeErp();
+        $lock = Cache::lock("erp-quotation-{$order->id}", 60);
+        $lock->get();
+
+        $this->assertSame(QuotationResult::Busy, app(QuotationSender::class)->send($order));
+        Livewire::test(ViewOrder::class, ['record' => $order->getRouteKey()])
+            ->callAction('sendToErp')
+            ->assertNotified('El pedido ya se está enviando al ERP');
+
+        Http::assertNothingSent();
+        $this->assertSame('old failure', $order->fresh()->erp_error);
+        $lock->release();
+    }
+
+    public function test_a_successful_send_keeps_a_status_the_admin_already_moved_forward(): void
+    {
+        $order = $this->pendingOrder();
+        $order->forceFill(['status' => OrderStatus::Confirmed])->save();
+        $this->fakeErp();
+
+        $this->assertSame(QuotationResult::Sent, app(QuotationSender::class)->send($order->fresh()));
+
+        $order->refresh();
+        $this->assertSame(OrderStatus::Confirmed, $order->status);
+        $this->assertSame(2, $order->erp_quotation_id);
+    }
+
+    public function test_the_order_lock_outlasts_a_slow_send_with_a_long_erp_timeout(): void
+    {
+        config(['services.erp.timeout' => 60]);
+        $order = $this->pendingOrder();
+        $lockFreeDuringPost = null;
+        $this->freshHttp();
+        Http::fake([
+            self::BASE.'/auth/login' => Http::response(['status' => 'success', 'token' => '1|test-token']),
+            self::BASE.'/cotizaciones' => function () use ($order, &$lockFreeDuringPost) {
+                $this->travel(170)->seconds();
+                $probe = Cache::lock("erp-quotation-{$order->id}", 5);
+                $lockFreeDuringPost = $probe->get();
+                $lockFreeDuringPost && $probe->release();
+
+                return Http::response(['status' => 'success', 'data' => ['idcotizacion' => 2, 'numero' => 'CT01-00000002']]);
+            },
+        ]);
+
+        app(QuotationSender::class)->send($order);
+
+        $this->assertFalse($lockFreeDuringPost);
+    }
+
+    public function test_a_cache_outage_keeps_the_order_pending_without_throwing(): void
+    {
+        $order = $this->pendingOrder();
+        $this->fakeErp();
+        Cache::shouldReceive('lock')->andThrow(new \RuntimeException('cache store unavailable'));
+
+        $this->assertSame(QuotationResult::Failed, app(QuotationSender::class)->send($order));
+
+        Http::assertNothingSent();
+        $order->refresh();
+        $this->assertSame(OrderStatus::Pending, $order->status);
+        $this->assertStringContainsString('cache store unavailable', $order->erp_error);
+    }
+
+    public function test_a_failed_save_after_the_erp_created_the_quotation_is_reported_clearly(): void
+    {
+        $order = $this->pendingOrder();
+        $this->fakeErp();
+        $failOnce = true;
+        Order::saving(function (Order $saving) use (&$failOnce): void {
+            if ($failOnce && $saving->isDirty('erp_quotation_id') && $saving->erp_quotation_id !== null) {
+                $failOnce = false;
+                throw new \RuntimeException('database went away');
+            }
+        });
+
+        $this->assertSame(QuotationResult::Failed, app(QuotationSender::class)->send($order));
+
+        $order->refresh();
+        $this->assertSame(OrderStatus::Pending, $order->status);
+        $this->assertNull($order->erp_quotation_id);
+        $this->assertNull($order->erp_sent_at);
+        $this->assertStringContainsString('ERP created quotation 2', $order->erp_error);
+        $this->assertStringContainsString('database went away', $order->erp_error);
+    }
+
+    public function test_change_status_requires_permission_to_update_orders(): void
+    {
+        $this->artisan('db:seed', ['--class' => 'Database\\Seeders\\ShieldSeeder']);
+        $role = Role::findOrCreate('order_viewer', 'web');
+        $role->givePermissionTo([Permission::findOrCreate('ViewAny:Order', 'web'), Permission::findOrCreate('View:Order', 'web')]);
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
+        $order = $this->pendingOrder();
+
+        Livewire::test(ViewOrder::class, ['record' => $order->getRouteKey()])
+            ->assertActionHidden('editStatus');
     }
 
     public function test_send_to_erp_requires_permission_to_update_orders(): void
