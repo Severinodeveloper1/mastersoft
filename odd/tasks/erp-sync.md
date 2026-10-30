@@ -28,7 +28,7 @@ Assumptions (to confirm): admin-written description is kept when the ERP sends n
 | T3 | S3-S9 | ERP client, catalog sync command, schedule, image merge in the store | inline (sequential, no Writer trigger) | done; verified (no blockers); native review approved and acknowledged | `1037a4a` |
 | T5 | S11 | Refuse an empty catalog answer | inline | done (RED: run succeeded on empty lists; GREEN 82 tests) | `be48dcf` |
 | T6 | S12 | Shared lock + "Sincronizar con ERP" button on the products list | inline | done (RED: no lock, no action; GREEN 82 tests) | `be48dcf` |
-| T7 | S9, S12 | Review advisories B1, B2, B4: short web lock + shutdown release, log refused runs, pin release after failure | inline | done (RED: B1 lock still held after 11 min, B2 no warning; GREEN 86 tests) | pending |
+| T7 | S9, S12 | Review advisories B1, B2, B4: short web lock + shutdown release, log refused runs, pin release after failure | inline | done (RED: B1 lock still held after 11 min, B2 no warning; GREEN 86 tests) | `e68e916` |
 | T4 | S10 | Orders to ERP quotations | blocked: awaiting authorization | pending | |
 
 ## Log
