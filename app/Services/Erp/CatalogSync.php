@@ -22,6 +22,15 @@ class CatalogSync
 {
     public const LOCK = 'erp-catalog-sync';
 
+    /** Console runs have no time limit, so their lock must outlive a long full load. */
+    public const LOCK_SECONDS = 3600;
+
+    /**
+     * Web runs are capped by the request time limit; a request killed by the server never reaches
+     * `finally`, so its lock must expire soon after instead of blocking every sync for an hour.
+     */
+    public const WEB_LOCK_SECONDS = 600;
+
     public function __construct(private readonly ErpClient $client) {}
 
     /**
@@ -29,13 +38,19 @@ class CatalogSync
      *
      * @throws ErpException when the ERP fails, returns an empty catalog, or another run holds the lock
      */
-    public function run(): array
+    public function run(int $lockSeconds = self::LOCK_SECONDS): array
     {
-        $lock = Cache::lock(self::LOCK, 3600);
+        $lock = Cache::lock(self::LOCK, $lockSeconds);
 
         if (! $lock->get()) {
+            Log::warning('ERP catalog sync skipped: another run is in progress.');
+
             throw new ErpException('Another ERP sync is already running.');
         }
+
+        // A fatal "maximum execution time" error skips `finally` but still runs shutdown functions.
+        // Release only removes the lock while this run still owns it, so the extra call is harmless.
+        register_shutdown_function(fn () => $lock->release());
 
         try {
             $stats = $this->load();

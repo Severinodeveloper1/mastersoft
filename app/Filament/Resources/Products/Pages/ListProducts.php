@@ -35,7 +35,7 @@ class ListProducts extends ListRecords
         set_time_limit(300);
 
         try {
-            $stats = $sync->run();
+            $stats = $sync->run(CatalogSync::WEB_LOCK_SECONDS);
         } catch (ErpException $exception) {
             Notification::make()
                 ->title('No se pudo sincronizar con el ERP')

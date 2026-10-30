@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\Erp\CatalogSync;
+use Closure;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Factory as HttpFactory;
@@ -280,6 +281,58 @@ class CatalogSyncTest extends TestCase
         $lock->release();
     }
 
+    public function test_a_run_refused_by_the_lock_is_logged(): void
+    {
+        $this->fakeErp(products: [[$this->product(1)]]);
+        Log::spy();
+        $lock = Cache::lock(CatalogSync::LOCK, 60);
+        $lock->get();
+
+        $this->artisan('erp:sync-products')->assertFailed();
+
+        Log::shouldHaveReceived('warning')->withArgs(fn (string $message) => str_contains($message, 'another run is in progress'))->once();
+        $lock->release();
+    }
+
+    public function test_the_lock_is_released_after_a_failed_run(): void
+    {
+        $this->freshHttp();
+        Http::fake([self::BASE.'/auth/login' => Http::response(['status' => 'error'], 401)]);
+        $this->artisan('erp:sync-products')->assertFailed();
+
+        $this->fakeErp(products: [[$this->product(1)]]);
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        $this->assertSame(1, Product::count());
+    }
+
+    public function test_a_lock_left_by_a_killed_admin_sync_expires_within_ten_minutes(): void
+    {
+        $this->actingAsSuperAdmin();
+        $freeAfterElevenMinutes = null;
+        $this->fakeErp(products: [[$this->product(1)]], onLogin: function () use (&$freeAfterElevenMinutes): void {
+            $this->travel(11)->minutes();
+            $freeAfterElevenMinutes = Cache::lock(CatalogSync::LOCK, 60)->get();
+        });
+
+        Livewire::test(ListProducts::class)->callAction('syncErp');
+
+        $this->assertTrue($freeAfterElevenMinutes);
+    }
+
+    public function test_the_nightly_run_keeps_its_lock_for_long_loads(): void
+    {
+        $freeAfterElevenMinutes = null;
+        $this->fakeErp(products: [[$this->product(1)]], onLogin: function () use (&$freeAfterElevenMinutes): void {
+            $this->travel(11)->minutes();
+            $freeAfterElevenMinutes = Cache::lock(CatalogSync::LOCK, 60)->get();
+        });
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertFalse($freeAfterElevenMinutes);
+    }
+
     public function test_admin_can_sync_the_erp_catalog_from_the_product_list(): void
     {
         $this->actingAsSuperAdmin();
@@ -346,7 +399,7 @@ class CatalogSyncTest extends TestCase
     /**
      * @param  list<list<array<string, mixed>>>  $products  one list per page
      */
-    private function fakeErp(array $products, ?array $categories = null, ?array $brands = null): void
+    private function fakeErp(array $products, ?array $categories = null, ?array $brands = null, ?Closure $onLogin = null): void
     {
         $lastPage = count($products);
         $pages = [];
@@ -357,7 +410,11 @@ class CatalogSyncTest extends TestCase
 
         $this->freshHttp();
         Http::fake([
-            self::BASE.'/auth/login' => Http::response($this->loginResponse()),
+            self::BASE.'/auth/login' => function () use ($onLogin) {
+                $onLogin && $onLogin();
+
+                return Http::response($this->loginResponse());
+            },
             self::BASE.'/categorias*' => Http::response(['status' => 'success', 'data' => $categories ?? [
                 $this->category(6, 'Bebidas'),
                 $this->category(8, 'Desodorante'),
