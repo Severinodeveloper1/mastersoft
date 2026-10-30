@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Services\Erp\CatalogSync;
-use App\Services\Erp\ErpException;
 use Illuminate\Console\Command;
+use Throwable;
 
 class SyncErpCatalog extends Command
 {
@@ -16,7 +16,7 @@ class SyncErpCatalog extends Command
     {
         try {
             $stats = $sync->run();
-        } catch (ErpException $exception) {
+        } catch (Throwable $exception) {
             $this->error("ERP sync failed, nothing was changed: {$exception->getMessage()}");
 
             return self::FAILURE;

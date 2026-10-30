@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Products\Tables;
 
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
@@ -16,7 +16,8 @@ class ProductsTable
     public static function configure(Table $table): Table
     {
         return $table->columns([
-            SpatieMediaLibraryImageColumn::make('images')->label('Imagen')->collection('images')->size(48)->square(),
+            // Same image the store shows first: the ERP one, or the admin upload when there is none.
+            ImageColumn::make('thumbnail')->label('Imagen')->state(fn ($record) => $record->primaryImageUrl())->imageSize(48)->square(),
             TextColumn::make('name')->label('Nombre')->searchable()->sortable(),
             TextColumn::make('category.name')->label('Categoría')->sortable(),
             TextColumn::make('brand.name')->label('Marca')->sortable(),

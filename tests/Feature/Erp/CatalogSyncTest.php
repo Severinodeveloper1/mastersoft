@@ -393,6 +393,136 @@ class CatalogSyncTest extends TestCase
         Livewire::test(ListProducts::class)->assertActionHidden('syncErp');
     }
 
+    public function test_a_product_without_a_name_is_skipped_and_logged(): void
+    {
+        Log::spy();
+        $this->fakeErp(products: [[$this->product(1), $this->product(2, extra: ['descripcioninterna' => '  '])]]);
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertSame(['1'], Product::pluck('external_id')->all());
+        Log::shouldHaveReceived('warning')->withArgs(fn (string $message, array $context = []) => str_contains($message, 'no name') && ($context['idproducto'] ?? null) === 2)->once();
+    }
+
+    public function test_a_product_without_category_or_unit_is_still_published(): void
+    {
+        $this->fakeErp(products: [[$this->product(1, categoryId: 999, presentations: [['nombre' => null, 'principalventa' => true, 'precios' => [['precio' => '5.00', 'principal' => true]]]])]]);
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $product = Product::where('external_id', '1')->firstOrFail();
+        $this->assertNull($product->category_id);
+        $this->assertNull($product->unit);
+        $this->assertTrue($product->is_active);
+    }
+
+    public function test_one_malformed_product_is_skipped_and_the_rest_are_synced(): void
+    {
+        Log::spy();
+        $this->fakeErp(products: [[$this->product(1), ['idproducto' => 2, 'descripcioninterna' => 'ROTO', 'presentaciones' => 'roto'], $this->product(3)]]);
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertSame(['1', '3'], Product::orderBy('external_id')->pluck('external_id')->all());
+        Log::shouldHaveReceived('warning')->withArgs(fn (string $message, array $context = []) => str_contains($message, 'malformed') && ($context['idproducto'] ?? null) === 2)->once();
+    }
+
+    public function test_an_unexpected_error_is_logged_and_fails_the_command_without_changes(): void
+    {
+        $this->fakeErp(products: [[$this->product(1)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+        Log::spy();
+
+        $this->fakeErp(products: [[$this->product(1, name: 'CAMBIADO')]], categories: [['descripcion' => 'Sin id']]);
+
+        $this->artisan('erp:sync-products')
+            ->expectsOutputToContain('nothing was changed')
+            ->assertFailed();
+
+        $this->assertSame('PRODUCTO 1', Product::where('external_id', '1')->value('name'));
+        Log::shouldHaveReceived('error')->withArgs(fn (string $message) => str_contains($message, 'failed'))->once();
+    }
+
+    public function test_a_catalog_that_changes_while_paging_writes_nothing(): void
+    {
+        $this->freshHttp();
+        Http::fake([
+            self::BASE.'/auth/login' => Http::response($this->loginResponse()),
+            self::BASE.'/categorias*' => Http::response(['status' => 'success', 'data' => [$this->category(8, 'Desodorante')]]),
+            self::BASE.'/marcas*' => Http::response(['status' => 'success', 'data' => []]),
+            self::BASE.'/productos?*page=1&*' => Http::response($this->productsPage([$this->product(1), $this->product(2)], 1, 2, total: 4)),
+            self::BASE.'/productos?*page=2&*' => Http::response($this->productsPage([$this->product(2), $this->product(3)], 2, 2, total: 5)),
+        ]);
+
+        $this->artisan('erp:sync-products')
+            ->expectsOutputToContain('changed while it was being read')
+            ->assertFailed();
+
+        $this->assertSame(0, Product::count());
+    }
+
+    public function test_a_product_repeated_across_pages_writes_nothing(): void
+    {
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)], [$this->product(2), $this->product(3)]]);
+
+        $this->artisan('erp:sync-products')
+            ->expectsOutputToContain('changed while it was being read')
+            ->assertFailed();
+
+        $this->assertSame(0, Product::count());
+    }
+
+    public function test_admin_product_list_shows_the_erp_image(): void
+    {
+        $this->actingAsSuperAdmin();
+        Product::factory()->create(['external_image_urls' => ['https://erp.test/img/axe.webp']]);
+
+        Livewire::test(ListProducts::class)->assertSee('https://erp.test/img/axe.webp', false);
+    }
+
+    public function test_admin_sync_reports_an_unexpected_error_as_a_notification(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->fakeErp(products: [[$this->product(1)]], categories: [['descripcion' => 'Sin id']]);
+
+        Livewire::test(ListProducts::class)
+            ->callAction('syncErp')
+            ->assertNotified('No se pudo sincronizar con el ERP');
+
+        $this->assertSame(0, Product::count());
+    }
+
+    public function test_a_lock_shorter_than_the_write_margin_is_rejected(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        app(CatalogSync::class)->run(CatalogSync::WRITE_MARGIN_SECONDS);
+    }
+
+    public function test_an_admin_download_within_its_budget_still_syncs(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->fakeErp(products: [[$this->product(1)]], onLogin: fn () => $this->travel(7)->minutes());
+
+        Livewire::test(ListProducts::class)
+            ->callAction('syncErp')
+            ->assertNotified('Sincronización completada');
+
+        $this->assertSame(1, Product::count());
+    }
+
+    public function test_a_deadline_refusal_is_logged_once_and_releases_the_lock(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->fakeErp(products: [[$this->product(1)]], onLogin: fn () => $this->travel(9)->minutes());
+        Log::spy();
+
+        Livewire::test(ListProducts::class)->callAction('syncErp');
+
+        Log::shouldHaveReceived('error')->withArgs(fn (string $message, array $context = []) => str_contains($context['error'] ?? '', 'took too long'))->once();
+        $this->assertTrue(Cache::lock(CatalogSync::LOCK, 5)->get());
+    }
+
     public function test_sync_is_scheduled_nightly_without_overlapping(): void
     {
         $event = collect(app(Schedule::class)->events())
@@ -472,9 +602,9 @@ class CatalogSyncTest extends TestCase
         return ['status' => 'success', 'message' => 'Autenticación exitosa', 'token' => '1|test-token', 'expira' => now()->addDay()->toIso8601String()];
     }
 
-    private function productsPage(array $items, int $page, int $lastPage): array
+    private function productsPage(array $items, int $page, int $lastPage, int $total = 0): array
     {
-        return ['status' => 'success', 'data' => ['current_page' => $page, 'data' => $items, 'last_page' => $lastPage, 'per_page' => 2, 'total' => 0]];
+        return ['status' => 'success', 'data' => ['current_page' => $page, 'data' => $items, 'last_page' => $lastPage, 'per_page' => 2, 'total' => $total]];
     }
 
     private function category(int $id, string $name, array $children = []): array

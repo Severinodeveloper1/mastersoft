@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Http;
  */
 class ErpClient
 {
+    public const CATALOG_CHANGED = 'The ERP catalog changed while it was being read; nothing was written. Try again.';
+
     private ?string $token = null;
 
     public function login(): void
@@ -58,11 +60,19 @@ class ErpClient
     {
         $items = [];
         $page = 1;
+        $firstTotal = null;
 
         do {
             $response = $this->get($path, [...$query, 'page' => $page, 'per_page' => config('services.erp.per_page')]);
             $items = [...$items, ...$this->ensureList($response->json('data.data'), "{$path} page {$page}")];
             $lastPage = (int) $response->json('data.last_page', 1);
+
+            // A different total means records were added or removed between pages, so offsets shifted.
+            $total = $response->json('data.total');
+            $firstTotal ??= $total;
+            if ($total !== $firstTotal) {
+                throw new ErpException(self::CATALOG_CHANGED);
+            }
             $page++;
         } while ($page <= $lastPage);
 

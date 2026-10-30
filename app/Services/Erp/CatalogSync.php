@@ -7,9 +7,12 @@ use App\Models\Category;
 use App\Models\Product;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
+use Throwable;
 
 /**
  * Nightly full load of categories, brands and products from the ERP.
@@ -44,6 +47,10 @@ class CatalogSync
      */
     public function run(int $lockSeconds = self::LOCK_SECONDS): array
     {
+        if ($lockSeconds <= self::WRITE_MARGIN_SECONDS) {
+            throw new InvalidArgumentException('The sync lock must last longer than the write margin ('.self::WRITE_MARGIN_SECONDS.' s).');
+        }
+
         $lock = Cache::lock(self::LOCK, $lockSeconds);
 
         if (! $lock->get()) {
@@ -58,7 +65,8 @@ class CatalogSync
 
         try {
             $stats = $this->load(now()->addSeconds($lockSeconds - self::WRITE_MARGIN_SECONDS));
-        } catch (ErpException $exception) {
+        } catch (Throwable $exception) {
+            // Every failure happens before the write transaction commits, so the store is unchanged.
             Log::error('ERP catalog sync failed; the store was not changed.', ['error' => $exception->getMessage()]);
 
             throw $exception;
@@ -87,6 +95,14 @@ class CatalogSync
         $this->guardAgainstEmpty(Category::class, $categories, 'categories');
         $this->guardAgainstEmpty(Product::class, $products, 'products');
 
+        // Offset paging repeats a product when the catalog shifts mid-read, and then another one is
+        // missed and would be deactivated; a repeated id means the read is not trustworthy.
+        $productIds = array_map(fn ($item) => is_array($item) ? ($item['idproducto'] ?? null) : null, $products);
+        $productIds = array_filter($productIds, fn ($id) => $id !== null);
+        if (count($productIds) !== count(array_unique($productIds))) {
+            throw new ErpException(ErpClient::CATALOG_CHANGED);
+        }
+
         // PHP's time limit ignores time spent waiting on the ERP, so a slow download could outlive
         // the lock; writing then could overlap another run, so the run stops before any write.
         if (now()->greaterThan($writeDeadline)) {
@@ -100,7 +116,7 @@ class CatalogSync
             $stats = ['created' => 0, 'updated' => 0, 'unchanged' => 0, 'skipped' => 0];
             $seen = [];
             foreach ($products as $item) {
-                $result = $this->syncProduct($item, $categoryIds, $brandIds);
+                $result = $this->syncProductSafely($item, $categoryIds, $brandIds);
                 $stats[$result]++;
                 if ($result !== 'skipped') {
                     $seen[] = (string) $item['idproducto'];
@@ -135,10 +151,43 @@ class CatalogSync
     }
 
     /**
+     * One malformed ERP record is skipped instead of aborting the whole catalog; database errors
+     * still abort, because the transaction can no longer be trusted.
+     *
+     * @return 'created'|'updated'|'unchanged'|'skipped'
+     */
+    private function syncProductSafely(mixed $item, array $categoryIds, array $brandIds): string
+    {
+        try {
+            if (! is_array($item) || ! is_numeric($item['idproducto'] ?? null)) {
+                throw new ErpException('record has no idproducto');
+            }
+
+            return $this->syncProduct($item, $categoryIds, $brandIds);
+        } catch (QueryException $exception) {
+            throw $exception;
+        } catch (Throwable $exception) {
+            Log::warning('ERP product skipped: malformed record.', [
+                'idproducto' => is_array($item) ? ($item['idproducto'] ?? null) : null,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return 'skipped';
+        }
+    }
+
+    /**
      * @return 'created'|'updated'|'unchanged'|'skipped'
      */
     private function syncProduct(array $item, array $categoryIds, array $brandIds): string
     {
+        $name = trim((string) ($item['descripcioninterna'] ?? ''));
+        if ($name === '') {
+            Log::warning('ERP product skipped: it has no name.', ['idproducto' => $item['idproducto']]);
+
+            return 'skipped';
+        }
+
         $presentation = $this->salePresentation($item);
         $price = $presentation ? $this->principalPrice($presentation) : null;
 
@@ -150,7 +199,7 @@ class CatalogSync
 
         $product = Product::firstOrNew(['external_id' => (string) $item['idproducto']]);
         $product->fill([
-            'name' => trim((string) $item['descripcioninterna']),
+            'name' => $name,
             'category_id' => $categoryIds[(string) ($item['idcategoria'] ?? '')] ?? null,
             'brand_id' => $brandIds[(string) ($item['idmarca'] ?? '')] ?? null,
             'price' => $price,

@@ -4,11 +4,11 @@ namespace App\Filament\Resources\Products\Pages;
 
 use App\Filament\Resources\Products\ProductResource;
 use App\Services\Erp\CatalogSync;
-use App\Services\Erp\ErpException;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Throwable;
 
 class ListProducts extends ListRecords
 {
@@ -36,7 +36,7 @@ class ListProducts extends ListRecords
 
         try {
             $stats = $sync->run(CatalogSync::WEB_LOCK_SECONDS);
-        } catch (ErpException $exception) {
+        } catch (Throwable $exception) {
             Notification::make()
                 ->title('No se pudo sincronizar con el ERP')
                 ->body("No se modificó ningún producto. Detalle: {$exception->getMessage()}")
