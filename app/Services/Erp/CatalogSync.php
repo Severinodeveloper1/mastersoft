@@ -140,8 +140,13 @@ class CatalogSync
         $ids = [];
         foreach ($items as $item) {
             $externalId = (string) $item[$idKey];
-            $record = $model::firstOrNew(['external_id' => $externalId]);
-            $record->fill(['name' => trim((string) $item['descripcion']), 'is_active' => true])->save();
+            $name = trim((string) $item['descripcion']);
+            // The store mirrors the ERP: an admin-made record with the same name is linked, not duplicated,
+            // and takes the ERP name; its slug (and so its URL) stays the same.
+            $record = $model::where('external_id', $externalId)->first()
+                ?? $model::whereNull('external_id')->whereRaw('LOWER(TRIM(name)) = ?', [mb_strtolower($name)])->orderBy('id')->first()
+                ?? new $model;
+            $record->fill(['external_id' => $externalId, 'name' => $name, 'is_active' => true])->save();
             $ids[$externalId] = $record->id;
         }
 

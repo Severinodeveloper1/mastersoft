@@ -393,6 +393,47 @@ class CatalogSyncTest extends TestCase
         Livewire::test(ListProducts::class)->assertActionHidden('syncErp');
     }
 
+    public function test_an_admin_category_with_the_erp_name_is_linked_instead_of_duplicated(): void
+    {
+        $adminCategory = Category::factory()->create(['external_id' => null, 'name' => ' bebidas ', 'slug' => 'bebidas']);
+        $manual = Product::factory()->create(['external_id' => null, 'category_id' => $adminCategory->id]);
+        $this->fakeErp(products: [[$this->product(1, categoryId: 6)]]);
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertSame(1, Category::whereRaw('LOWER(TRIM(name)) = ?', ['bebidas'])->count());
+        $adminCategory->refresh();
+        $this->assertSame('6', $adminCategory->external_id);
+        $this->assertSame('Bebidas', $adminCategory->name);
+        $this->assertSame('bebidas', $adminCategory->slug);
+        $this->assertSame($adminCategory->id, Product::where('external_id', '1')->value('category_id'));
+        $this->assertSame($adminCategory->id, $manual->fresh()->category_id);
+    }
+
+    public function test_an_admin_brand_with_the_erp_name_is_linked_instead_of_duplicated(): void
+    {
+        $adminBrand = Brand::factory()->create(['external_id' => null, 'name' => 'Epson']);
+        $this->fakeErp(products: [[$this->product(1, brandId: 2)]]);
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertSame(1, Brand::whereRaw('LOWER(name) = ?', ['epson'])->count());
+        $this->assertSame('2', $adminBrand->fresh()->external_id);
+        $this->assertSame('EPSON', $adminBrand->fresh()->name);
+        $this->assertSame($adminBrand->id, Product::where('external_id', '1')->value('brand_id'));
+    }
+
+    public function test_a_category_already_linked_to_the_erp_is_never_relinked(): void
+    {
+        $this->fakeErp(products: [[$this->product(1, categoryId: 6)]], categories: [$this->category(6, 'Bebidas')]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->fakeErp(products: [[$this->product(1, categoryId: 7)]], categories: [$this->category(6, 'Bebidas'), $this->category(7, 'Bebidas')]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertSame(['6', '7'], Category::orderBy('external_id')->pluck('external_id')->all());
+    }
+
     public function test_a_product_hidden_in_the_admin_stays_hidden_but_keeps_updating(): void
     {
         $this->fakeErp(products: [[$this->product(1, price: '18.00', stock: '8.000')]]);
