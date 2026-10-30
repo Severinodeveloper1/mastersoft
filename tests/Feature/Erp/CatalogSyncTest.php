@@ -2,17 +2,24 @@
 
 namespace Tests\Feature\Erp;
 
+use App\Filament\Resources\Products\Pages\ListProducts;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
+use App\Services\Erp\CatalogSync;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Client\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Livewire;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CatalogSyncTest extends TestCase
@@ -229,6 +236,88 @@ class CatalogSyncTest extends TestCase
         $this->assertSame(0, Product::count());
     }
 
+    public function test_an_empty_product_list_changes_nothing(): void
+    {
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->fakeErp(products: [[]]);
+
+        $this->artisan('erp:sync-products')
+            ->expectsOutputToContain('nothing was changed')
+            ->assertFailed();
+
+        $this->assertSame(2, Product::where('is_active', true)->count());
+    }
+
+    public function test_an_empty_category_list_changes_nothing(): void
+    {
+        $this->fakeErp(products: [[$this->product(1, categoryId: 8)]]);
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->fakeErp(products: [[$this->product(1, name: 'CAMBIADO', categoryId: 8)]], categories: []);
+
+        $this->artisan('erp:sync-products')->assertFailed();
+
+        $this->assertSame(4, Category::where('is_active', true)->count());
+        $product = Product::where('external_id', '1')->firstOrFail();
+        $this->assertSame('PRODUCTO 1', $product->name);
+        $this->assertSame('Desodorante', $product->category->name);
+    }
+
+    public function test_a_sync_already_running_blocks_another_one(): void
+    {
+        $this->fakeErp(products: [[$this->product(1)]]);
+        $lock = Cache::lock(CatalogSync::LOCK, 60);
+        $lock->get();
+
+        $this->artisan('erp:sync-products')
+            ->expectsOutputToContain('already running')
+            ->assertFailed();
+
+        Http::assertNothingSent();
+        $this->assertSame(0, Product::count());
+        $lock->release();
+    }
+
+    public function test_admin_can_sync_the_erp_catalog_from_the_product_list(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->fakeErp(products: [[$this->product(1), $this->product(2)]]);
+
+        Livewire::test(ListProducts::class)
+            ->assertActionVisible('syncErp')
+            ->callAction('syncErp')
+            ->assertNotified('Sincronización completada');
+
+        $this->assertSame(2, Product::where('is_active', true)->whereNotNull('external_id')->count());
+    }
+
+    public function test_admin_sync_failure_is_reported_and_changes_nothing(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->freshHttp();
+        Http::fake([self::BASE.'/auth/login' => Http::response(['status' => 'error'], 401)]);
+
+        Livewire::test(ListProducts::class)
+            ->callAction('syncErp')
+            ->assertNotified('No se pudo sincronizar con el ERP');
+
+        $this->assertSame(0, Product::count());
+    }
+
+    public function test_sync_button_is_hidden_from_users_who_cannot_manage_products(): void
+    {
+        $this->artisan('db:seed', ['--class' => 'Database\\Seeders\\ShieldSeeder']);
+        $role = Role::findOrCreate('catalog_viewer', 'web');
+        $role->givePermissionTo(Permission::findOrCreate('ViewAny:Product', 'web'));
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
+
+        Livewire::test(ListProducts::class)->assertActionHidden('syncErp');
+    }
+
     public function test_sync_is_scheduled_nightly_without_overlapping(): void
     {
         $event = collect(app(Schedule::class)->events())
@@ -280,6 +369,14 @@ class CatalogSyncTest extends TestCase
             ]]),
             ...$pages,
         ]);
+    }
+
+    private function actingAsSuperAdmin(): void
+    {
+        $this->artisan('db:seed', ['--class' => 'Database\\Seeders\\ShieldSeeder']);
+        $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('super_admin', 'web'));
+        $this->actingAs($user);
     }
 
     /**

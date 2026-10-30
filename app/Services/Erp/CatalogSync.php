@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -15,21 +16,57 @@ use Illuminate\Support\Facades\Log;
  * Everything is fetched before anything is written, so a failed request leaves the store untouched.
  * Records with an external_id that a complete load did not return are deactivated; admin-created
  * records (no external_id) and admin-only content (summary, featured flag, uploaded images) are kept.
+ * The nightly schedule and the admin button share one lock, so two runs never overlap.
  */
 class CatalogSync
 {
+    public const LOCK = 'erp-catalog-sync';
+
     public function __construct(private readonly ErpClient $client) {}
 
     /**
      * @return array<string, int>
+     *
+     * @throws ErpException when the ERP fails, returns an empty catalog, or another run holds the lock
      */
     public function run(): array
+    {
+        $lock = Cache::lock(self::LOCK, 3600);
+
+        if (! $lock->get()) {
+            throw new ErpException('Another ERP sync is already running.');
+        }
+
+        try {
+            $stats = $this->load();
+        } catch (ErpException $exception) {
+            Log::error('ERP catalog sync failed; the store was not changed.', ['error' => $exception->getMessage()]);
+
+            throw $exception;
+        } finally {
+            $lock->release();
+        }
+
+        Log::info('ERP catalog sync finished.', $stats);
+
+        return $stats;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function load(): array
     {
         $this->client->login();
 
         $categories = $this->flatten($this->client->list('/categorias', ['arbol' => 'true', 'estado' => 1]), 'subcategorias');
         $brands = $this->flatten($this->client->list('/marcas', ['arbol' => 'true', 'estado' => 1]), 'submarcas');
         $products = $this->client->all('/productos', ['estado' => 1]);
+
+        // An empty answer is far more likely an ERP glitch than a real empty catalog; deactivating
+        // everything on it would empty the store, so the run stops instead.
+        $this->guardAgainstEmpty(Category::class, $categories, 'categories');
+        $this->guardAgainstEmpty(Product::class, $products, 'products');
 
         return DB::transaction(function () use ($categories, $brands, $products): array {
             $categoryIds = $this->syncNamed(Category::class, $categories, 'idcategoria');
@@ -172,6 +209,16 @@ class CatalogSync
         }
 
         return $flat;
+    }
+
+    /**
+     * @param  class-string<Model>  $model
+     */
+    private function guardAgainstEmpty(string $model, array $items, string $label): void
+    {
+        if ($items === [] && $model::query()->whereNotNull('external_id')->where('is_active', true)->exists()) {
+            throw new ErpException("ERP returned no {$label}; refusing to deactivate the whole catalog.");
+        }
     }
 
     /**
