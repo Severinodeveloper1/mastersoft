@@ -410,6 +410,17 @@ class CatalogSyncTest extends TestCase
         $this->assertSame($adminCategory->id, $manual->fresh()->category_id);
     }
 
+    public function test_same_name_linking_ignores_case_in_accented_letters(): void
+    {
+        $adminCategory = Category::factory()->create(['external_id' => null, 'name' => 'CATEGORÍA UNO']);
+        $this->fakeErp(products: [[$this->product(1, categoryId: 2)]]);
+
+        $this->artisan('erp:sync-products')->assertSuccessful();
+
+        $this->assertSame('2', $adminCategory->fresh()->external_id);
+        $this->assertSame('categoría uno', $adminCategory->fresh()->name);
+    }
+
     public function test_an_admin_brand_with_the_erp_name_is_linked_instead_of_duplicated(): void
     {
         $adminBrand = Brand::factory()->create(['external_id' => null, 'name' => 'Epson']);

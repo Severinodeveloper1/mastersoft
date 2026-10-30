@@ -143,8 +143,10 @@ class CatalogSync
             $name = trim((string) $item['descripcion']);
             // The store mirrors the ERP: an admin-made record with the same name is linked, not duplicated,
             // and takes the ERP name; its slug (and so its URL) stays the same.
+            // Names are compared in PHP: SQLite's LOWER() only folds A-Z, so "CATEGORÍA" would not match.
             $record = $model::where('external_id', $externalId)->first()
-                ?? $model::whereNull('external_id')->whereRaw('LOWER(TRIM(name)) = ?', [mb_strtolower($name)])->orderBy('id')->first()
+                ?? $model::whereNull('external_id')->orderBy('id')->get()
+                    ->first(fn (Model $candidate) => mb_strtolower(trim($candidate->name)) === mb_strtolower($name))
                 ?? new $model;
             $record->fill(['external_id' => $externalId, 'name' => $name, 'is_active' => true])->save();
             $ids[$externalId] = $record->id;
