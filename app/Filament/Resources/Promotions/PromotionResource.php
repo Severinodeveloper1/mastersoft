@@ -4,16 +4,11 @@ namespace App\Filament\Resources\Promotions;
 
 use App\Models\Promotion;
 use BackedEnum;
-use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
-use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -47,27 +42,5 @@ class PromotionResource extends Resource
     public static function getPages(): array
     {
         return ['index' => PromotionList::route('/'), 'create' => PromotionCreate::route('/create'), 'edit' => PromotionEdit::route('/{record}/edit')];
-    }
-}
-class PromotionList extends ListRecords
-{
-    protected static string $resource = PromotionResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [CreateAction::make()];
-    }
-}
-class PromotionCreate extends CreateRecord
-{
-    protected static string $resource = PromotionResource::class;
-}
-class PromotionEdit extends EditRecord
-{
-    protected static string $resource = PromotionResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [DeleteAction::make()];
     }
 }

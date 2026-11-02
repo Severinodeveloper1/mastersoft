@@ -5,16 +5,11 @@ namespace App\Filament\Resources\Banners;
 use App\Enums\BannerPlacement;
 use App\Models\Banner;
 use BackedEnum;
-use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
-use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -48,27 +43,5 @@ class BannerResource extends Resource
     public static function getPages(): array
     {
         return ['index' => BannerList::route('/'), 'create' => BannerCreate::route('/create'), 'edit' => BannerEdit::route('/{record}/edit')];
-    }
-}
-class BannerList extends ListRecords
-{
-    protected static string $resource = BannerResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [CreateAction::make()];
-    }
-}
-class BannerCreate extends CreateRecord
-{
-    protected static string $resource = BannerResource::class;
-}
-class BannerEdit extends EditRecord
-{
-    protected static string $resource = BannerResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [DeleteAction::make()];
     }
 }

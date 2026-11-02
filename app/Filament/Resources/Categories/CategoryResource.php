@@ -4,14 +4,9 @@ namespace App\Filament\Resources\Categories;
 
 use App\Models\Category;
 use BackedEnum;
-use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
-use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -47,27 +42,5 @@ class CategoryResource extends Resource
     public static function getPages(): array
     {
         return ['index' => CategoryList::route('/'), 'create' => CategoryCreate::route('/create'), 'edit' => CategoryEdit::route('/{record}/edit')];
-    }
-}
-class CategoryList extends ListRecords
-{
-    protected static string $resource = CategoryResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [CreateAction::make()];
-    }
-}
-class CategoryCreate extends CreateRecord
-{
-    protected static string $resource = CategoryResource::class;
-}
-class CategoryEdit extends EditRecord
-{
-    protected static string $resource = CategoryResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [DeleteAction::make()];
     }
 }

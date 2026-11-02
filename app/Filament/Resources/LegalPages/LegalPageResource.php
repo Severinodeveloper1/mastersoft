@@ -7,8 +7,6 @@ use BackedEnum;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Pages\EditRecord;
-use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -40,18 +38,5 @@ class LegalPageResource extends Resource
     public static function getPages(): array
     {
         return ['index' => LegalPageList::route('/'), 'edit' => LegalPageEdit::route('/{record}/edit')];
-    }
-}
-class LegalPageList extends ListRecords
-{
-    protected static string $resource = LegalPageResource::class;
-}
-class LegalPageEdit extends EditRecord
-{
-    protected static string $resource = LegalPageResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [];
     }
 }
