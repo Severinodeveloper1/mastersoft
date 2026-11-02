@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Store;
 
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,6 +20,27 @@ class HomePageTest extends TestCase
         $this->get(route('home'))->assertOk()->assertSee('Destacado visible')
             ->assertDontSee('Sin stock')->assertDontSee('Compra por categoría')
             ->assertDontSee('Nuestras promociones');
+    }
+
+    public function test_home_shows_only_the_categories_marked_for_the_home_page_in_their_order(): void
+    {
+        $second = Category::factory()->create(['name' => 'Redes marcada', 'show_on_home' => true, 'sort_order' => 2]);
+        $first = Category::factory()->create(['name' => 'Impresoras marcada', 'show_on_home' => true, 'sort_order' => 1]);
+        $hidden = Category::factory()->create(['name' => 'Papeleria sin marcar', 'show_on_home' => false]);
+        $empty = Category::factory()->create(['name' => 'Marcada sin productos', 'show_on_home' => true]);
+        foreach ([$second, $first, $hidden] as $category) {
+            Product::factory()->create(['category_id' => $category->id]);
+        }
+
+        $content = $this->get(route('home'))->assertOk()->getContent();
+        $start = strpos($content, 'Compra por categoría');
+        $section = substr($content, $start, strpos($content, '</section>', $start) - $start);
+
+        $this->assertStringContainsString($first->name, $section);
+        $this->assertStringContainsString($second->name, $section);
+        $this->assertStringNotContainsString($hidden->name, $section);
+        $this->assertStringNotContainsString($empty->name, $section);
+        $this->assertLessThan(strpos($section, $second->name), strpos($section, $first->name));
     }
 
     public function test_home_orders_best_sellers_by_sold_quantity(): void

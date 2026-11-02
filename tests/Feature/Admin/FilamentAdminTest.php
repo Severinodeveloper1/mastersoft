@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Filament\Pages\CompanySettings;
+use App\Filament\Resources\Categories\CategoryEdit;
 use App\Filament\Resources\Claims\ClaimResource;
 use App\Filament\Resources\Claims\Pages\EditClaim;
 use App\Filament\Resources\Claims\Pages\ListClaims;
@@ -53,6 +54,18 @@ class FilamentAdminTest extends TestCase
     public function test_orders_have_no_create_page(): void
     {
         $this->assertArrayNotHasKey('create', OrderResource::getPages());
+    }
+
+    public function test_category_can_be_marked_to_show_on_the_home_page(): void
+    {
+        $category = Category::factory()->create(['show_on_home' => false]);
+
+        Livewire::test(CategoryEdit::class, ['record' => $category->getRouteKey()])
+            ->fillForm(['show_on_home' => true])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertTrue($category->fresh()->show_on_home);
     }
 
     public function test_product_creation_persists_sale_prices(): void

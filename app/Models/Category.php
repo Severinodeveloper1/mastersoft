@@ -19,12 +19,14 @@ class Category extends Model
         'slug',
         'sort_order',
         'is_active',
+        'show_on_home',
     ];
 
     protected function casts(): array
     {
         return [
             'is_active' => 'boolean',
+            'show_on_home' => 'boolean',
         ];
     }
 

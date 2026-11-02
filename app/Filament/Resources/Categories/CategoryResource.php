@@ -31,12 +31,12 @@ class CategoryResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([TextInput::make('name')->label('Nombre')->required()->maxLength(255)->live(onBlur: true)->afterStateUpdated(fn ($state, callable $set, callable $get) => blank($get('slug')) ? $set('slug', Str::slug($state)) : null), TextInput::make('slug')->label('URL')->required()->unique(ignoreRecord: true), TextInput::make('sort_order')->label('Orden')->numeric()->default(0), Toggle::make('is_active')->label('Activa')->default(true)]);
+        return $schema->components([TextInput::make('name')->label('Nombre')->required()->maxLength(255)->live(onBlur: true)->afterStateUpdated(fn ($state, callable $set, callable $get) => blank($get('slug')) ? $set('slug', Str::slug($state)) : null), TextInput::make('slug')->label('URL')->required()->unique(ignoreRecord: true), TextInput::make('sort_order')->label('Orden')->numeric()->default(0), Toggle::make('is_active')->label('Activa')->default(true), Toggle::make('show_on_home')->label('Mostrar en inicio')->helperText('Aparece en "Compra por categoría" de la página de inicio, ordenada por el campo Orden.')->default(false)]);
     }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([TextColumn::make('name')->label('Nombre')->searchable()->sortable(), TextColumn::make('products_count')->label('Productos')->counts('products'), TextColumn::make('sort_order')->label('Orden')->sortable(), ToggleColumn::make('is_active')->label('Activa')])->recordActions([EditAction::make()]);
+        return $table->columns([TextColumn::make('name')->label('Nombre')->searchable()->sortable(), TextColumn::make('products_count')->label('Productos')->counts('products'), TextColumn::make('sort_order')->label('Orden')->sortable(), ToggleColumn::make('is_active')->label('Activa'), ToggleColumn::make('show_on_home')->label('En inicio')])->recordActions([EditAction::make()]);
     }
 
     public static function getPages(): array

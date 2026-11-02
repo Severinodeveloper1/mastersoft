@@ -34,7 +34,7 @@ class HomeController extends Controller
             'description' => 'Encuentra productos de tecnología, cómputo y oficina en Mastersoft.',
             'heroBanners' => Banner::query()->where('placement', BannerPlacement::Hero->value)->where('is_active', true)->orderBy('sort_order')->get(),
             'sideBanner' => Banner::query()->where('placement', BannerPlacement::Side->value)->where('is_active', true)->orderBy('sort_order')->first(),
-            'categories' => Category::query()->where('is_active', true)->whereHas('products', fn (Builder $q) => $q->visibleInStore())->withCount(['products as visible_products_count' => fn (Builder $q) => $q->visibleInStore()])->orderBy('sort_order')->orderBy('name')->get(),
+            'categories' => Category::query()->where('is_active', true)->where('show_on_home', true)->whereHas('products', fn (Builder $q) => $q->visibleInStore())->withCount(['products as visible_products_count' => fn (Builder $q) => $q->visibleInStore()])->orderBy('sort_order')->orderBy('name')->get(),
             'promotions' => Promotion::query()->where('is_active', true)->where(fn (Builder $q) => $q->whereNull('product_id')->orWhereHas('product', fn (Builder $p) => $p->visibleInStore()))->with('product')->orderBy('sort_order')->take(2)->get(),
             'featuredProducts' => $featured,
             'latestProducts' => $latest,
