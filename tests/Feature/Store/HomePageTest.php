@@ -5,6 +5,7 @@ namespace Tests\Feature\Store;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use Database\Seeders\DemoCatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -34,6 +35,7 @@ class HomePageTest extends TestCase
 
         $content = $this->get(route('home'))->assertOk()->getContent();
         $start = strpos($content, 'Compra por categoría');
+        $this->assertNotFalse($start, 'The home page has no "Compra por categoría" section.');
         $section = substr($content, $start, strpos($content, '</section>', $start) - $start);
 
         $this->assertStringContainsString($first->name, $section);
@@ -41,6 +43,13 @@ class HomePageTest extends TestCase
         $this->assertStringNotContainsString($hidden->name, $section);
         $this->assertStringNotContainsString($empty->name, $section);
         $this->assertLessThan(strpos($section, $second->name), strpos($section, $first->name));
+    }
+
+    public function test_demo_catalog_fills_the_home_category_section(): void
+    {
+        $this->seed(DemoCatalogSeeder::class);
+
+        $this->get(route('home'))->assertOk()->assertSee('Compra por categoría')->assertSee('Access Point');
     }
 
     public function test_home_orders_best_sellers_by_sold_quantity(): void

@@ -22,7 +22,8 @@ class DemoCatalogSeeder extends Seeder
             'Access Point', 'Adaptadores', 'USB Inalámbrico', 'Herramientas',
             'Suministros', 'Papel', 'Sensores', 'Alcohol Isopropílico', 'Parlantes',
         ])->mapWithKeys(fn (string $name, int $index) => [
-            $name => Category::firstOrCreate(['name' => $name], ['sort_order' => $index]),
+            // The first six appear in "Compra por categoría" on the home page.
+            $name => Category::firstOrCreate(['name' => $name], ['sort_order' => $index, 'show_on_home' => $index < 6]),
         ]);
 
         $brands = collect(['Ubiquiti', 'TP-Link', 'D-Link', 'Epson', 'Brother', 'MikroTik', 'Genérico'])
