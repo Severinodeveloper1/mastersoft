@@ -15,7 +15,7 @@ return [
     */
 
     'erp' => [
-        'base_url' => env('ERP_BASE_URL', 'https://api.vesertech.com/api/v1'),
+        'base_url' => env('ERP_BASE_URL', 'https://veserfactapi.vesertech.com/api/v1'),
         'tenant' => env('ERP_TENANT'),
         'username' => env('ERP_USERNAME'),
         'password' => env('ERP_PASSWORD'),
