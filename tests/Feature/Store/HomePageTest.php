@@ -49,7 +49,14 @@ class HomePageTest extends TestCase
     {
         $this->seed(DemoCatalogSeeder::class);
 
-        $this->get(route('home'))->assertOk()->assertSee('Compra por categoría')->assertSee('Access Point');
+        $content = $this->get(route('home'))->assertOk()->getContent();
+        $start = strpos($content, 'Compra por categoría');
+        $this->assertNotFalse($start, 'The home page has no "Compra por categoría" section.');
+        $section = substr($content, $start, strpos($content, '</section>', $start) - $start);
+
+        // Demo categories 1-6 are marked for the home page; the seventh ("Sensores") is not.
+        $this->assertStringContainsString('Access Point', $section);
+        $this->assertStringNotContainsString('Sensores', $section);
     }
 
     public function test_home_orders_best_sellers_by_sold_quantity(): void
